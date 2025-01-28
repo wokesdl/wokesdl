@@ -10,13 +10,10 @@
             height: 100%;
             margin: 0;
         }
-        body{
-            background-color: #000;
-            color:white;
-        }
+      
         .bg {
             /* The image used */
-            background-image: url("img_girl.jpg");
+            background-image: url("{% static 'wokesdlPages/mainHomeCover.jpg' %}");
 
             /* Full height */
             height: 100%;
@@ -30,6 +27,34 @@
             justify-content: center;
             align-items: center;
         }
+   @font-face {
+    font-family: 'agency';
+    src: url("{% static 'fonts/AGENCYB.TTF' %}") format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.time {
+    font-family: 'agency';
+    margin-right: 10px;
+    font-size: 20px;
+    color: white;
+}
+
+ @font-face {
+    font-family: "Sitka Heading Bold";
+    src: url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.eot");
+    src: url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.svg#Sitka Heading Bold")format("svg");
+}
+
+.lls{
+    font-family: 'Sitka Heading Bold';
+}
+
     </style>
 </head>
 
@@ -37,22 +62,24 @@
 
     <div class="bg">
         <div>
-            <div>Long Live Sdl.</div>
-            <div>
+            <div class="lls"><img src="{% static 'wokesdlPages/lls.png' %}" alt=""></div>
+            <div style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
                 <div>
-                    <span>3/12/2024</span><span id="accra-time" class="time">Time</span><span>ACC</span>
+                    <span class="time">3/12/2024</span><span id="accra-time" class="time">Time</span><span class="time">ACC</span>
                    
                 </div>
                 <div>
 
-                    <span>3/12/2024</span><span id="abuja-time" class="time" >Time</span><span>ABJ</span>
+                    <span class="time">3/12/2024</span><span id="abuja-time" class="time" >Time</span><span class="time">ABJ</span>
                 </div>
             </div>
         </div>
         <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-            <div>
-                <img src="{% static 'wokesdlPages/wokesdl_white.png' %}" alt="" style="width: 300px; ">
-            </div>
+        <a href="{% url 'store' %}">
+                <div>
+                    <img src="{% static 'wokesdlPages/wokesdl_white.png' %}" alt="" style="width: 300px; ">
+                </div>
+        </a>
             <div style="width: 100%; height: 10px; margin: 10px; background-color: grey;">
 
             </div>

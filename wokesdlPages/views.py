@@ -8,4 +8,8 @@ class MainHome(View):
     def get(self,request):
         return render(request,'wokesdlPages/mainHome.html')
 
-# config for vercel
+
+class Store(View):
+
+    def get(self,request):
+        return render(request,'wokesdlPages/store.html')
