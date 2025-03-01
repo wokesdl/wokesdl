@@ -152,7 +152,7 @@
                 width: 300px;
             }
 
-            /* On small screens, keep the middle logos vertically centered */
+            /* On small screens, keep the middle logos centered both horizontally & vertically */
             .middle-logos {
                 position: absolute;
                 top: 50%;
@@ -194,12 +194,12 @@
             <!-- Accra & Abuja Times -->
             <div class="time-container">
                 <div class="time-row">
-                    <span class="date-label">3/12/2024</span>
+                    <span class="date-label"></span>
                     <span class="time-label" id="accra-time">Time</span>
                     <span class="time-loc">ACC</span>
                 </div>
                 <div class="time-row">
-                    <span class="date-label">3/12/2024</span>
+                    <span class="date-label"></span>
                     <span class="time-label" id="abuja-time">Time</span>
                     <span class="time-loc">ABJ</span>
                 </div>
@@ -218,21 +218,36 @@
         <div class="footer-right">ABOUT</div>
     </div>
 
-    <!-- Script for Accra/Abuja times -->
+    <!-- Script for Current Date and Accra/Abuja times -->
     <script>
-        function updateTime() {
+        function updateTimeAndDate() {
             const now = new Date();
+
+            // Update date labels
+            const dateFormatted = now.toLocaleDateString('en-US');
+            document.querySelectorAll('.date-label').forEach(label => {
+                label.textContent = dateFormatted;
+            });
+
+            // Convert local time to UTC
             const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+
+            // Accra is UTC+0
             const accraTime = new Date(utc);
+
+            // Abuja is UTC+1 => add 1 hour (3600000 ms)
             const abujaTime = new Date(utc + 3600000);
+
             const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
             const accraFormatted = accraTime.toLocaleTimeString('en-US', options);
             const abujaFormatted = abujaTime.toLocaleTimeString('en-US', options);
+
             document.getElementById('accra-time').textContent = accraFormatted;
             document.getElementById('abuja-time').textContent = abujaFormatted;
         }
-        setInterval(updateTime, 1000);
-        updateTime();
+
+        setInterval(updateTimeAndDate, 1000);
+        updateTimeAndDate(); // Initial call
     </script>
 </body>
 
