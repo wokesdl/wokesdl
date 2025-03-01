@@ -17,7 +17,6 @@
             color: #fff;
             font-family: Arial, sans-serif;
             overflow-x: hidden;
-            /* Prevent horizontal scroll */
         }
 
         /* Full-page background image */
@@ -26,7 +25,6 @@
             height: 100%;
             background: url("{% static 'wokesdlPages/backgroundImage.jpg' %}") center center / cover no-repeat;
             position: relative;
-            /* For positioning bottom text */
         }
 
         /* Top area: LONG LIVE SDL image */
@@ -45,7 +43,6 @@
             /* Adjust as needed */
             max-width: 90%;
             min-width: 300px;
-            /* Responsive scaling */
             height: auto;
             display: block;
             margin: 0 auto;
@@ -54,7 +51,6 @@
         /* TIME CONTAINER (Accra & Abuja) */
         .time-container {
             margin-top: 10px;
-            /* On small screens, each .time-row is on its own line */
         }
 
         .time-row {
@@ -81,29 +77,25 @@
         /* Middle logos: WOKESDL | vertical line | SOUNDSBYSDL */
         .middle-logos {
             position: absolute;
-           
+            min-width: 250px;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            /* Center both horizontally & vertically */
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 40px;
-            /* Space between images & line */
         }
 
         .middle-logos img {
             max-width: 200px;
-            /* Adjust as needed */
             width: 100%;
             height: auto;
         }
 
         .vertical-line {
             width: 2px;
-            /* Thickness of the line */
             height: 60px;
-            /* Height of the line (kept 60px for all screens) */
             min-height: 60px;
             min-width: 2px;
             background-color: #fff;
@@ -113,9 +105,7 @@
         .footer-left {
             position: absolute;
             bottom: 30px;
-            /* Adjust vertical position */
             left: 30px;
-            /* Adjust horizontal position */
             font-size: 1rem;
             letter-spacing: 1px;
             cursor: pointer;
@@ -135,7 +125,7 @@
             opacity: 0.8;
         }
 
-        /* Optional: custom fonts (Sitka, Agency, etc.) */
+        /* Optional: custom fonts */
         @font-face {
             font-family: 'agency';
             src: url("{% static 'fonts/AGENCYB.TTF' %}") format('truetype');
@@ -156,30 +146,31 @@
         @media (max-width: 600px) {
             .top-logo {
                 min-width: auto;
-                /* Remove fixed min-width on small screens */
             }
 
             .top-logo img {
                 width: 300px;
             }
 
+            /* On small screens, keep the middle logos vertically centered */
             .middle-logos {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
                 gap: 20px;
             }
 
             .middle-logos img {
                 max-width: 130px;
-                /* Slightly larger logos on phone screens */
             }
 
-            /* Vertical line remains 60px tall */
             .footer-left,
             .footer-right {
                 font-size: 0.9rem;
             }
         }
 
-        /* On larger screens, display the two .time-row blocks side by side */
         @media (min-width: 601px) {
             .time-container {
                 display: flex;
@@ -231,27 +222,17 @@
     <script>
         function updateTime() {
             const now = new Date();
-
-            // Convert local time to UTC
             const utc = now.getTime() + now.getTimezoneOffset() * 60000;
-
-            // Accra is UTC+0
             const accraTime = new Date(utc);
-
-            // Abuja is UTC+1 => add 1 hour (3600000 ms)
             const abujaTime = new Date(utc + 3600000);
-
-            // Format time as hh:mm:ss AM/PM
             const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
             const accraFormatted = accraTime.toLocaleTimeString('en-US', options);
             const abujaFormatted = abujaTime.toLocaleTimeString('en-US', options);
-
             document.getElementById('accra-time').textContent = accraFormatted;
             document.getElementById('abuja-time').textContent = abujaFormatted;
         }
-
         setInterval(updateTime, 1000);
-        updateTime(); // Initial call
+        updateTime();
     </script>
 </body>
 
