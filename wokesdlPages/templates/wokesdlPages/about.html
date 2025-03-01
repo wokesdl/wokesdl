@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LONG LIVE SDL – About Us</title>
+
+    <style>
+        /* Example @font-face for Hagrid ExtraBold Italic (replace with actual source) */
+        @font-face {
+            font-family: "HagridExtraBoldItalic";
+            src: url("HagridExtraBoldItalic.woff2") format("woff2");
+            font-weight: 800;
+            font-style: italic;
+        }
+
+        /* Example @font-face for Wide Latin (replace with actual source) */
+        @font-face {
+            font-family: "WideLatin";
+            src: url("WideLatin.woff2") format("woff2");
+        }
+
+        /* Base reset */
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #000000;
+            /* black background */
+            color: #8f181b;
+            /* dark red text */
+            overflow-x: hidden;
+            /* prevent horizontal scroll */
+            font-family: Arial, sans-serif;
+        }
+
+        /* Top-left star image */
+        .top-left-star {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            /* ensure it stays on top */
+        }
+
+        .top-left-star img {
+            max-width: 100px;
+            height: auto;
+            display: block;
+        }
+
+        /* Container for central content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+            /* heading centered */
+        }
+
+        /* ABOUT US heading */
+        .about-title {
+            font-family: "HagridExtraBoldItalic", sans-serif;
+            /* your real font name */
+            font-size: 3rem;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            /* optional */
+        }
+
+        /* Paragraph text (justified) */
+        .about-text {
+            font-family: "WideLatin", sans-serif;
+            /* your real font name */
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            text-align: justify;
+            /* justify alignment */
+        }
+
+        /* EST. year styling (also justified) */
+        .est-year {
+            font-family: "WideLatin", sans-serif;
+            font-size: 1rem;
+            margin-bottom: 60px;
+            text-align: justify;
+            /* or center if you prefer */
+        }
+
+        /* Bottom logo (LONG LIVE SDL) */
+        .bottom-logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 300px;
+            /* adjust as needed */
+            width: 100%;
+            height: auto;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .top-left-star img {
+                max-width: 60px;
+                /* smaller star on phones */
+            }
+
+            .about-title {
+                font-size: 2rem;
+            }
+
+            .about-text {
+                font-size: 0.9rem;
+            }
+
+            .est-year {
+                font-size: 0.9rem;
+            }
+
+            .bottom-logo {
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top-left star image -->
+    <div class="top-left-star">
+        <img src="{% static 'images/sdlstar.png' %}" alt="SDL Star">
+    </div>
+
+    <div class="container">
+        <!-- ABOUT US heading -->
+        <h1 class="about-title">ABOUT US</h1>
+
+        <!-- Paragraphs (justified) -->
+        <p class="about-text">
+            Born from the vision of Adamu Malabu and Wedham Laugié, <strong>LONG LIVE SDL</strong>
+            is more than a brand—it’s an anthem for freedom and fearlessness.
+        </p>
+        <p class="about-text">
+            What began as <strong>WOKE SEE DA LIGHT</strong>, a statement of defiance against
+            societal norms, has grown into an umbrella uniting art, fashion, and music.
+            From pushing boundaries from the streets to bridging sounds between Africa
+            and the world, we are here to make dreams undeniable.
+        </p>
+        <p class="about-text">
+            <strong>LONG LIVE SDL</strong> is a call to community, expression, and
+            breaking free from the limits placed on us. This is not just a brand.
+            It’s a way of life.
+        </p>
+
+        <!-- EST. year -->
+        <p class="est-year">EST. 2021</p>
+
+        <!-- Bottom logo -->
+        <img src="{% static 'images/longlivesdl.png' %}" alt="LONG LIVE SDL" class="bottom-logo">
+    </div>
+</body>
+
+</html>

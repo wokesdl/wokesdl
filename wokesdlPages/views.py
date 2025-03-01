@@ -9,6 +9,10 @@ class MainHome(View):
     def get(self,request):
         return render(request,'wokesdlPages/mainHome.html')
 
+class WokeSdlHome(View):
+    
+    def get(self,request):
+        return render(request,'wokesdlPages/wokesdlHome.html')
 
 class Store(View):
 
@@ -26,3 +30,8 @@ class LookBook(View):
             'countRange':countRange,
         }
         return render(request,'wokesdlPages/lookBook.html',context)
+    
+class AboutWokeSdl(View):
+
+    def get(self,request):
+        return render(request,'wokesdlPages/about.html')

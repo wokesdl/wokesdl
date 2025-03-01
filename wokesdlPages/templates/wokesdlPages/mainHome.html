@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LONG LIVE SDL</title>
     <style>
+        a{
+            text-decoration: none;
+            color: #fff;
+        }
         /* Reset & base styles */
         html,
         body {
@@ -215,7 +219,7 @@
 
         <!-- BOTTOM: CONTACT (left), ABOUT (right) -->
         <div class="footer-left">CONTACT</div>
-        <div class="footer-right">ABOUT</div>
+        <a href="{% url 'about' %}"><div class="footer-right">ABOUT</div></a>
     </div>
 
     <!-- Script for Current Date and Accra/Abuja times -->

@@ -11,52 +11,7 @@
             margin: 0;
         }
 
-        .bg {
-            /* The image used */
-            background-image: url("{% static  'images/cover_image.jpg' %}");
-
-            /* Full height */
-            height: 100%;
-
-            /* Center and scale the image nicely */
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-        .emailBox {
-            background-color: #241e20;
-            border: 2px solid white;
-            padding: 12px;
-            color: white;
-        }
-
-        input[type=submit] {
-            background-color: #c31c30;
-            color: white;
-            border: 2px solid #c31c30;
-            padding: 12px;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            flex-direction: column;
-        }
-
-        .container img {
-            width: 300px;
-            margin-bottom: 20px;
-        }
-
-        .footer {
-            position: absolute;
-            bottom: 0;
-
-        }
-
+        
         .main-store {
             background-color: #000;
             min-height: 100vh;
@@ -75,9 +30,11 @@
             font-family: 'Sitka';
             color: white;
             font-size: 20px;
-            margin-bottom: 20px;
+           
         }
-
+        .store img{
+            max-width: 120px;
+        }
         .sdlStar {
             max-width: 60px;
             height: auto;
@@ -113,8 +70,8 @@
             flex-direction: column;
             gap: 20px;
             position: absolute;
-            top: 100vh;
-            margin-top: 80px;
+            top: 80px;
+            
             margin-left: 20px;
         }
 
@@ -230,36 +187,106 @@
             }
         }
     </style>
-
+<!-- Modal Popup style -->
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+    
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            height: 70vh;
+            overflow-y: auto;
+            border-radius: 8px;
+            position: relative;
+            text-align: center;
+        }
+    
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+    
+        .modal-content h2 {
+            margin-bottom: 10px;
+            font-size: 22px;
+            color: #000;
+        }
+    
+        .modal-content p {
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #333;
+        }
+    
+        .modal-content label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+    
+        .modal-content select,
+        .modal-content input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+        }
+    
+        .modal-content button {
+            background-color: #c31c30;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+    
+        .modal-content button:hover {
+            background-color: #a01628;
+        }
+    
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #333;
+        }
+    
+        @media (max-width:600px) {
+            .modal-content {
+                padding: 15px;
+            }
+    
+            .modal-content h2 {
+                font-size: 20px;
+            }
+    
+            .modal-content p {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-
-    <div class="bg">
-
-        <div class="container">
-            <img src="{% static 'images/wokesdl_logoo_white.png' %}" alt="">
-            <div>
-                <input type="text" placeholder="Email" class="emailBox"><input type="submit" value="Submit">
-            </div>
-            <div class="footer">
-                <div class='store'>Store</div>
-                <div id="scroll-bottom">
-                    <svg width="64px" height="64px" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"
-                        fill="#000000">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path fill="#ffffff"
-                                d="M17.707 5.707l-8 8a1 1 0 0 1-1.414 0l-8-8A1 1 0 0 1 1 4h16a1 1 0 0 1 .924.617A.97.97 0 0 1 18 5a1 1 0 0 1-.293.707z">
-                            </path>
-                        </g>
-                    </svg>
-                </div>
-            </div>
-
-        </div>
-    </div>
     <div class="main-store">
         <div class="nav">
             <span><img src="{% static 'images/sdlstar.png' %}" alt="" class="sdlStar"></span>
@@ -280,25 +307,32 @@
             <span>Films</span>
         </div>
         <div class="product-container">
-            <div class="product-card">
+            <!-- Product Card 1 -->
+            <div class="product-card" data-img="{% static 'images/products/1a.png' %}" data-title="Product 1"
+                data-price="GHS25.00"
+                data-description="This is a detailed description for Product 1. High-quality, comfortable, and stylish."
+                data-sizes="Small,Medium,Large,XL">
                 <img src="{% static 'images/products/1a.png' %}" alt="Product 1">
                 <h3>Product 1</h3>
                 <p>GHS25.00</p>
-
             </div>
-
-            <div class="product-card">
+            <!-- Product Card 2 -->
+            <div class="product-card" data-img="{% static 'images/products/2a.png' %}" data-title="Product 2"
+                data-price="GHS30.00"
+                data-description="This is a detailed description for Product 2. Modern design with premium materials."
+                data-sizes="Small,Medium,Large,XL">
                 <img src="{% static 'images/products/2a.png' %}" alt="Product 2">
                 <h3>Product 2</h3>
                 <p>GHS30.00</p>
-
             </div>
-
-            <div class="product-card">
+            <!-- Product Card 3 -->
+            <div class="product-card" data-img="{% static 'images/products/3A.png' %}" data-title="Product 3"
+                data-price="GHS35.00"
+                data-description="This is a detailed description for Product 3. Versatile style and excellent comfort."
+                data-sizes="Small,Medium,Large,XL">
                 <img src="{% static 'images/products/3A.png' %}" alt="Product 3">
                 <h3>Product 3</h3>
                 <p>GHS35.00</p>
-
             </div>
         </div>
         <div class="store-footer">
@@ -450,17 +484,101 @@
                 <span> +2025. LONG LIVE SDL</span>
             </div>
         </div>
+            <div class="modal" id="productModal">
+                <div class="modal-content">
+                    <span class="close-modal" id="closeModal">&times;</span>
+                    <img id="modalImg" src="" alt="Product Image">
+                    <h2 id="modalTitle">Product Title</h2>
+                    <p id="modalDescription">Product description goes here.</p>
+                    <p id="modalPrice">Price: </p>
+                    <div>
+                        <label for="modalSizeSelect">Select Size:</label>
+                        <select id="modalSizeSelect">
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                            <option value="XL">XL</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="modalQuantity">Quantity:</label>
+                        <input type="number" id="modalQuantity" min="1" value="1">
+                    </div>
+                    <button id="addToCartBtn">Add to Cart</button>
+                </div>
+            </div>
 
     </div>
 
 </body>
+
 <script>
-    document.getElementById('scroll-bottom').addEventListener('click', function () {
-        window.scrollTo({
-            top: window.innerHeight, // Scroll 100vh down
-            behavior: 'smooth'
+    // Modal elements
+    const modal = document.getElementById('productModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalSizeSelect = document.getElementById('modalSizeSelect');
+    const modalQuantity = document.getElementById('modalQuantity');
+    const addToCartBtn = document.getElementById('addToCartBtn');
+    const closeModal = document.getElementById('closeModal');
+
+    // Attach click event to each product card
+    document.querySelectorAll('.product-card').forEach(card => {
+        // Add data attributes if missing (optional – if you already have them, this is not needed)
+        // card.setAttribute('data-img', card.querySelector('img').src);
+        // card.setAttribute('data-title', card.querySelector('h3').textContent);
+        // card.setAttribute('data-price', card.querySelector('p').textContent);
+
+        card.addEventListener('click', function () {
+            // Retrieve product details from data attributes
+            const imgSrc = this.getAttribute('data-img');
+            const title = this.getAttribute('data-title');
+            const price = this.getAttribute('data-price');
+            const description = this.getAttribute('data-description');
+            const sizes = this.getAttribute('data-sizes').split(',');
+
+            // Populate modal content
+            modalImg.src = imgSrc;
+            modalTitle.textContent = title;
+            modalPrice.textContent = "Price: " + price;
+            modalDescription.textContent = description;
+
+            // Populate size dropdown options dynamically
+            modalSizeSelect.innerHTML = "";
+            sizes.forEach(size => {
+                const option = document.createElement('option');
+                option.value = size;
+                option.textContent = size;
+                modalSizeSelect.appendChild(option);
+            });
+            modalSizeSelect.selectedIndex = 0;
+            modalQuantity.value = 1;
+
+            // Show the modal (using flex to center content)
+            modal.style.display = "flex";
         });
-        
+    });
+
+    // Close modal on close button click
+    closeModal.addEventListener('click', function () {
+        modal.style.display = "none";
+    });
+
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    // "Add to Cart" functionality (example)
+    addToCartBtn.addEventListener('click', function () {
+        const selectedSize = modalSizeSelect.value;
+        const quantity = modalQuantity.value;
+        alert(`Added ${quantity} of ${modalTitle.textContent} (Size: ${selectedSize}) to cart.`);
+        modal.style.display = "none";
     });
 </script>
 

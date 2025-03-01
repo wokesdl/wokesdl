@@ -1,0 +1,540 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LONG LIVE SDL – Store</title>
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .main-store {
+            background-color: #000;
+            min-height: 100vh;
+            color: #d01e26;
+        }
+
+        @font-face {
+            font-family: 'Sitka';
+            src: url('fonts/sitka/sitka-small-bold.ttf') format('truetype');
+            /* Legacy support */
+        }
+
+        .store {
+            font-family: 'Sitka';
+            color: white;
+            font-size: 20px;
+        }
+
+        .store img {
+            max-width: 120px;
+        }
+
+        .sdlStar {
+            max-width: 60px;
+            height: auto;
+            padding-left: 20px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+            padding-top: 20px;
+        }
+
+        .main-store-controls {
+            display: flex;
+            gap: 20px;
+            padding-right: 20px;
+        }
+
+        .wokesdl_logoo_white {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wokesdl_logoo_white img {
+            width: 300px;
+        }
+
+        .side-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: absolute;
+            top: 80px;
+            margin-left: 20px;
+        }
+
+        .store-footer {
+            background-color: #000;
+            position: relative;
+            bottom: 0;
+            padding: 20px;
+            color: #c31c30;
+        }
+
+        .sf-h1-1 {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .responsive-image {
+            max-width: 30%;
+            height: auto;
+        }
+
+        .paymentBox {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media screen and (max-width:850px) {
+            .paymentBox {
+                flex-direction: column;
+            }
+
+            .mailFooter {
+                width: 160px !important;
+            }
+
+            .mailFooter {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .mailFooterBox input[type=submit] {
+                width: 188px !important;
+            }
+
+            .sf-h1-1 {
+                flex-direction: column;
+            }
+
+            .paymentBox {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+        }
+    </style>
+    <style>
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .product-card {
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #111;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: scale(1.02);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            background-color: #222;
+        }
+
+        .product-card h3 {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .product-card p {
+            font-size: 16px;
+            color: #666;
+            margin: 0 10px 10px;
+        }
+
+        .product-card button {
+            background-color: #c31c30;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .product-card button:hover {
+            background-color: #a01628;
+        }
+
+        @media screen and (max-width: 900px) {
+            .product-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .product-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+    <!-- ================= Modal Popup Styles ================= -->
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            height: 70vh;
+            overflow-y: auto;
+            border-radius: 8px;
+            position: relative;
+            text-align: center;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 10px;
+            font-size: 22px;
+            color: #000;
+        }
+
+        .modal-content p {
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .modal-content label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .modal-content select,
+        .modal-content input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+        }
+
+        .modal-content button {
+            background-color: #c31c30;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .modal-content button:hover {
+            background-color: #a01628;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #333;
+        }
+
+        @media (max-width:600px) {
+            .modal-content {
+                padding: 15px;
+            }
+
+            .modal-content h2 {
+                font-size: 20px;
+            }
+
+            .modal-content p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-store">
+        <div class="nav">
+            <span><img src="{% static 'images/sdlstar.png' %}" alt="" class="sdlStar"></span>
+            <div class="main-store-controls">
+                <span>Search</span>
+                <span>Cart()</span>
+                <span>Checkout</span>
+            </div>
+        </div>
+        <div class="wokesdl_logoo_white">
+            <img src="{% static 'images/wokesdl_logoo_white.png' %}" alt="" class="responsive-image">
+        </div>
+        <div class="side-controls">
+            <span>Account</span>
+            <span><a href="{% url 'lookbook' 'mob2023' %}">Lookbook</a></span>
+            <span>Films</span>
+        </div>
+        <div class="product-container">
+            <!-- Product Card 1 -->
+            <div class="product-card" data-img="{% static 'images/products/1a.png' %}" data-title="Product 1"
+                data-price="GHS25.00"
+                data-description="This is a detailed description for Product 1. High-quality, comfortable, and stylish."
+                data-sizes="Small,Medium,Large,XL">
+                <img src="{% static 'images/products/1a.png' %}" alt="Product 1">
+                <h3>Product 1</h3>
+                <p>GHS25.00</p>
+            </div>
+            <!-- Product Card 2 -->
+            <div class="product-card" data-img="{% static 'images/products/2a.png' %}" data-title="Product 2"
+                data-price="GHS30.00"
+                data-description="This is a detailed description for Product 2. Modern design with premium materials."
+                data-sizes="Small,Medium,Large,XL">
+                <img src="{% static 'images/products/2a.png' %}" alt="Product 2">
+                <h3>Product 2</h3>
+                <p>GHS30.00</p>
+            </div>
+            <!-- Product Card 3 -->
+            <div class="product-card" data-img="{% static 'images/products/3A.png' %}" data-title="Product 3"
+                data-price="GHS35.00"
+                data-description="This is a detailed description for Product 3. Versatile style and excellent comfort."
+                data-sizes="Small,Medium,Large,XL">
+                <img src="{% static 'images/products/3A.png' %}" alt="Product 3">
+                <h3>Product 3</h3>
+                <p>GHS35.00</p>
+            </div>
+        </div>
+        <div class="store-footer">
+            <div class="sf-h1">
+                <div class="sf-h1-1">
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>SIGN UP FOR EARLY ACCESS & DISCOUNTS</div>
+                        <div class="mailFooterBox">
+                            <input type="text" placeholder="Email" class="emailBox mailFooter" style="width: 230px;">
+                            <input type="submit" value="Submit">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; width: 100%;">
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <span>Country/Region</span>
+                                <span>Ghana (GHS)</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <span>Language</span>
+                                <span>English</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                            <span>
+                                <svg class="icon-responsive" viewBox="0 0 192 192" fill="none">
+                                    <path stroke="#c31c30" stroke-width="12"
+                                        d="M96 162c-14.152 0-24.336-.007-32.276-.777-7.849-.761-12.87-2.223-16.877-4.741a36 36 0 0 1-11.33-11.329c-2.517-4.007-3.98-9.028-4.74-16.877C30.007 120.336 30 110.152 30 96c0-14.152.007-24.336.777-32.276.76-7.849 2.223-12.87 4.74-16.877a36 36 0 0 1 11.33-11.33c4.007-2.517 9.028-3.98 16.877-4.74C71.663 30.007 81.847 30 96 30c14.152 0 24.336.007 32.276.777 7.849.76 12.87 2.223 16.877 4.74a36 36 0 0 1 11.329 11.33c2.518 4.007 3.98 9.028 4.741 16.877.77 7.94.777 18.124.777 32.276 0 14.152-.007 24.336-.777 32.276-.761 7.849-2.223 12.87-4.741 16.877a36 36 0 0 1-11.329 11.329c-4.007 2.518-9.028 3.98-16.877 4.741-7.94.77-18.124.777-32.276.777Z" />
+                                    <circle cx="96" cy="96" r="30" stroke="#c31c30" stroke-width="12"></circle>
+                                    <circle cx="135" cy="57" r="9" fill="#c31c30"></circle>
+                                </svg>
+                            </span>
+                            <span>
+                                <svg class="icon-responsive" fill="#c31c30" viewBox="0 0 32 32"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M24.325 8.309s-2.655-.334-8.357-.334c-5.517 0-8.294.334-8.294.334A2.675 2.675 0 0 0 5 10.984v10.034a2.675 2.675 0 0 0 2.674 2.676s2.582.332 8.294.332c5.709 0 8.357-.332 8.357-.332A2.673 2.673 0 0 0 27 21.018V10.982a2.673 2.673 0 0 0-2.675-2.673zM13.061 19.975V12.03L20.195 16l-7.134 3.975z" />
+                                </svg>
+                            </span>
+                            <span>
+                                <svg class="icon-responsive" version="1.0" xmlns="http://www.w3.org/2000/svg"
+                                    width="30px" height="64px" viewBox="0 0 64.000000 65.000000"
+                                    preserveAspectRatio="xMidYMid meet" fill="#c31c30">
+                                    <g transform="translate(0.000000,65.000000) scale(0.100000,-0.100000)"
+                                        stroke="none">
+                                        <path
+                                            d="M43 588 c212 -300 207 -292 194 -308 -7 -8 -64 -72 -126 -142 -107 -123 -111 -128 -83 -128 25 0 45 18 132 118 57 64 108 117 114 117 5 0 46 -52 91 -115 l81 -115 98 -3 99 -3 -25 33 c-13 18 -57 80 -98 138 -40 58 -88 126 -107 151 l-33 47 115 130 c63 72 115 134 115 137 0 3 -11 5 -23 5 -18 0 -51 -30 -127 -116 -56 -64 -106 -112 -111 -107 -4 4 -41 55 -81 113 l-74 105 -98 3 -98 3 45 -63z m272 -190 c83 -117 172 -242 198 -280 l48 -68 -43 0 -43 0 -180 252 c-99 138 -188 264 -198 280 l-19 28 44 0 43 -1 150 -211z" />
+                                    </g>
+                                </svg>
+                            </span>
+                            <span>
+                                <svg class="icon-responsive" viewBox="0 0 141.732 141.732"
+                                    xmlns="http://www.w3.org/2000/svg" fill="#2566af">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <g fill="#2566af">
+                                            <path
+                                                d="M62.935 89.571h-9.733l6.083-37.384h9.734zM45.014 52.187L35.735 77.9l-1.098-5.537.001.002-3.275-16.812s-.396-3.366-4.617-3.366h-15.34l-.18.633s4.691.976 10.181 4.273l8.456 32.479h10.141l15.485-37.385H45.014zM121.569 89.571h8.937l-7.792-37.385h-7.824c-3.613 0-4.493 2.786-4.493 2.786L95.881 89.571h10.146l2.029-5.553h12.373l1.14 5.553zm-10.71-13.224l5.114-13.99 2.877 13.99h-7.991zM96.642 61.177l1.389-8.028s-4.286-1.63-8.754-1.63c-4.83 0-16.3 2.111-16.3 12.376 0 9.658 13.462 9.778 13.462 14.851s-12.075 4.164-16.06.965l-1.447 8.394s4.346 2.111 10.986 2.111c6.642 0 16.662-3.439 16.662-12.799 0-9.72-13.583-10.625-13.583-14.851.001-4.227 9.48-3.684 13.645-1.389z">
+                                            </path>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </span>
+                            <span>
+                                <svg class="icon-responsive" viewBox="0 -140 780 780" xmlns="http://www.w3.org/2000/svg"
+                                    fill="#000000">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path
+                                            d="M40,0h700c22.092,0,40,17.909,40,40v420c0,22.092-17.908,40-40,40H40c-22.091,0-40-17.908-40-40V40 C0,17.909,17.909,0,40,0z"
+                                            fill="#16366F"></path>
+                                        <path
+                                            d="m449.01 250c0 99.143-80.37 179.5-179.51 179.5s-179.5-80.361-179.5-179.5c0-99.133 80.362-179.5 179.5-179.5 99.137 0 179.51 80.37 179.51 179.5"
+                                            fill="#D9222A"></path>
+                                        <path
+                                            d="m510.49 70.496c-46.38 0-88.643 17.596-120.5 46.466-6.49 5.889-12.548 12.237-18.125 18.996h36.266c4.966 6.037 9.536 12.388 13.685 19.013h-63.635c-3.827 6.121-7.28 12.469-10.341 19.008h84.312c2.893 6.185 5.431 12.53 7.6 19.004h-99.512c-2.091 6.235-3.832 12.581-5.217 19.009h109.94c2.689 12.49 4.044 25.231 4.041 38.008 0 19.934-3.254 39.113-9.254 57.02h-99.512c2.164 6.479 4.7 12.825 7.595 19.01h84.317c-3.064 6.54-6.52 12.889-10.347 19.013h-63.625c4.154 6.629 8.73 12.979 13.685 18.996h36.258c-5.57 6.772-11.63 13.126-18.13 19.012 31.86 28.867 74.118 46.454 120.5 46.454 99.138-1e-3 179.51-80.362 179.51-179.5 0-99.13-80.37-179.5-179.51-179.5"
+                                            fill="#EE9F2D"></path>
+                                        <path
+                                            d="m666.08 350.06c0-3.201 2.592-5.801 5.796-5.801s5.796 2.6 5.796 5.801c0 3.199-2.592 5.799-5.796 5.799-3.202-1e-3 -5.797-2.598-5.796-5.799zm5.796 4.408c2.435-1e-3 4.407-1.975 4.408-4.408 0-2.433-1.972-4.404-4.404-4.404h-4e-3c-2.429-4e-3 -4.4 1.963-4.404 4.392v0.013c-3e-3 2.432 1.967 4.406 4.399 4.408 1e-3 -1e-3 3e-3 -1e-3 5e-3 -1e-3zm-0.783-1.86h-1.188v-5.084h2.154c0.45 0 0.908 0 1.296 0.254 0.416 0.283 0.654 0.767 0.654 1.274 0 0.575-0.337 1.113-0.888 1.317l0.941 2.236h-1.319l-0.78-2.008h-0.87v2.008 3e-3zm0-2.88h0.654c0.245 0 0.513 0.018 0.729-0.1 0.195-0.125 0.295-0.361 0.295-0.587-9e-3 -0.21-0.115-0.404-0.287-0.524-0.204-0.117-0.542-0.085-0.763-0.085h-0.629v1.296h1e-3z"
+                                            fill="#ffffff"></path>
+                                    </g>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="sf-h2"
+                            style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                            <span>Shipping Policies & Return</span>
+                            <span>Terms and Conditions</span>
+                            <span>Contact</span>
+                            <span>About</span>
+                        </div>
+                        <div class="sf-h3" style="display: flex; justify-content: center; margin-top: 20px;">
+                            <span>+2025. LONG LIVE SDL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= Modal Popup for Product Details ================= -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <img id="modalImg" src="" alt="Product Image">
+            <h2 id="modalTitle">Product Title</h2>
+            <p id="modalDescription">Product description goes here.</p>
+            <p id="modalPrice">Price: </p>
+            <div>
+                <label for="modalSizeSelect">Select Size:</label>
+                <select id="modalSizeSelect">
+                    <option value="Small">Small</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Large">Large</option>
+                    <option value="XL">XL</option>
+                </select>
+            </div>
+            <div>
+                <label for="modalQuantity">Quantity:</label>
+                <input type="number" id="modalQuantity" min="1" value="1">
+            </div>
+            <button id="addToCartBtn">Add to Cart</button>
+        </div>
+    </div>
+
+    <script>
+        // Modal elements
+        const modal = document.getElementById('productModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalSizeSelect = document.getElementById('modalSizeSelect');
+        const modalQuantity = document.getElementById('modalQuantity');
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        const closeModal = document.getElementById('closeModal');
+
+        // Attach click event to each product card
+        document.querySelectorAll('.product-card').forEach(card => {
+            // Add data attributes if missing (optional – if you already have them, this is not needed)
+            // card.setAttribute('data-img', card.querySelector('img').src);
+            // card.setAttribute('data-title', card.querySelector('h3').textContent);
+            // card.setAttribute('data-price', card.querySelector('p').textContent);
+
+            card.addEventListener('click', function () {
+                // Retrieve product details from data attributes
+                const imgSrc = this.getAttribute('data-img');
+                const title = this.getAttribute('data-title');
+                const price = this.getAttribute('data-price');
+                const description = this.getAttribute('data-description');
+                const sizes = this.getAttribute('data-sizes').split(',');
+
+                // Populate modal content
+                modalImg.src = imgSrc;
+                modalTitle.textContent = title;
+                modalPrice.textContent = "Price: " + price;
+                modalDescription.textContent = description;
+
+                // Populate size dropdown options dynamically
+                modalSizeSelect.innerHTML = "";
+                sizes.forEach(size => {
+                    const option = document.createElement('option');
+                    option.value = size;
+                    option.textContent = size;
+                    modalSizeSelect.appendChild(option);
+                });
+                modalSizeSelect.selectedIndex = 0;
+                modalQuantity.value = 1;
+
+                // Show the modal (using flex to center content)
+                modal.style.display = "flex";
+            });
+        });
+
+        // Close modal on close button click
+        closeModal.addEventListener('click', function () {
+            modal.style.display = "none";
+        });
+
+        // Close modal when clicking outside the modal content
+        window.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+
+        // "Add to Cart" functionality (example)
+        addToCartBtn.addEventListener('click', function () {
+            const selectedSize = modalSizeSelect.value;
+            const quantity = modalQuantity.value;
+            alert(`Added ${quantity} of ${modalTitle.textContent} (Size: ${selectedSize}) to cart.`);
+            modal.style.display = "none";
+        });
+    </script>
+</body>
+
+</html>
