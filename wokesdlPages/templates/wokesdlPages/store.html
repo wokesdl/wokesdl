@@ -271,10 +271,12 @@
         </div>
         <div class="wokesdl_logoo_white">
             <img src="{% static 'images/wokesdl_logoo_white.png' %}" alt="" class="responsive-image">
-        </div>f
+        </div>
         <div class="side-controls">
             <span>Account</span>
-            <span>Lookbook</span>
+            <span><a href="{% url 'lookbook' 'mob2023' %}">
+                Lookbook
+            </a></span>
             <span>Films</span>
         </div>
         <div class="product-container">
@@ -458,6 +460,7 @@
             top: window.innerHeight, // Scroll 100vh down
             behavior: 'smooth'
         });
+        
     });
 </script>
 

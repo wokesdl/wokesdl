@@ -1,125 +1,258 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LONG LIVE SDL</title>
     <style>
-        body,
-        html {
-            height: 100%;
+        /* Reset & base styles */
+        html,
+        body {
             margin: 0;
-        }
-      
-        .bg {
-            /* The image used */
-            background-image: url("{% static 'wokesdlPages/mainHomeCover.jpg' %}");
-
-            /* Full height */
+            padding: 0;
             height: 100%;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            /* Prevent horizontal scroll */
+        }
 
-            /* Center and scale the image nicely */
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            display:flex;
-            flex-direction:column;
+        /* Full-page background image */
+        .bg {
+            width: 100%;
+            height: 100%;
+            background: url("{% static 'wokesdlPages/backgroundImage.jpg' %}") center center / cover no-repeat;
+            position: relative;
+            /* For positioning bottom text */
+        }
+
+        /* Top area: LONG LIVE SDL image */
+        .top-logo {
+            position: absolute;
+            top: 50px;
+            /* Adjust vertical position */
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            min-width: 500px;
+        }
+
+        .top-logo img {
+            width: 400px;
+            /* Adjust as needed */
+            max-width: 90%;
+            min-width: 300px;
+            /* Responsive scaling */
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* TIME CONTAINER (Accra & Abuja) */
+        .time-container {
+            margin-top: 10px;
+            /* On small screens, each .time-row is on its own line */
+        }
+
+        .time-row {
+            display: flex;
             justify-content: center;
             align-items: center;
+            gap: 10px;
+            margin: 5px 0;
         }
-   @font-face {
-    font-family: 'agency';
-    src: url("{% static 'fonts/AGENCYB.TTF' %}") format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
 
-.time {
-    font-family: 'agency';
-    margin-right: 10px;
-    font-size: 20px;
-    color: white;
-}
+        .time-row span {
+            font-size: 1rem;
+            font-weight: 400;
+        }
 
- @font-face {
-    font-family: "Sitka Heading Bold";
-    src: url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.eot");
-    src: url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.eot?#iefix")format("embedded-opentype"),
-    url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.woff2")format("woff2"),
-    url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.woff")format("woff"),
-    url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.ttf")format("truetype"),
-    url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.svg#Sitka Heading Bold")format("svg");
-}
+        .date-label {
+            margin-right: 5px;
+        }
 
-.lls{
-    font-family: 'Sitka Heading Bold';
-}
+        .time-label {
+            margin-right: 5px;
+        }
 
+        /* Middle logos: WOKESDL | vertical line | SOUNDSBYSDL */
+        .middle-logos {
+            position: absolute;
+            min-width: 250px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* Center both horizontally & vertically */
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            /* Space between images & line */
+        }
+
+        .middle-logos img {
+            max-width: 200px;
+            /* Adjust as needed */
+            width: 100%;
+            height: auto;
+        }
+
+        .vertical-line {
+            width: 2px;
+            /* Thickness of the line */
+            height: 60px;
+            /* Height of the line (kept 60px for all screens) */
+            min-height: 60px;
+            min-width: 2px;
+            background-color: #fff;
+        }
+
+        /* Bottom corners: CONTACT (left), ABOUT (right) */
+        .footer-left {
+            position: absolute;
+            bottom: 30px;
+            /* Adjust vertical position */
+            left: 30px;
+            /* Adjust horizontal position */
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .footer-right {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .footer-left:hover,
+        .footer-right:hover {
+            opacity: 0.8;
+        }
+
+        /* Optional: custom fonts (Sitka, Agency, etc.) */
+        @font-face {
+            font-family: 'agency';
+            src: url("{% static 'fonts/AGENCYB.TTF' %}") format('truetype');
+        }
+
+        @font-face {
+            font-family: "Sitka Heading Bold";
+            src: url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.eot");
+            src:
+                url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.eot?#iefix") format("embedded-opentype"),
+                url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.woff2") format("woff2"),
+                url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.woff") format("woff"),
+                url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.ttf") format("truetype"),
+                url("https://db.onlinewebfonts.com/t/5261d6115c3d635230381ae3a9d4823b.svg#Sitka Heading Bold") format("svg");
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .top-logo {
+                min-width: auto;
+                /* Remove fixed min-width on small screens */
+            }
+
+            .top-logo img {
+                width: 300px;
+            }
+
+            .middle-logos {
+                gap: 20px;
+            }
+
+            .middle-logos img {
+                max-width: 180px;
+                /* Slightly larger logos on phone screens */
+            }
+
+            /* Vertical line remains 60px tall */
+            .footer-left,
+            .footer-right {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* On larger screens, display the two .time-row blocks side by side */
+        @media (min-width: 601px) {
+            .time-container {
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 30px;
+                justify-content: center;
+            }
+
+            .time-row {
+                margin: 0;
+            }
+        }
     </style>
 </head>
 
 <body>
-
     <div class="bg">
-        <div>
-            <div class="lls"><img src="{% static 'wokesdlPages/lls.png' %}" alt=""></div>
-            <div style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
-                <div>
-                    <span class="time">3/12/2024</span><span id="accra-time" class="time">Time</span><span class="time">ACC</span>
-                   
+        <!-- TOP: LONG LIVE SDL -->
+        <div class="top-logo">
+            <img src="{% static 'wokesdlPages/lls.png' %}" alt="LONG LIVE SDL">
+            <!-- Accra & Abuja Times -->
+            <div class="time-container">
+                <div class="time-row">
+                    <span class="date-label">3/12/2024</span>
+                    <span class="time-label" id="accra-time">Time</span>
+                    <span class="time-loc">ACC</span>
                 </div>
-                <div>
-
-                    <span class="time">3/12/2024</span><span id="abuja-time" class="time" >Time</span><span class="time">ABJ</span>
+                <div class="time-row">
+                    <span class="date-label">3/12/2024</span>
+                    <span class="time-label" id="abuja-time">Time</span>
+                    <span class="time-loc">ABJ</span>
                 </div>
             </div>
         </div>
-        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-        <a href="{% url 'store' %}">
-                <div>
-                    <img src="{% static 'wokesdlPages/wokesdl_white.png' %}" alt="" style="width: 300px; ">
-                </div>
-        </a>
-            <div style="width: 100%; height: 10px; margin: 10px; background-color: grey;">
 
-            </div>
-            <div>
-                <img src="{% static 'wokesdlPages/soundsbysdl_white.png' %}" alt="">
-            </div>
+        <!-- MIDDLE: WOKESDL + vertical line + SOUNDSBYSDL -->
+        <div class="middle-logos">
+            <img src="{% static 'wokesdlPages/wokesdl_white.png' %}" alt="WOKESDL">
+            <div class="vertical-line"></div>
+            <img src="{% static 'wokesdlPages/ssl.png' %}" alt="SOUNDSBYSDL">
         </div>
-        <div style="width:100%; display: flex; justify-content: space-around; position: fixed; bottom: 0;">
-            <span>About</span>
-            <span>Contact</span>
 
-        </div>
+        <!-- BOTTOM: CONTACT (left), ABOUT (right) -->
+        <div class="footer-left">CONTACT</div>
+        <div class="footer-right">ABOUT</div>
     </div>
 
-<script>
-    function updateTime() {
-        const now = new Date();
+    <!-- Script for Accra/Abuja times -->
+    <script>
+        function updateTime() {
+            const now = new Date();
 
-        // Get the UTC time
-        const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+            // Convert local time to UTC
+            const utc = now.getTime() + now.getTimezoneOffset() * 60000;
 
-        // Abuja and Accra are both GMT+0 (UTC)
-        const abujaTime = new Date(utc);
-        const accraTime = new Date(utc);
+            // Accra is UTC+0
+            const accraTime = new Date(utc);
 
-        // Format the time (hh:mm:ss AM/PM)
-        const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-        const abujaFormatted = abujaTime.toLocaleTimeString('en-US', options);
-        const accraFormatted = accraTime.toLocaleTimeString('en-US', options);
+            // Abuja is UTC+1 => add 1 hour (3600000 ms)
+            const abujaTime = new Date(utc + 3600000);
 
-        // Update the content on the website
-        document.getElementById('abuja-time').textContent = `${abujaFormatted}`;
-        document.getElementById('accra-time').textContent = `${accraFormatted}`;
-    }
+            // Format time as hh:mm:ss AM/PM
+            const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            const accraFormatted = accraTime.toLocaleTimeString('en-US', options);
+            const abujaFormatted = abujaTime.toLocaleTimeString('en-US', options);
 
-    // Update the time every second
-    setInterval(updateTime, 1000);
-    updateTime(); // Initial call to set the time immediately
+            document.getElementById('accra-time').textContent = accraFormatted;
+            document.getElementById('abuja-time').textContent = abujaFormatted;
+        }
 
-</script>
+        setInterval(updateTime, 1000);
+        updateTime(); // Initial call
+    </script>
 </body>
 
 </html>
