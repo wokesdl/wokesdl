@@ -1,9 +1,69 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+          body,
+        html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .bg {
+            /* The image used */
+            background-image: url("{% static  'images/cover_image.jpg' %}");
+
+            /* Full height */
+            height: 100%;
+
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .emailBox {
+            background-color: #241e20;
+            border: 2px solid white;
+            padding: 12px;
+            color: white;
+        }
+
+        input[type=submit] {
+            background-color: #c31c30;
+            color: white;
+            border: 2px solid #c31c30;
+            padding: 12px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            flex-direction: column;
+        }
+
+        .container img {
+            width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width:100% ;
+           
+
+        }
+    </style>
 </head>
 <body>
     <div class="bg">
@@ -14,7 +74,10 @@
                 <input type="text" placeholder="Email" class="emailBox"><input type="submit" value="Submit">
             </div>
             <div class="footer">
-                <div class='store'><img src="{% static 'images/store.png' %}" alt=""></div>
+              <a href="{% url 'store' %}">
+                <div class='store'><img src="{% static 'images/store.png' %}" alt="" style="width: 150px; margin-bottom: 0;"></div>
+              </a>
+              <a href="{% url 'store' %}">
                 <div id="scroll-bottom">
                     <svg width="64px" height="64px" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -26,6 +89,7 @@
                         </g>
                     </svg>
                 </div>
+              </a>
             </div>
     
         </div>
