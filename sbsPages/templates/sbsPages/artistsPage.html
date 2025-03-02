@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artists</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+
+        }
+
+        body {
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Top section (main background) */
+        .top-section {
+            background-color: black;
+            position: relative;
+            min-height: calc(100vh - 50px);
+            padding: 40px 20px;
+        }
+
+        /* Logo shape (top-left corner) */
+        .logo-shape {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Center the image vertically */
+            width: 100%;
+            height: 60px;
+        }
+
+        /* Star or any image in top-left corner */
+        .logo-shape img {
+            width: 150px;
+            height: auto;
+        }
+
+        /* "ARTISTS" heading */
+        h1 {
+            text-align: center;
+
+            margin-top: 40px;
+            margin-bottom: 40px;
+            font-size: 2rem;
+        }
+
+        /* Artist grid container */
+        .artist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Individual artist item */
+        .artist-item {
+            text-align: center;
+        }
+
+        /* Uniformly sized artist images using aspect-ratio */
+        .artist-item img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Artist names */
+        .artist-item p {
+            font-style: italic;
+            color: #dde2d8;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        .bottom-bar {
+            background-color: #000000;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .bottom-bar p {
+            font-size: 0.9rem;
+        }
+
+        /* Responsive adjustments if desired */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .artist-item p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Section -->
+    <div class="top-section">
+        <!-- Logo Shape (top-left corner) -->
+        <div class="logo-shape">
+            <!-- Replace "sllblack.png" with your desired top-left image -->
+            <img src="{% static 'sbsPages/sllblack.png' %}" alt="Star Image">
+        </div>
+
+        <!-- Heading -->
+        <h1>ARTISTS</h1>
+
+        <!-- Artist Grid -->
+        <div class="artist-grid">
+
+            <div class="artist-item">
+                <img src="{% static 'sbsPages/montana.jpg' %}" alt="DANNY MONTANNA">
+                <p>DANNY MONTANNA</p>
+            </div>
+            <div class="artist-item">
+                <img src="{% static 'sbsPages/santana.jpg' %}" alt="JAVAN SANTANA">
+                <p>JAVAN SANTANA</p>
+            </div>
+            <div class="artist-item">
+                <img src="{% static 'sbsPages/kwelit.jpg' %}" alt="KWELIT">
+                <p>KWELIT</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer (bottom bar) -->
+    <div class="bottom-bar">
+        <p>2025, SOUNDSBYSDL</p>
+    </div>
+</body>
+
+</html>
