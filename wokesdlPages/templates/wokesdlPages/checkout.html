@@ -1,0 +1,299 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checkout Page</title>
+    <style>
+        /* Base styles - Mobile First */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            height: 100vh;
+        }
+
+        .checkout-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 100%;
+        }
+
+        .form-section {
+            background: white;
+            padding: 30px;
+        }
+
+        .form-section h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .payment-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .payment-buttons button {
+            flex: 1;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .shop-pay {
+            background: #5a31f4;
+        }
+
+        .google-pay {
+            background: black;
+        }
+
+        .checkout-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .checkout-footer button {
+            width: 100%;
+            padding: 12px;
+            background: #0070d2;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .order-summary {
+            background: #f5f5f5;
+            padding: 30px;
+        }
+
+        .order-summary h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .order-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .order-item div {
+            flex-grow: 1;
+        }
+
+        .total {
+            font-weight: bold;
+            font-size: 18px;
+            color: black;
+        }
+
+        .separator {
+            width: 2px;
+            background: #b0b0b0;
+            display: none;
+        }
+
+        @media screen and (min-width: 900px) {
+            body {
+                overflow: hidden;
+            }
+
+            .checkout-container {
+                display: flex;
+                flex-direction: row;
+                height: 100vh;
+            }
+
+            .form-section {
+                flex: 1;
+                max-width: 50%;
+                box-sizing: border-box;
+                overflow-y: auto;
+                height: 100vh;
+            }
+
+            .order-summary {
+                flex: 1;
+                max-width: 50%;
+                box-sizing: border-box;
+                background: #f5f5f5;
+                padding: 30px;
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                overflow-y: auto;
+            }
+
+            .separator {
+                display: block;
+                width: 2px;
+                background: #b0b0b0;
+                height: 100vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="checkout-container">
+        <!-- LEFT SIDE: Checkout Form -->
+        <div class="form-section">
+            <div class="payment-buttons" style="display: flex; justify-content: center;">
+                <img src="{% static  'images/wokesdl_logo.png' %}" width="100px" alt="">
+            </div>
+
+            <h2>Contact</h2>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="Enter your email">
+            </div>
+
+            <h2>Shipping Address</h2>
+            <div class="form-group">
+                <label>Country/Region</label>
+                <select>
+                    <option>Ghana</option>
+                    <option>United States</option>
+                    <option>Canada</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" placeholder="First Name">
+            </div>
+
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" placeholder="Last Name">
+            </div>
+
+            <div class="form-group">
+                <label>Address</label>
+                <input type="text" placeholder="Street Address">
+            </div>
+
+            <div class="form-group">
+                <label>Apartment, suite, etc. (optional)</label>
+                <input type="text" placeholder="Apartment, suite, etc.">
+            </div>
+
+            <div class="form-group">
+                <label>City</label>
+                <input type="text" placeholder="City">
+            </div>
+
+            <div class="form-group">
+                <label>State</label>
+                <input type="text" placeholder="State">
+            </div>
+
+            <div class="form-group">
+                <label>ZIP Code</label>
+                <input type="text" placeholder="ZIP Code">
+            </div>
+
+            <div class="form-group">
+                <label>Phone (optional)</label>
+                <input type="text" placeholder="Phone Number">
+            </div>
+
+            <div class="checkout-footer">
+                <button>Continue to Shipping</button>
+            </div>
+        </div>
+
+        <!-- Vertical Separator -->
+        <div class="separator"></div>
+
+        <!-- RIGHT SIDE: Order Summary -->
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            <div id="order-items"></div>
+            <hr>
+            <p id="subtotal">Subtotal: $0.00</p>
+            <p>Shipping: <span style="color: gray;">Calculated at next step</span></p>
+            <p class="total" id="total">Total: <strong>$0.00</strong></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const orderItemsContainer = document.getElementById('order-items');
+            const subtotalEl = document.getElementById('subtotal');
+            const totalEl = document.getElementById('total');
+
+            let subtotal = 0;
+            let totalPrice = 0;
+
+            cart.forEach(item => {
+                const price = parseFloat(item.price) || 0;
+                const quantity = parseInt(item.quantity) || 0;
+                const itemTotal = price * quantity;
+                subtotal += itemTotal;
+                totalPrice += Number(item.quantity) * parseFloat(item.price.replace('GHS', ''));
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'order-item';
+
+                itemDiv.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        ${item.variation || ''} x${quantity}
+                    </div>
+                    <span style="color: green;">GHS ${parseFloat(item.price.replace('GHS', '')) * Number(item.quantity)}</span>
+                `;
+
+                orderItemsContainer.appendChild(itemDiv);
+            });
+
+          
+            totalEl.innerHTML = `Total: GHS ${totalPrice.toFixed(2)}`;
+        });
+
+    </script>
+
+</body>
+
+</html>

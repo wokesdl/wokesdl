@@ -103,6 +103,12 @@
                 font-size: 1rem;
             }
         }
+        @media (max-width: 900px) {
+    .artist-grid {
+        grid-template-columns: 1fr; /* Directly switch to a single column */
+    }
+}
+
     </style>
 </head>
 
@@ -129,10 +135,11 @@
                 <img src="{% static 'sbsPages/santana.jpg' %}" alt="JAVAN SANTANA">
                 <p>JAVAN SANTANA</p>
             </div>
-            <div class="artist-item">
-                <img src="{% static 'sbsPages/kwelit.jpg' %}" alt="KWELIT">
-                <p>KWELIT</p>
-            </div>
+        <a href="{% url 'kwelit' %}">
+                <div class="artist-item">
+                
+                </div>
+        </a>
 
         </div>
     </div>

@@ -6,3 +6,12 @@ from django.views import View
 class SbsHome(View):
     def get(self,request):
         return render(request,'sbsPages/home.html')
+    
+class ArtistPage(View):
+    def get(self,request):
+        return render(request,'sbsPages/artistsPage.html')
+    
+
+class Kwelit(View):
+    def get(self,request):
+        return render(request,'sbsPages/kwelit.html')

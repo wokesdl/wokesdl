@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Modern Lookbook</title>
     <style>
+        a{
+            text-decoration: none;
+            color: black;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -72,7 +76,6 @@
             flex: 1;
             display: grid;
             grid-template-columns: repeat(5, 60px);
-            /* Changed to 5 columns */
             gap: 5px;
             justify-content: center;
             align-content: start;
@@ -122,42 +125,61 @@
         </div>
         <div class="thumbnails"></div>
     </div>
-
+    <div style="display: flex; justify-content: center; gap:15px;">
+        <div style="display: flex;">
+            <img src="{% static 'images/wokesdl_logo.png' %}" style="width: 100px;" alt="wokesdl_logo">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+            {% for data in imageSets %}
+            <a href="{% url 'lookbook' data.accessCode %}">{{data.name}}</a>
+            {% endfor %}
+        </div>
+    </div>
     <script>
         const images = [
             {% for count in countRange %}
-           
-             '{% static "mob2023/IMG_" %}{{ count }}.jpg',
+        '{% static accessCode %}/IMG_{{ count }}.jpg',
             {% endfor %}
-        ]; 
+        ];
+
         let currentIndex = 0;
+        const mainImage = document.getElementById("activeImage");
+
+        function updateActiveImage() {
+            mainImage.src = images[currentIndex];
+
+            // Remove active class from all thumbnails
+            document.querySelectorAll(".thumbnails img").forEach(img => img.classList.remove("active"));
+
+            // Add active class to the current thumbnail
+            document.querySelector(`.thumbnails img[data-index="${currentIndex}"]`).classList.add("active");
+        }
 
         function changeImage(src, element) {
-            // Update the main image and the active thumbnail when a thumbnail is clicked.
-            document.getElementById("activeImage").src = src;
+            mainImage.src = src;
+            currentIndex = images.indexOf(src);
+
             document.querySelectorAll(".thumbnails img").forEach(img => img.classList.remove("active"));
             element.classList.add("active");
-            currentIndex = images.indexOf(src);
         }
 
         function prevImage() {
-            // Change main image using navigation buttons
             currentIndex = (currentIndex - 1 + images.length) % images.length;
-            document.getElementById("activeImage").src = images[currentIndex];
-            // Note: The active thumbnail is not updated here.
+            updateActiveImage();
         }
 
         function nextImage() {
-            // Change main image using navigation buttons
             currentIndex = (currentIndex + 1) % images.length;
-            document.getElementById("activeImage").src = images[currentIndex];
-            // Note: The active thumbnail is not updated here.
+            updateActiveImage();
         }
 
-        // Dynamically generate the thumbnail grid.
+        // Generate the thumbnail grid dynamically
         document.querySelector('.thumbnails').innerHTML = images.map((src, index) =>
-            `<img src="${src}" onclick="changeImage('${src}', this)" ${index === 0 ? 'class="active"' : ''} />`
+            `<img src="${src}" data-index="${index}" onclick="changeImage('${src}', this)" ${index === 0 ? 'class="active"' : ''} />`
         ).join('');
+
+        // Ensure the first image is set as active initially
+        updateActiveImage();
     </script>
 </body>
 

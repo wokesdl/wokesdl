@@ -5,10 +5,15 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        @font-face {
+            font-family: 'WideLatin';
+            src: url('{% static "fonts/LATINWD.TTF" %}');
+        }
         body,
         html {
             height: 100%;
             margin: 0;
+            font-family: 'WideLatin';
         }
         a{
             text-decoration: none;
@@ -27,12 +32,14 @@
             src: url('fonts/sitka/sitka-small-bold.ttf') format('truetype');
             /* Legacy support */
         }
+        
 
         .store {
-            font-family: 'Sitka';
+           
             color: white;
-            font-size: 20px;
+            font-size: 12px;
         }
+        
 
         .store img {
             max-width: 120px;
@@ -51,6 +58,7 @@
             align-items: center;
             padding-top: 20px;
             margin-bottom: 50px;
+            font-size: 12px;
         }
 
         .main-store-controls {
@@ -60,7 +68,7 @@
         }
         .main-store-controls div{
             display: flex;
-            gap: 30px;
+            gap: 10px;
         }
 
         .wokesdl_logoo_white {
@@ -79,7 +87,8 @@
             gap: 20px;
             position: absolute;
             top: 100px;
-            margin-left: 20px;
+            margin-left: 5px;
+            font-size: 12px;
         }
 
         .store-footer {
@@ -88,6 +97,7 @@
             bottom: 0;
             padding: 20px;
             color: #c31c30;
+            font-size: 12px;
         }
 
         .sf-h1-1 {
@@ -142,6 +152,7 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             padding: 20px;
+            font-size:12px;
         }
 
         .product-card {
@@ -159,11 +170,11 @@
 
         .product-card h3 {
             margin: 10px 0;
-            font-size: 18px;
+            font-size: 13px;
         }
 
         .product-card p {
-            font-size: 16px;
+            font-size: 12px;
             color: #666;
             margin: 0 10px 10px;
         }
@@ -198,7 +209,71 @@
             }
         }
     </style>
-    <!-- Modal Popup style -->
+   <style>
+    #close-btn{
+        display: none;
+    }
+@media screen and (max-width: 600px) {
+    .side-controls {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: black;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 50px;
+        z-index: 1000;
+        overflow-y: auto; /* Enables vertical scrolling */
+        transform: translateY(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+    #close-btn{
+        display: block;
+    }
+    .side-controls.show {
+        transform: translateY(0); /* Show the menu when toggled */
+    }
+
+    .dropdown-toggle {
+           
+           
+           
+          
+        cursor: pointer;
+        color: #d01e26;
+        font-weight: bold;
+        
+      
+        
+        
+        z-index: 1001;
+    }
+}
+
+@media screen and (min-width: 601px) {
+    .side-controls {
+        position: absolute;
+        top: 100px;
+        left: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: auto;
+        background: transparent;
+        transform: none;
+        transition: none;
+    }
+
+    .dropdown-toggle {
+        display: none; /* Hide dropdown toggle on larger screens */
+    }
+}
+
+   </style>
     <style>
         .modal {
             display: none;
@@ -343,6 +418,7 @@
             border-bottom: 1px solid #ccc;
             padding-bottom: 10px;
             margin-bottom: 10px;
+            
         }
 
         .cart-items {
@@ -350,7 +426,7 @@
         }
 
         .cart-item {
-            border-bottom: 1px solid #eee;
+          
             padding: 10px 0;
         }
 
@@ -377,21 +453,29 @@
                 </span>
                 <!-- Cart element with id to update count from localStorage -->
                 <div>
+                   
+                    <span class="dropdown-toggle" onclick="toggleDropdown()" id="menu-btn">Menu</span>
                     <span id="cartNav">Cart(0)</span>
                     <span>Checkout</span>
+                    
                 </div>
             </div>
         </div>
         <div class="wokesdl_logoo_white">
             <img src="{% static 'images/wokesdl_logoo_white.png' %}" alt="" class="responsive-image">
         </div>
-        <div class="side-controls">
-            <span>Account</span>
-            <span><a href="{% url 'lookbook' 'mob2023' %}">
-                    Lookbook
-                </a></span>
-            <span>Films</span>
-        </div>
+<!-- Toggle Button (Only Visible on Mobile) -->
+
+
+<!-- Side Controls -->
+
+<div class="side-controls" id="sideControls">
+    <span id="close-btn">&#9660</span>
+    <span>Account</span>
+    <span><a href="{% url 'lookbook' 'mob2023' %}">Lookbook</a></span>
+    <span>Films</span>
+</div>
+
         <div class="product-container">
             <!-- Product Card 1 -->
             <div class="product-card" data-img="{% static 'images/products/1a.png' %}" data-title="Product 1"
@@ -443,7 +527,7 @@
                     </div>
                     <div>
                         <div style="display: flex; justify-content: center; align-items: center;">
-                            <span><svg width="45px" height="55px" viewBox="0 0 192 192"
+                            <span><svg width="30px" height="40px" viewBox="0 0 192 192"
                                     xmlns="http://www.w3.org/2000/svg" fill="none">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -457,7 +541,7 @@
                                 </svg>
                             </span>
                             <span>
-                                <svg width="64px" height="64px" fill="#c31c30" viewBox="0 0 32 32"
+                                <svg width="44px" height="44px" fill="#c31c30" viewBox="0 0 32 32"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -469,7 +553,7 @@
                                 </svg>
                             </span>
                             <span>
-                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="30px" height="64px"
+                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="15px" height="53px"
                                     viewBox="0 0 64.000000 65.000000" preserveAspectRatio="xMidYMid meet">
                                     <g transform="translate(0.000000,65.000000) scale(0.100000,-0.100000)"
                                         fill="#c31c30" stroke="none">
@@ -492,7 +576,7 @@
                                 <img src="images/telecel.png" alt="" style="height: 30px; width: auto;">
                             </span>
                             <span>
-                                <svg width="64px" height="64px" viewBox="0 0 1920 1280"
+                                <svg width="55px" height="55px" viewBox="0 0 1920 1280"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M960 320c-353.46 0-640 143.27-640 320s286.54 320 640 320 640-143.27 640-320-286.54-320-640-320zm0 589.48c-325.56 0-589.48-120.65-589.48-269.48S634.44 370.52 960 370.52 1549.48 491.17 1549.48 640 1285.56 909.48 960 909.48zm-80.71-325.62v-50.53h180.55v50.53h-65v162.81H944.3V583.86zm398.49-50.53v213.34h-50.52l-91.63-127v127h-50.52V533.33h50.52l91.63 127v-127zM640.72 746.67V533.33h50.52l56.13 86.34 56.13-86.34H854v213.34h-50.5V626l-38.32 58.9h-35.62L691.24 626v120.67z"
@@ -505,7 +589,7 @@
                                 </svg>
                             </span>
                             <span>
-                                <svg width="64px" height="64px" viewBox="0 0 141.732 141.732"
+                                <svg width="55px" height="55px" viewBox="0 0 141.732 141.732"
                                     xmlns="http://www.w3.org/2000/svg" fill="#000000">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -522,7 +606,7 @@
                                     </g>
                                 </svg>
                             </span>
-                            <svg width="64px" height="64px" viewBox="0 -140 780 780" enable-background="new 0 0 780 500"
+                            <svg width="40px" height="40px" viewBox="0 -140 780 780" enable-background="new 0 0 780 500"
                                 version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -600,33 +684,17 @@
         <div class="cart-items" id="cartItems">
             <!-- Dynamically added cart items will appear here -->
         </div>
-        <div class="cart-footer">
+    <div class="cart-footer">
+        <p id="cartTotal" style="font-weight: bold; color: red;">Total: GHS 0.00</p>
+        <a href="{% url 'checkout' %}">
             <button id="checkoutBtn">Checkout</button>
-        </div>
+        </a>
+    </div>
+
     </div>
 
     <script>
-        // Update cart count by reading from localStorage
-        function updateCartCount() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const total = cart.reduce((sum, item) => sum + Number(item.quantity), 0);
-            document.getElementById('cartCount').textContent = total;
-            document.getElementById('cartNav').textContent = `Cart(${total})`;
-        }
-
-        // Render cart items from localStorage in the slideout panel
-        function renderCartItems() {
-            const cartItemsDiv = document.getElementById('cartItems');
-            cartItemsDiv.innerHTML = "";
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.forEach((item, index) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = "cart-item";
-                itemDiv.innerHTML = `<strong>${item.title}</strong> - Size: ${item.size} - Qty: ${item.quantity} - Price: ${item.price}`;
-                cartItemsDiv.appendChild(itemDiv);
-            });
-        }
-
+       
         // Search functionality to filter product cards
         document.getElementById('searchInput').addEventListener('input', function () {
             const query = this.value.toLowerCase();
@@ -694,40 +762,6 @@
             }
         });
 
-        // "Add to Cart" functionality using localStorage
-        addToCartBtn.addEventListener('click', function () {
-            const selectedSize = modalSizeSelect.value;
-            const quantity = modalQuantity.value;
-            // Create a unique id for this cart entry
-            const uniqueId = `${modalTitle.textContent}_${selectedSize}_${Date.now()}`;
-            // Create the new item object
-            const item = {
-                id: uniqueId,
-                title: modalTitle.textContent,
-                size: selectedSize,
-                quantity: quantity,
-                price: modalPrice.textContent.replace("Price: ", ""),
-            };
-
-            // Get the cart from localStorage or initialize as empty array
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-            // Optionally update existing entry if product and size match
-            const existingIndex = cart.findIndex(cartItem => cartItem.title === item.title && cartItem.size === item.size);
-            if (existingIndex !== -1) {
-                cart[existingIndex] = item;
-                alert('Updated product in cart');
-            } else {
-                cart.push(item);
-                alert(`Added ${quantity} of ${modalTitle.textContent} (Size: ${selectedSize}) to cart.`);
-            }
-            localStorage.setItem('cart', JSON.stringify(cart));
-
-            updateCartCount();
-            renderCartItems();
-            modal.style.display = "none";
-        });
-
         // Cart slideout panel toggle
         const cartNav = document.getElementById('cartNav');
         const cartSlideout = document.getElementById('cartSlideout');
@@ -743,17 +777,125 @@
             cartSlideout.style.right = "-100%";
         });
 
-        // Optional checkout button functionality
-        document.getElementById('checkoutBtn').addEventListener('click', function () {
-            alert("Checkout functionality not implemented yet.");
+     
+</script>
+<script>
+    // Update cart count and total price
+    function updateCartCountAndTotal() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let totalItems = 0;
+        let totalPrice = 0;
+
+        cart.forEach(item => {
+            totalItems += Number(item.quantity);
+            totalPrice += Number(item.quantity) * parseFloat(item.price.replace('GHS', ''));
         });
 
-        // When the page loads, update the cart display from localStorage
-        window.onload = function () {
-            updateCartCount();
-            renderCartItems();
+        document.getElementById('cartCount').textContent = totalItems;
+        document.getElementById('cartNav').textContent = `Cart(${totalItems})`;
+        document.getElementById('cartTotal').textContent = `Total: GHS ${totalPrice.toFixed(2)}`;
+    }
+
+    // Render cart items in the slideout panel
+    function renderCartItems() {
+        const cartItemsDiv = document.getElementById('cartItems');
+        cartItemsDiv.innerHTML = "";
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        cart.forEach((item, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = "cart-item";
+            itemDiv.style.display = "flex";
+            itemDiv.style.alignItems = "center";
+            itemDiv.style.justifyContent = "space-between";
+            itemDiv.style.padding = "10px";
+            itemDiv.style.borderBottom = "1px solid #ccc";
+
+            itemDiv.innerHTML = `
+                <img src="${item.image}" alt="${item.title}" style="width: 100px; height: 100px; object-fit: contain;">
+                <div style="flex-grow: 1; margin-left: 10px;">
+                    <strong>${item.title}</strong><br>
+                    ${item.size} | Qty: ${item.quantity}<br>
+                    <span style="color: green;">GHS ${parseFloat(item.price.replace('GHS', '')) * Number(item.quantity)}</span>
+                </div>
+                <button onclick="removeFromCart(${index})" style=" color: red; border: none; padding: 5px 10px; cursor: pointer;">X</button>
+            `;
+            cartItemsDiv.appendChild(itemDiv);
+        });
+
+        updateCartCountAndTotal();
+    }
+
+    // Function to remove an item from the cart
+    function removeFromCart(index) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCartItems();
+    }
+
+    // "Add to Cart" functionality
+    addToCartBtn.addEventListener('click', function () {
+        const selectedSize = modalSizeSelect.value;
+        const quantity = modalQuantity.value;
+        const price = modalPrice.textContent.replace("Price: ", "");
+        const title = modalTitle.textContent;
+        const image = modalImg.src;
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Check if item with the same title and size exists, if so, update quantity
+        const existingIndex = cart.findIndex(cartItem => cartItem.title === title && cartItem.size === selectedSize);
+        if (existingIndex !== -1) {
+            cart[existingIndex].quantity = Number(cart[existingIndex].quantity) + Number(quantity);
+        } else {
+            cart.push({ title, size: selectedSize, quantity, price, image });
         }
-    </script>
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCountAndTotal();
+        renderCartItems();
+        modal.style.display = "none";
+    });
+
+    // Open cart slideout
+    cartNav.addEventListener('click', function () {
+        cartSlideout.style.right = "0";
+    });
+
+    // Close cart slideout
+    closeCartSlideout.addEventListener('click', function () {
+        cartSlideout.style.right = "-100%";
+    });
+
+    // Load cart items when page loads
+    window.onload = function () {
+        updateCartCountAndTotal();
+        renderCartItems();
+    };
+</script>
+
+        <script>
+        closeBtn = document.getElementById('close-btn')
+        menuBtn = document.getElementById('menu-btn')
+        closeBtn.addEventListener('click', function () {
+          const sideControls = document.querySelector(".side-controls");
+           
+            sideControls.classList.toggle("show");
+           
+            menuBtn.style.display = 'block'
+        })
+           function toggleDropdown() {
+                const sideControls = document.querySelector(".side-controls");
+            
+
+                sideControls.classList.toggle("show");
+               
+                menuBtn.style.display = 'none'
+                
+            }
+
+        </script>
 </body>
 
 </html>
