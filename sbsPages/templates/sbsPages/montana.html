@@ -1,0 +1,512 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <style>
+        @font-face {
+            font-family: 'WideLatin';
+            src: url('{% static "fonts/LATINWD.TTF" %}');
+        }
+
+        /* RESET & BASE STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'WideLatin';
+            line-height: 1.5;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Blur class for background when modal is open */
+        .blur {
+            filter: blur(5px);
+        }
+
+        /* HEADER (TOP SECTION) */
+        header {
+            padding: 10px 20px;
+            text-align: left;
+        }
+
+        .logo-shape {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 60px;
+        }
+
+        .logo-shape img {
+            width: 150px;
+            height: auto;
+        }
+
+        /* MAIN CONTENT (KWELIT SECTION) */
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .left-column {
+            flex: 1 1 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .left-column img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        .right-column {
+            flex: 1 1 50%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .right-column h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .right-column p {
+            margin-bottom: 1rem;
+            max-width: 600px;
+            font-size: 1rem;
+        }
+
+        .logos {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .logos svg {
+            width: 32px;
+            height: auto;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        /* DISCOGRAPHY TITLE */
+        .discography-title {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            margin: 20px;
+        }
+
+        /* OVERLAPPING ALBUM COVERS (70% width container) */
+        .overlay-images {
+            display: flex;
+            width: 70%;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+
+        .overlay-images img {
+            /* Width will be set dynamically via JS */
+            border: 2px solid #000000;
+            z-index: 1;
+            cursor: pointer;
+        }
+
+        .overlay-images img:first-child {
+            margin-left: 0;
+        }
+
+        /* MESSAGE BOX */
+        .message-box {
+            width: 250px;
+            background-color:#d90000;
+            color: #ffffff;
+            padding: 15px;
+            margin: 20px;
+        }
+
+        .messageBoxCover {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .message-box h3 {
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .message-box input[type="text"] {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #d90000;
+            background-color: #910d0d;;
+            color: #ffffff;
+        }
+
+        .message-box input[type="text"]::placeholder {
+            color:#a12e2e;
+        }
+
+        /* FOOTER */
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            color:#910d0d;;
+            font-size: 0.9rem;
+        }
+
+        /* MODAL STYLES (Card Popover) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: #000;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .modal-content .image-container {
+            width: 100%;
+            padding-top: 100%;
+            /* Creates a 1:1 aspect ratio */
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .modal-content img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Ensures image covers the entire container */
+            object-position: center;
+            /* Centers the image */
+        }
+
+        .modal-content a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #3e2147;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            right: -10px;
+
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* RESPONSIVE ADJUSTMENTS */
+        @media (max-width: 768px) {
+
+            .left-column,
+            .right-column {
+                flex: 1 1 100%;
+                padding: 10px;
+            }
+
+            .left-column img {
+                max-width: 100%;
+            }
+
+            .logos svg {
+                width: 24px;
+            }
+
+            .overlay-images {
+                width: 90%;
+            }
+
+            .message-box {
+                width: 200px;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Modal for album view -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="modal-close">&times;</span>
+            <div class="image-container">
+                <img src="" alt="Album Cover" id="modal-img">
+            </div>
+            <a href="#" target="_blank" id="album-link">View Album</a>
+        </div>
+    </div>
+
+    <!-- Header / Top Section -->
+    <header>
+        <div class="logo-shape">
+            <img src="{% static 'art/sllblack.png' %}" alt="Star Image">
+        </div>
+    </header>
+
+    <!-- KWELIT Section -->
+    <main class="content" id="main-content">
+        <div class="left-column">
+            <img src="{% static 'art/montana.jpg' %}" alt="KWELIT">
+        </div>
+        <div class="right-column">
+            <h1>Danny Montana</h1>
+            <p>
+                There’s a moment every artist holds close—the one that confirms they’re on the right path. For Danny
+                Montanna, that moment came when he heard his song on the radio for the first time, a wave of messages
+                and reaction videos flooding in. “That shit was so tuff,” he recalls. But his journey started long before the
+                airwaves caught on. Back when he was still releasing music under his government name, Daniel Yough, he
+                was just a kid frustrated with the sounds around him. “I knew I could be better than a lot of what I was
+                hearing out there,” he says. “So instead of complaining about not getting the music I wanted, I figured
+                I’d just do it myself.”
+                Now, as Danny Montanna, he’s not just doing it—he’s carving out his own lane. Blending psychedelic rock
+                with alternative trap, he calls his sound PSYKE TRAP—a genre-bending fusion that feels like a trip through
+                a neon-lit dreamscape. But Montanna isn’t boxed in. On any given track, he might drift into Alte influences,
+                proving his versatility while staying true to his vision. With a natural gift for reinvention and an undeniable
+                presence, Danny Montanna is more than potential—he’s a movement waiting to shake the system.
+            </p>
+            <div class="logos">
+                <div>
+                    <span>
+                        <a href="https://open.spotify.com/artist/5AXg70KRdrTGA8VoraL0Fd?si=0tSYno7rQQimKqGnXGyEVA">
+                            <svg viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <title>Spotify-color</title>
+                                    <desc>Created with Sketch.</desc>
+                                    <defs> </defs>
+                                    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g id="Color-" transform="translate(-200.000000, -460.000000)" fill="#00DA5A">
+                                            <path
+                                                d="M238.16,481.36 C230.48,476.8 217.64,476.32 210.32,478.6 C209.12,478.96 207.92,478.24 207.56,477.16 C207.2,475.96 207.92,474.76 209,474.4 C217.52,471.88 231.56,472.36 240.44,477.64 C241.52,478.24 241.88,479.68 241.28,480.76 C240.68,481.6 239.24,481.96 238.16,481.36 M237.92,488.08 C237.32,488.92 236.24,489.28 235.4,488.68 C228.92,484.72 219.08,483.52 211.52,485.92 C210.56,486.16 209.48,485.68 209.24,484.72 C209,483.76 209.48,482.68 210.44,482.44 C219.2,479.8 230,481.12 237.44,485.68 C238.16,486.04 238.52,487.24 237.92,488.08 M235.04,494.68 C234.56,495.4 233.72,495.64 233,495.16 C227.36,491.68 220.28,490.96 211.88,492.88 C211.04,493.12 210.32,492.52 210.08,491.8 C209.84,490.96 210.44,490.24 211.16,490 C220.28,487.96 228.2,488.8 234.44,492.64 C235.28,493 235.4,493.96 235.04,494.68 M224,460 C210.8,460 200,470.8 200,484 C200,497.2 210.8,508 224,508 C237.2,508 248,497.2 248,484 C248,470.8 237.32,460 224,460"
+                                                id="Spotify"> </path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                        </a>
+                    </span>
+                    <span>
+                        <a href="https://music.apple.com/ng/artist/danny-montanna/1457505926">
+                            <svg xmlns="http://www.w3.org/2000/svg" aria-label="Apple Music" role="img"
+                                viewBox="0 0 512 512" fill="#000000">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <rect width="512" height="512" rx="15%" fill="url(#g)"></rect>
+                                    <linearGradient id="g" x1=".5" y1=".99" x2=".5" y2=".02">
+                                        <stop offset="0" stop-color="#FA233B"></stop>
+                                        <stop offset="1" stop-color="#FB5C74"></stop>
+                                    </linearGradient>
+                                    <path fill="#ffffff"
+                                        d="M199 359V199q0-9 10-11l138-28q11-2 12 10v122q0 15-45 20c-57 9-48 105 30 79 30-11 35-40 35-69V88s0-20-17-15l-170 35s-13 2-13 18v203q0 15-45 20c-57 9-48 105 30 79 30-11 35-40 35-69">
+                                    </path>
+                                </g>
+                            </svg>
+                        </a>
+                    </span>
+                </div>
+                <!-- Icons (SVG placeholders) can be inserted here -->
+                <br>
+                <div>
+                    <span><a href="https://www.instagram.com/dannymontannaa?igsh=MWZoZWUxdTJtYXVnbQ==">
+                            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint0_radial_87_7153)">
+                                    </rect>
+                                    <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint1_radial_87_7153)">
+                                    </rect>
+                                    <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint2_radial_87_7153)">
+                                    </rect>
+                                    <path
+                                        d="M23 10.5C23 11.3284 22.3284 12 21.5 12C20.6716 12 20 11.3284 20 10.5C20 9.67157 20.6716 9 21.5 9C22.3284 9 23 9.67157 23 10.5Z"
+                                        fill="white"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M16 21C18.7614 21 21 18.7614 21 16C21 13.2386 18.7614 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21ZM16 19C17.6569 19 19 17.6569 19 16C19 14.3431 17.6569 13 16 13C14.3431 13 13 14.3431 13 16C13 17.6569 14.3431 19 16 19Z"
+                                        fill="white"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M6 15.6C6 12.2397 6 10.5595 6.65396 9.27606C7.2292 8.14708 8.14708 7.2292 9.27606 6.65396C10.5595 6 12.2397 6 15.6 6H16.4C19.7603 6 21.4405 6 22.7239 6.65396C23.8529 7.2292 24.7708 8.14708 25.346 9.27606C26 10.5595 26 12.2397 26 15.6V16.4C26 19.7603 26 21.4405 25.346 22.7239C24.7708 23.8529 23.8529 24.7708 22.7239 25.346C21.4405 26 19.7603 26 16.4 26H15.6C12.2397 26 10.5595 26 9.27606 25.346C8.14708 24.7708 7.2292 23.8529 6.65396 22.7239C6 21.4405 6 19.7603 6 16.4V15.6ZM15.6 8H16.4C18.1132 8 19.2777 8.00156 20.1779 8.0751C21.0548 8.14674 21.5032 8.27659 21.816 8.43597C22.5686 8.81947 23.1805 9.43139 23.564 10.184C23.7234 10.4968 23.8533 10.9452 23.9249 11.8221C23.9984 12.7223 24 13.8868 24 15.6V16.4C24 18.1132 23.9984 19.2777 23.9249 20.1779C23.8533 21.0548 23.7234 21.5032 23.564 21.816C23.1805 22.5686 22.5686 23.1805 21.816 23.564C21.5032 23.7234 21.0548 23.8533 20.1779 23.9249C19.2777 23.9984 18.1132 24 16.4 24H15.6C13.8868 24 12.7223 23.9984 11.8221 23.9249C10.9452 23.8533 10.4968 23.7234 10.184 23.564C9.43139 23.1805 8.81947 22.5686 8.43597 21.816C8.27659 21.5032 8.14674 21.0548 8.0751 20.1779C8.00156 19.2777 8 18.1132 8 16.4V15.6C8 13.8868 8.00156 12.7223 8.0751 11.8221C8.14674 10.9452 8.27659 10.4968 8.43597 10.184C8.81947 9.43139 9.43139 8.81947 10.184 8.43597C10.4968 8.27659 10.9452 8.14674 11.8221 8.0751C12.7223 8.00156 13.8868 8 15.6 8Z"
+                                        fill="white"></path>
+                                    <defs>
+                                        <radialGradient id="paint0_radial_87_7153" cx="0" cy="0" r="1"
+                                            gradientUnits="userSpaceOnUse"
+                                            gradientTransform="translate(12 23) rotate(-55.3758) scale(25.5196)">
+                                            <stop stop-color="#B13589"></stop>
+                                            <stop offset="0.79309" stop-color="#C62F94"></stop>
+                                            <stop offset="1" stop-color="#8A3AC8"></stop>
+                                        </radialGradient>
+                                        <radialGradient id="paint1_radial_87_7153" cx="0" cy="0" r="1"
+                                            gradientUnits="userSpaceOnUse"
+                                            gradientTransform="translate(11 31) rotate(-65.1363) scale(22.5942)">
+                                            <stop stop-color="#E0E8B7"></stop>
+                                            <stop offset="0.444662" stop-color="#FB8A2E"></stop>
+                                            <stop offset="0.71474" stop-color="#E2425C"></stop>
+                                            <stop offset="1" stop-color="#E2425C" stop-opacity="0"></stop>
+                                        </radialGradient>
+                                        <radialGradient id="paint2_radial_87_7153" cx="0" cy="0" r="1"
+                                            gradientUnits="userSpaceOnUse"
+                                            gradientTransform="translate(0.500002 3) rotate(-8.1301) scale(38.8909 8.31836)">
+                                            <stop offset="0.156701" stop-color="#406ADC"></stop>
+                                            <stop offset="0.467799" stop-color="#6A45BE"></stop>
+                                            <stop offset="1" stop-color="#6A45BE" stop-opacity="0"></stop>
+                                        </radialGradient>
+                                    </defs>
+                                </g>
+                            </svg>
+                        </a></span>
+                    <span>
+                        <a href="https://x.com/dannymontannaaa?s=21">
+                            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M11.7887 28C8.55374 28 5.53817 27.0591 3 25.4356C5.15499 25.5751 8.95807 25.2411 11.3236 22.9848C7.76508 22.8215 6.16026 20.0923 5.95094 18.926C6.25329 19.0426 7.6953 19.1826 8.50934 18.856C4.4159 17.8296 3.78793 14.2373 3.92748 13.141C4.695 13.6775 5.99745 13.8641 6.50913 13.8174C2.69479 11.0882 4.06703 6.98276 4.74151 6.09635C7.47882 9.88867 11.5812 12.0186 16.6564 12.137C16.5607 11.7174 16.5102 11.2804 16.5102 10.8316C16.5102 7.61092 19.1134 5 22.3247 5C24.0025 5 25.5144 5.71275 26.5757 6.85284C27.6969 6.59011 29.3843 5.97507 30.2092 5.4432C29.7934 6.93611 28.4989 8.18149 27.7159 8.64308C27.7224 8.65878 27.7095 8.62731 27.7159 8.64308C28.4037 8.53904 30.2648 8.18137 31 7.68256C30.6364 8.52125 29.264 9.91573 28.1377 10.6964C28.3473 19.9381 21.2765 28 11.7887 28Z"
+                                        fill="#47ACDF"></path>
+                                </g>
+                            </svg>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- DISCOGRAPHY Section -->
+    <h2 class="discography-title">DISCOGRAPHY</h2>
+    <div class="overlay-images" id="overlay-images">
+        <!-- Replace with your album cover paths and add data-album-link for each -->
+     
+        <img src="{% static 'mont/cover1.jpg' %}" alt="Cover 1" data-album-link="http://example.com/album1">
+        <img src="{% static 'mont/cover2.jpg' %}" alt="Cover 2" data-album-link="http://example.com/album2">
+        <img src="{% static 'mont/cover3.jpg' %}" alt="Cover 3" data-album-link="http://example.com/album3">
+        <img src="{% static 'mont/cover4.jpg' %}" alt="Cover 4" data-album-link="http://example.com/album4">
+        <img src="{% static 'mont/cover5.jpg' %}" alt="Cover 5" data-album-link="http://example.com/album5">
+        <img src="{% static 'mont/cover6.jpg' %}" alt="Cover 6" data-album-link="http://example.com/album6">
+    </div>
+
+    <!-- Message Box -->
+    <div class="messageBoxCover">
+        <div class="message-box">
+            <h3>MESSAGE TO ARTIST</h3>
+            <input type="text" placeholder="type message">
+            <input type="submit" name="Send" value="Send"
+                style="margin: 5px 0px; border: none; padding: 10px; background-color:#910d0d; color: #fff;">
+
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        SOUNDSBYSDL 2025
+    </div>
+
+    <script>
+        // Function to adjust album cover sizes dynamically
+        function adjustAlbumSizes() {
+            const container = document.querySelector('.overlay-images');
+            const images = container.querySelectorAll('img');
+            const count = images.length;
+            const containerWidth = container.clientWidth;
+            const overlapFraction = 0.2; // 20% overlap per image
+            // Calculate each image's width in pixels:
+            // Total width = x + (count - 1) * (x * (1 - overlapFraction))
+            // Solve for x: x = containerWidth / [1 + (count - 1) * (1 - overlapFraction)]
+            const imageWidth = containerWidth / (1 + (count - 1) * (1 - overlapFraction));
+            // Calculate width percentage relative to container
+            const newWidthPercent = (imageWidth / containerWidth) * 100;
+            images.forEach((img, index) => {
+                img.style.width = newWidthPercent + '%';
+                if (index !== 0) {
+                    img.style.marginLeft = '-' + (overlapFraction * newWidthPercent) + '%';
+                } else {
+                    img.style.marginLeft = '0';
+                }
+            });
+        }
+        window.addEventListener('load', adjustAlbumSizes);
+        window.addEventListener('resize', adjustAlbumSizes);
+
+        // Modal functionality
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-img');
+        const albumLink = document.getElementById('album-link');
+        const mainContent = document.getElementById('main-content');
+        const overlayImages = document.getElementById('overlay-images');
+        overlayImages.addEventListener('click', function (e) {
+            if (e.target.tagName.toLowerCase() === 'img') {
+                modal.style.display = 'flex';
+                modalImg.src = e.target.src;
+                albumLink.href = e.target.getAttribute('data-album-link') || '#';
+                // Blur the main content and header
+                document.querySelector('header').classList.add('blur');
+                document.getElementById('main-content').classList.add('blur');
+            }
+        });
+        document.getElementById('modal-close').addEventListener('click', function () {
+            modal.style.display = 'none';
+            document.querySelector('header').classList.remove('blur');
+            document.getElementById('main-content').classList.remove('blur');
+        });
+        // Close modal when clicking outside modal-content
+        window.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.querySelector('header').classList.remove('blur');
+                document.getElementById('main-content').classList.remove('blur');
+            }
+        });
+    </script>
+</body>
+
+</html>

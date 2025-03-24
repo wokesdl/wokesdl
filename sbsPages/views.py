@@ -15,3 +15,11 @@ class ArtistPage(View):
 class Kwelit(View):
     def get(self,request):
         return render(request,'sbsPages/kwelit.html')
+
+class Santana(View):
+    def get(self,request):
+        return render(request,'sbsPages/santana.html')
+
+class Montana(View):
+    def get(self,request):
+        return render(request,'sbsPages/montana.html')

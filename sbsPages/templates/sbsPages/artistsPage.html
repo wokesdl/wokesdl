@@ -11,9 +11,9 @@
         * {
             margin: 0;
             padding: 0;
-
         }
-         @font-face {
+
+        @font-face {
             font-family: 'WideLatin';
             src: url('{% static "fonts/LATINWD.TTF" %}');
         }
@@ -21,6 +21,11 @@
         body {
             color: #ffffff;
             font-family: 'WideLatin';
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
         }
 
         /* Top section (main background) */
@@ -36,7 +41,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Center the image vertically */
             width: 100%;
             height: 60px;
         }
@@ -47,13 +51,16 @@
             height: auto;
         }
 
-        /* "ARTISTS" heading */
-        h1 {
-            text-align: center;
+        /* Artists section container */
+        .artists-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-            margin-top: 40px;
-            margin-bottom: 40px;
-            font-size: 2rem;
+        /* "ARTISTS" heading */
+        .artists-container h2 {
+            text-decoration: underline;
+            margin-bottom: 20px;
         }
 
         /* Artist grid container */
@@ -61,8 +68,6 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
         }
 
         /* Individual artist item */
@@ -97,9 +102,9 @@
             font-size: 0.9rem;
         }
 
-        /* Responsive adjustments if desired */
+        /* Responsive adjustments */
         @media (max-width: 600px) {
-            h1 {
+            h2 {
                 font-size: 1.6rem;
             }
 
@@ -107,12 +112,12 @@
                 font-size: 1rem;
             }
         }
-        @media (max-width: 900px) {
-    .artist-grid {
-        grid-template-columns: 1fr; /* Directly switch to a single column */
-    }
-}
 
+        @media (max-width: 900px) {
+            .artist-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
@@ -121,38 +126,33 @@
     <div class="top-section">
         <!-- Logo Shape (top-left corner) -->
         <div class="logo-shape">
-            <!-- Replace "sllblack.png" with your desired top-left image -->
             <img src="{% static 'sbsPages/sllblack.png' %}" alt="Star Image">
         </div>
 
-        <!-- Heading -->
-  
-
-        <!-- Artist Grid -->
-       <div style="display: flex; flex-direction: column;">
-        <div style="display: flex; justify-content: left;">
-            <h1>ARTISTS</h1>
-        </div>
-        <div class="artist-grid">
-        
-        
-            <div class="artist-item">
-                <img src="{% static 'sbsPages/montana.jpg' %}" alt="DANNY MONTANNA">
-                <p>DANNY MONTANNA</p>
-            </div>
-            <div class="artist-item">
-                <img src="{% static 'sbsPages/santana.jpg' %}" alt="JAVAN SANTANA">
-                <p>JAVAN SANTANA</p>
-            </div>
-            <a href="{% url 'kwelit' %}">
+        <!-- Artists Container -->
+        <div class="artists-container">
+            <h2>ARTISTS</h2>
+            <div class="artist-grid">
+               <a href="{% url 'montana' %}">
                 <div class="artist-item">
-                    <img src="{% static 'sbsPages/kwelit.jpg' %}" alt="Kwelit">
+                    <img src="{% static 'sbsPages/montana.jpg' %}" alt="DANNY MONTANNA">
+                    <p>DANNY MONTANNA</p>
+                </div>
+               </a>
+              <a href="{% url 'santana' %}">
+                <div class="artist-item">
+                    <img src="{% static 'sbsPages/santana.jpg' %}" alt="JAVAN SANTANA">
                     <p>JAVAN SANTANA</p>
                 </div>
-            </a>
-        
+              </a>
+                <a href="{% url 'kwelit' %}">
+                    <div class="artist-item">
+                        <img src="{% static 'sbsPages/kwelit.jpg' %}" alt="Kwelit">
+                        <p>Kwelit</p>
+                    </div>
+                </a>
+            </div>
         </div>
-       </div>
     </div>
 
     <!-- Footer (bottom bar) -->
