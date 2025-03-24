@@ -13,10 +13,14 @@
             padding: 0;
 
         }
+         @font-face {
+            font-family: 'WideLatin';
+            src: url('{% static "fonts/LATINWD.TTF" %}');
+        }
 
         body {
             color: #ffffff;
-            font-family: Arial, sans-serif;
+            font-family: 'WideLatin';
         }
 
         /* Top section (main background) */
@@ -122,11 +126,16 @@
         </div>
 
         <!-- Heading -->
-        <h1>ARTISTS</h1>
+  
 
         <!-- Artist Grid -->
+       <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: left;">
+            <h1>ARTISTS</h1>
+        </div>
         <div class="artist-grid">
-
+        
+        
             <div class="artist-item">
                 <img src="{% static 'sbsPages/montana.jpg' %}" alt="DANNY MONTANNA">
                 <p>DANNY MONTANNA</p>
@@ -135,13 +144,15 @@
                 <img src="{% static 'sbsPages/santana.jpg' %}" alt="JAVAN SANTANA">
                 <p>JAVAN SANTANA</p>
             </div>
-        <a href="{% url 'kwelit' %}">
+            <a href="{% url 'kwelit' %}">
                 <div class="artist-item">
-                
+                    <img src="{% static 'sbsPages/kwelit.jpg' %}" alt="Kwelit">
+                    <p>JAVAN SANTANA</p>
                 </div>
-        </a>
-
+            </a>
+        
         </div>
+       </div>
     </div>
 
     <!-- Footer (bottom bar) -->
