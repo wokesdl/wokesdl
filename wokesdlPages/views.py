@@ -44,3 +44,7 @@ class Checkout(View):
     def get(self,request):
         return render(request,'wokesdlPages/checkout.html')
     
+class Contact(View):
+    
+    def get(self,request):
+        return render(request,'wokesdlPages/contact.html')
