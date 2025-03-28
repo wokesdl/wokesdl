@@ -6,6 +6,5 @@ urlpatterns = [
     path('kwelit/',Kwelit.as_view(),name='kwelit'),
     path('santana/',Santana.as_view(),name='santana'),
     path('montana/',Montana.as_view(),name='montana'),
-    
 
 ]
