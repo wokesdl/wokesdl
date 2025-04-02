@@ -73,16 +73,13 @@
         }
 </style>
     <style>
-        @font-face {
-            font-family: 'WideLatin';
-            src: url('{% static "fonts/LATINWD.TTF" %}');
-        }
+    
     
         body,
         html {
             height: 100%;
             margin: 0;
-            font-family: 'WideLatin';
+            font-family: 'Arial';
         }
     
         a {
@@ -488,7 +485,7 @@
                 width: 100%;
             }
             .menu-slideout{
-                width: 50%;
+                width: 100%;
             }
         }
     
@@ -786,7 +783,12 @@
     </div>
     <!-- New Menu slideout Panel-->
     <div class="menu-slideout" id="menuSlideout">
-        
+        <span class="close-menu" id="closeMenuSlideout">&times;</span>
+        <div>
+            <span>Account</span>
+            <span><a href="{% url 'lookbook' 'mob2023' %}">Lookbook</a></span>
+            <span>Films</span>
+        </div>
 
     </div>
     <!-- New Cart Slideout Panel -->
@@ -922,6 +924,7 @@
         const menuSlideout = document.getElementById('menuSlideout')
         const menuNav = document.getElementById('menu-btn')
         const closeCartSlideout = document.getElementById('closeCartSlideout');
+        const closeMenuSlideout = document.getElementById('closeMenuSlideout')
 
         // Open slideout when clicking the cart element
         cartNav.addEventListener('click', function () {
@@ -936,7 +939,9 @@
         closeCartSlideout.addEventListener('click', function () {
             cartSlideout.style.right = "-100%";
         });
-
+        closeMenuSlideout.addEventListener('click',function(){
+            menuSlideout.style.left ="-100%"
+        })
 
     </script>
     <script>
@@ -1045,15 +1050,7 @@
 
             menuBtn.style.display = 'block'
         })
-        function toggleDropdown() {
-            const sideControls = document.querySelector(".side-controls");
-
-
-            sideControls.classList.toggle("show");
-
-            menuBtn.style.display = 'none'
-
-        }
+       
 
     </script>
 </body>
