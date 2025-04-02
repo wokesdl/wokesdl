@@ -469,10 +469,26 @@
     
             overflow-y: auto;
         }
+
+        .menu-slideout{
+            position: fixed;
+            top: 0;
+            left: -120%;
+            height: 100%;
+            background-color: #fff;
+            z-index: 3000;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: left 0.3s ease;
     
+            overflow-y: auto;
+        }
+
         @media screen and (max-width: 600px) {
             .cart-slideout {
                 width: 100%;
+            }
+            .menu-slideout{
+                width: 50%;
             }
         }
     
@@ -480,10 +496,16 @@
             .cart-slideout {
                 width: 50%;
             }
+            .menu-slideout{
+                width: 50%;
+            }
         }
     
         @media screen and (min-width: 901px) {
             .cart-slideout {
+                width: 35%;
+            }
+            .menu-slideout{
                 width: 35%;
             }
         }
@@ -582,33 +604,17 @@
     
      
         <div class="product-container">
-            <!-- Product Card 1 -->
-            <div class="product-card" data-img="{% static 'images/products/1a.png' %}" data-title="Product 1"
-                data-price="GHS25.00"
-                data-description="This is a detailed description for Product 1. High-quality, comfortable, and stylish."
-                data-sizes="Small,Medium,Large,XL">
-                <img src="{% static 'images/products/1a.png' %}" alt="Product 1">
-                <h3>Product 1</h3>
-                <p>GHS25.00</p>
-            </div>
-            <!-- Product Card 2 -->
-            <div class="product-card" data-img="{% static 'images/products/2a.png' %}" data-title="Product 2"
-                data-price="GHS30.00"
-                data-description="This is a detailed description for Product 2. Modern design with premium materials."
-                data-sizes="Small,Medium,Large,XL">
-                <img src="{% static 'images/products/2a.png' %}" alt="Product 2">
-                <h3>Product 2</h3>
-                <p>GHS30.00</p>
-            </div>
-            <!-- Product Card 3 -->
-            <div class="product-card" data-img="{% static 'images/products/3A.png' %}" data-title="Product 3"
-                data-price="GHS35.00"
-                data-description="This is a detailed description for Product 3. Versatile style and excellent comfort."
-                data-sizes="Small,Medium,Large,XL">
-                <img src="{% static 'images/products/3A.png' %}" alt="Product 3">
-                <h3>Product 3</h3>
-                <p>GHS35.00</p>
-            </div>
+           {% for product in products %}
+            <a href="{% url 'productDetail' product.unique_id %}">
+                    <div class="product-card" data-img="{% static 'images/products/1a.png' %}" data-title="Product 1" data-price="GHS25.00"
+                        data-description="This is a detailed description for Product 1. High-quality, comfortable, and stylish."
+                        data-sizes="Small,Medium,Large,XL">
+                        <img src="{% static 'images/products/1a.png' %}" alt="Product 1">
+                        <h3>Product 1</h3>
+                        <p>GHS25.00</p>
+                    </div>
+            </a>
+            {% endfor %}
         </div>
         <div class="store-footer">
             <div class="sf-h1">
@@ -778,7 +784,11 @@
             </div>
         </div>
     </div>
-    
+    <!-- New Menu slideout Panel-->
+    <div class="menu-slideout" id="menuSlideout">
+        
+
+    </div>
     <!-- New Cart Slideout Panel -->
     <div class="cart-slideout" id="cartSlideout">
         <div class="cart-header">
@@ -909,11 +919,17 @@
         // Cart slideout panel toggle
         const cartNav = document.getElementById('cartNav');
         const cartSlideout = document.getElementById('cartSlideout');
+        const menuSlideout = document.getElementById('menuSlideout')
+        const menuNav = document.getElementById('menu-btn')
         const closeCartSlideout = document.getElementById('closeCartSlideout');
 
         // Open slideout when clicking the cart element
         cartNav.addEventListener('click', function () {
             cartSlideout.style.right = "0";
+        });
+        // open menu slideout when clicking the menu element
+        menuNav.addEventListener('click', function () {
+            menuSlideout.style.left = "0";
         });
 
         // Close slideout when clicking the close button

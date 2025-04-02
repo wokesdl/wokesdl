@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from .models import ImageSet
+from .models import ImageSet, Product
 # Create your views here.
 
 
@@ -17,7 +17,11 @@ class WokeSdlHome(View):
 class Store(View):
 
     def get(self,request):
-        return render(request,'wokesdlPages/store.html')
+        products = Product.objects.all()
+        context ={
+            'products':products,
+        }
+        return render(request,'wokesdlPages/store.html',context)
 
 
 class LookBook(View):
@@ -48,3 +52,12 @@ class Contact(View):
     
     def get(self,request):
         return render(request,'wokesdlPages/contact.html')
+
+class ProductDetail(View):
+
+    def get(self, request,unique_id):
+        product = Product.objects.get(unique_id=unique_id)
+        context = {
+            'product':product,
+        }
+        return render(request,'wokesdlPages/productDetail.html',context)
