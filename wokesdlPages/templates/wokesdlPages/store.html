@@ -38,6 +38,25 @@
             background-repeat: no-repeat;
             background-size: cover;
         }
+/* Overlay base for when cart or menu is clicked */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* transparent black */
+  z-index: 1000;
+  display: none;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+/* When active */
+#overlay.active {
+  display: block;
+  opacity: 1;
+}
 
         .emailBox {
             background-color: #241e20;
@@ -513,7 +532,7 @@
             align-items: center;
             border-bottom: 1px solid #ccc;
             padding-bottom: 10px;
-            margin-bottom: 10px;
+            margin: 20px 10px;
     
         }
     
@@ -568,6 +587,7 @@
         </div>
     </div>
     <div class="main-store">
+        <div id="overlay"></div>
         <div class="nav">
             <span><img src="{% static 'images/sdlstar.png' %}" alt="" class="sdlStar"></span>
             <div class="main-store-controls">
@@ -602,7 +622,7 @@
      
         <div class="product-container">
            {% for product in products %}
-            <a href="{% url 'productDetail' product.unique_id %}">
+            <a href="#">
                     <div class="product-card" data-img="{% static 'images/products/1a.png' %}" data-title="Product 1" data-price="GHS25.00"
                         data-description="This is a detailed description for Product 1. High-quality, comfortable, and stylish."
                         data-sizes="Small,Medium,Large,XL">
@@ -794,7 +814,7 @@
     <!-- New Cart Slideout Panel -->
     <div class="cart-slideout" id="cartSlideout">
         <div class="cart-header">
-            <span>Cart (<span id="cartCount">0</span>)</span>
+            <span>CART</span>
             <span class="close-cart" id="closeCartSlideout">&times;</span>
         </div>
         <div class="cart-items" id="cartItems">
@@ -925,23 +945,32 @@
         const menuNav = document.getElementById('menu-btn')
         const closeCartSlideout = document.getElementById('closeCartSlideout');
         const closeMenuSlideout = document.getElementById('closeMenuSlideout')
-
+        const overlay = document.getElementById('overlay');
         // Open slideout when clicking the cart element
         cartNav.addEventListener('click', function () {
             cartSlideout.style.right = "0";
+            overlay.classList.toggle('active');
         });
         // open menu slideout when clicking the menu element
         menuNav.addEventListener('click', function () {
             menuSlideout.style.left = "0";
+            overlay.classList.toggle('active');
         });
 
         // Close slideout when clicking the close button
         closeCartSlideout.addEventListener('click', function () {
             cartSlideout.style.right = "-100%";
+            overlay.classList.remove('active');
         });
         closeMenuSlideout.addEventListener('click',function(){
             menuSlideout.style.left ="-100%"
+            overlay.classList.remove('active');
         })
+          overlay.addEventListener('click', () => {
+                overlay.classList.remove('active'); // close overlay on click
+                menuSlideout.style.left = "-100%";
+                cartSlideout.style.right = "-100%"; // close cart slideout
+            });
 
     </script>
     <script>
@@ -956,7 +985,7 @@
                 totalPrice += Number(item.quantity) * parseFloat(item.price.replace('GHS', ''));
             });
 
-            document.getElementById('cartCount').textContent = totalItems;
+          
             document.getElementById('cartNav').textContent = `Cart(${totalItems})`;
             document.getElementById('cartTotal').textContent = `Total: GHS ${totalPrice.toFixed(2)}`;
         }
@@ -979,11 +1008,15 @@
                 itemDiv.innerHTML = `
                     <img src="${item.image}" alt="${item.title}" style="width: 100px; height: 100px; object-fit: contain;">
                     <div style="flex-grow: 1; margin-left: 10px;">
-                        <strong>${item.title}</strong><br>
-                        ${item.size} | Qty: ${item.quantity}<br>
-                        <span style="color: green;">GHS ${parseFloat(item.price.replace('GHS', '')) * Number(item.quantity)}</span>
+                        <div><strong>${item.title}</strong></div>
+                        <div>${item.size}</div>
+                        <div>Qty: ${item.quantity}</div>
+                      
                     </div>
-                    <button onclick="removeFromCart(${index})" style=" color: red; border: none; padding: 5px 10px; cursor: pointer;">X</button>
+                    <div style="display:flex; flex-direction:column;align-items:space-between;>
+                          <span style="color: green;">GHS ${parseFloat(item.price.replace('GHS', '')) * Number(item.quantity)}</span>
+                    <span onclick="removeFromCart(${index})" style=" color: red;">X</span>
+                    </div>
                 `;
                 cartItemsDiv.appendChild(itemDiv);
             });
