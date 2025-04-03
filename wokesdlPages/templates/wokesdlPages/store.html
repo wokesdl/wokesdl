@@ -38,6 +38,17 @@
             background-repeat: no-repeat;
             background-size: cover;
         }
+        .close-menu{
+            font-size: 30px;
+            cursor: pointer;
+        }
+        .menu-details{
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+            gap: 20px;
+            align-items: center;
+        }
 /* Overlay base for when cart or menu is clicked */
 #overlay {
   position: fixed;
@@ -89,6 +100,9 @@
             position: absolute;
             bottom: 0;
 
+        }
+        .nav-main{
+            cursor: pointer;
         }
 </style>
     <style>
@@ -496,9 +510,23 @@
             box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
             transition: left 0.3s ease;
     
-            overflow-y: auto;
+           
+            background: rgba(221, 141, 141, 0.3); /* Red color with transparency */
+  backdrop-filter: blur(10px);      /* Applies the blur effect */
+  -webkit-backdrop-filter: blur(10px);/* For Safari compatibility */
         }
-
+        .menu-slideout a, .close-menu{
+            color: white;
+        }
+        .menu-slideout a:hover, .close-menu:hover{
+            color: #c31c30;
+        }
+        .cart-slideout{
+              background: rgba(221, 141, 141, 0.3); /* Red color with transparency */
+  backdrop-filter: blur(10px);      /* Applies the blur effect */
+  -webkit-backdrop-filter: blur(10px);/* For Safari compatibility */
+  color: white;
+        }
         @media screen and (max-width: 600px) {
             .cart-slideout {
                 width: 100%;
@@ -554,6 +582,39 @@
             font-size: 24px;
             cursor: pointer;
         }
+      
+        button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  translate: 0 -28px;
+  appearance: none;
+  border: 0;
+  display: flex;
+  align-items: center;
+  padding: 16px 20px 16px 15px;
+  height: 56px;
+  position: relative;
+  font-family: inherit;
+  font-size: 1em;
+  line-height: 1em;
+  font-weight: 500;
+  background-color:#c31c30;
+  color: white;
+  cursor: pointer;
+  border-radius: 32px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  -webkit-tap-highlight-color: transparent;
+  transition: box-shadow 0.2s ease, background-color 150ms ease;
+  &:focus {
+    box-shadow: 0 8px 64px 16px rgba(0,0,0,0.5);
+    outline: none;
+  }
+  
+  &:hover, &:active {
+    background-color: lighten(#c31c30, 5%);
+  }
+}
+
     </style>
 </head>
 
@@ -596,7 +657,7 @@
                     <input type="text" id="searchInput" placeholder="Search products...">
                 </span>
                 <!-- Cart element with id to update count from localStorage -->
-                <div>
+                <div class="nav-main">
     
                     <span class="dropdown-toggle" onclick="toggleDropdown()" id="menu-btn">Menu</span>
                     <span id="cartNav">Cart(0)</span>
@@ -622,7 +683,7 @@
      
         <div class="product-container">
            {% for product in products %}
-            <a href="#">
+            <a href="{% url 'productDetail' product.unique_id %}">
                     <div class="product-card" data-img="{% static 'images/products/1a.png' %}" data-title="Product 1" data-price="GHS25.00"
                         data-description="This is a detailed description for Product 1. High-quality, comfortable, and stylish."
                         data-sizes="Small,Medium,Large,XL">
@@ -802,12 +863,12 @@
         </div>
     </div>
     <!-- New Menu slideout Panel-->
-    <div class="menu-slideout" id="menuSlideout">
+    <div class="menu-slideout" id="menuSlideout" style="display: flex; flex-direction: column; align-items: center;">
         <span class="close-menu" id="closeMenuSlideout">&times;</span>
-        <div>
-            <span>Account</span>
+        <div class="menu-details">
+            <span><a href="#">Account</a></span>
             <span><a href="{% url 'lookbook' 'mob2023' %}">Lookbook</a></span>
-            <span>Films</span>
+            <span><a href="#">Films</a></span>
         </div>
 
     </div>
@@ -821,9 +882,17 @@
             <!-- Dynamically added cart items will appear here -->
         </div>
         <div class="cart-footer">
-            <p id="cartTotal" style="font-weight: bold; color: red;">Total: GHS 0.00</p>
-            <a href="{% url 'checkout' %}">
-                <button id="checkoutBtn">Checkout</button>
+            <p id="cartTotal" style="font-weight: bold; ">Total: GHS 0.00</p>
+            <a href="{% url 'checkout' %}" style="display: flex;justify-content: center;padding-top: 70px;">
+             
+                <button id="checkoutBtn">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24" id="cart">
+                        <path fill="#fff"
+                            d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z" />
+                    </svg>
+                    <span>Checkout</span>
+                    
+                </button>
             </a>
         </div>
     
@@ -1003,7 +1072,7 @@
                 itemDiv.style.alignItems = "center";
                 itemDiv.style.justifyContent = "space-between";
                 itemDiv.style.padding = "10px";
-                itemDiv.style.borderBottom = "1px solid #ccc";
+            
 
                 itemDiv.innerHTML = `
                     <img src="${item.image}" alt="${item.title}" style="width: 100px; height: 100px; object-fit: contain;">
@@ -1013,9 +1082,10 @@
                         <div>Qty: ${item.quantity}</div>
                       
                     </div>
-                    <div style="display:flex; flex-direction:column;align-items:space-between;>
-                          <span style="color: green;">GHS ${parseFloat(item.price.replace('GHS', '')) * Number(item.quantity)}</span>
-                    <span onclick="removeFromCart(${index})" style=" color: red;">X</span>
+                    <div style="display:flex; flex-direction:column;align-items:center;gap:40px;">
+                          <span onclick="removeFromCart(${index})" style="color:#c31c30;font-size:30px;cursor:pointer;" >&times;</span>
+                        <span >GHS ${parseFloat(item.price.replace('GHS', '')) * Number(item.quantity)}</span>
+                  
                     </div>
                 `;
                 cartItemsDiv.appendChild(itemDiv);
