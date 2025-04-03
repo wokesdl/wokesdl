@@ -474,6 +474,179 @@
         }
     
     </style>
+    <style>
+        /* This covers the menu slideout and cart slideout */
+    
+        /* Cart Slideout Panel */
+        .cart-slideout {
+            position: fixed;
+            top: 0;
+            right: -120%;
+            height: 100%;
+            background-color: #fff;
+            z-index: 3000;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: right 0.3s ease;
+    
+            overflow-y: auto;
+        }
+
+        .menu-slideout{
+            position: fixed;
+            top: 0;
+            left: -120%;
+            height: 100%;
+            background-color: #fff;
+            z-index: 3000;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: left 0.3s ease;
+    
+           
+            background: rgba(221, 141, 141, 0.3); /* Red color with transparency */
+  backdrop-filter: blur(10px);      /* Applies the blur effect */
+  -webkit-backdrop-filter: blur(10px);/* For Safari compatibility */
+        }
+        .menu-slideout a, .close-menu{
+            color: white;
+        }
+        .menu-slideout a:hover, .close-menu:hover{
+            color: #c31c30;
+        }
+        .cart-slideout{
+              background: rgba(221, 141, 141, 0.3); /* Red color with transparency */
+  backdrop-filter: blur(10px);      /* Applies the blur effect */
+  -webkit-backdrop-filter: blur(10px);/* For Safari compatibility */
+  color: white;
+        }
+        @media screen and (max-width: 600px) {
+            .cart-slideout {
+                width: 100%;
+            }
+            .menu-slideout{
+                width: 100%;
+            }
+        }
+    
+        @media screen and (min-width: 601px) and (max-width: 900px) {
+            .cart-slideout {
+                width: 50%;
+            }
+            .menu-slideout{
+                width: 50%;
+            }
+        }
+    
+        @media screen and (min-width: 901px) {
+            .cart-slideout {
+                width: 35%;
+            }
+            .menu-slideout{
+                width: 35%;
+            }
+        }
+    
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin: 20px 10px;
+    
+        }
+    
+        .cart-items {
+            flex-grow: 1;
+        }
+    
+        .cart-item {
+    
+            padding: 10px 0;
+        }
+    
+        .cart-footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+    
+        .close-cart {
+            font-size: 24px;
+            cursor: pointer;
+        }
+      
+        button#checkout {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  translate: 0 -28px;
+  appearance: none;
+  border: 0;
+  display: flex;
+  align-items: center;
+  padding: 16px 20px 16px 15px;
+  height: 56px;
+  position: relative;
+  font-family: inherit;
+  font-size: 1em;
+  line-height: 1em;
+  font-weight: 500;
+  background-color:#c31c30;
+  color: white;
+  cursor: pointer;
+  border-radius: 32px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  -webkit-tap-highlight-color: transparent;
+  transition: box-shadow 0.2s ease, background-color 150ms ease;
+  &:focus {
+    box-shadow: 0 8px 64px 16px rgba(0,0,0,0.5);
+    outline: none;
+  }
+  
+  &:hover, &:active {
+    background-color: lighten(#c31c30, 5%);
+  }
+}
+    
+    </style>
+    <style>
+        /* New styles display */
+        .size-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.size-btn {
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 10px 16px;
+    background-color: #f4f4f4;
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 50px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.size-btn:hover:not(.disabled):not(.selected) {
+    background-color: #e0e0e0;
+}
+
+.size-btn.selected {
+    border: 2px solid black;
+    background-color: white;
+    font-weight: bold;
+}
+
+.size-btn:disabled {
+    color: #999;
+    text-decoration: line-through;
+    background-color: #f4f4f4;
+    cursor: not-allowed;
+}
+
+    </style>
 </head>
 
 <body>
@@ -488,13 +661,47 @@
                 <!-- Cart element with id to update count from localStorage -->
                 <div>
         
-                    <span class="dropdown-toggle" onclick="toggleDropdown()" id="menu-btn">Menu</span>
+                    <span class="dropdown-toggle" onclick="" id="menu-btn">Menu</span>
                     <span id="cartNav">Cart(0)</span>
                     <span>Checkout</span>
         
                 </div>
             </div>
         </div>
+        <div id="overlay"></div>
+            <div class="menu-slideout" id="menuSlideout" style="display: flex; flex-direction: column; align-items: center;">
+                <span class="close-menu" id="closeMenuSlideout">&times;</span>
+                <div class="menu-details">
+                    <span><a href="#">Account</a></span>
+                    <span><a href="{% url 'lookbook' 'mob2023' %}">Lookbook</a></span>
+                    <span><a href="#">Films</a></span>
+                </div>
+            
+            </div>
+            <div class="cart-slideout" id="cartSlideout">
+                <div class="cart-header">
+                    <span>CART</span>
+                    <span class="close-cart" id="closeCartSlideout">&times;</span>
+                </div>
+                <div class="cart-items" id="cartItems">
+                    <!-- Dynamically added cart items will appear here -->
+                </div>
+                <div class="cart-footer">
+                    <p id="cartTotal" style="font-weight: bold; ">Total: GHS 0.00</p>
+                    <a href="{% url 'checkout' %}" style="display: flex;justify-content: center;padding-top: 70px;">
+            
+                        <button id="checkoutBtn">
+                            <svg style="width:24px;height:24px" viewBox="0 0 24 24" id="cart">
+                                <path fill="#fff"
+                                    d="M17,18A2,2 0 0,1 19,20A2,2 0 0,1 17,22C15.89,22 15,21.1 15,20C15,18.89 15.89,18 17,18M1,2H4.27L5.21,4H20A1,1 0 0,1 21,5C21,5.17 20.95,5.34 20.88,5.5L17.3,11.97C16.96,12.58 16.3,13 15.55,13H8.1L7.2,14.63L7.17,14.75A0.25,0.25 0 0,0 7.42,15H19V17H7C5.89,17 5,16.1 5,15C5,14.65 5.09,14.32 5.24,14.04L6.6,11.59L3,4H1V2M7,18A2,2 0 0,1 9,20A2,2 0 0,1 7,22C5.89,22 5,21.1 5,20C5,18.89 5.89,18 7,18M16,11L18.78,6H6.14L8.5,11H16Z" />
+                            </svg>
+                            <span>Checkout</span>
+            
+                        </button>
+                    </a>
+                </div>
+            
+            </div>
     <div class="wokesdl_logoo_white">
         <img src="{% static 'images/wokesdl_logo.png' %}" alt="" class="responsive-image">
     </div>
@@ -550,31 +757,16 @@
                     <div class="fs-5 mb-5">
                         <span>GH₵{{product.price}}0</span>
                     </div>
-                    <div id="optionBox" class="dropdown">
-                        {% if 'Denim' in product.name %}
-                        <div class="dropdown-selected" id="drop-down-select" onclick="toggleDropdown()">Select size
-                        </div>
-                        <div class="dropdown-options" id="dropdownOptions">
-                            <div class="size-box" id="size-28" onclick="selectSize('28')">28</div>
-                            <div class="size-box" id="size-30" onclick="selectSize('30')">30</div>
-                            <div class="size-box" id="size-32" onclick="selectSize('32')">32</div>
-                            <div class="size-box" id="size-34" onclick="selectSize('34')">34</div>
-                            <div class="size-box" id="size-36" onclick="selectSize('36')">36</div>
-                            <div class="size-box" id="size-38" onclick="selectSize('38')">38</div>
-                            <div class="size-box" id="size-40" onclick="selectSize('40')">40</div>
-                        </div>
-                        {% else %}
-                        <div class="dropdown-selected" id="drop-down-select" onclick="toggleDropdown()">Select size
-                        </div>
-                        <div class="dropdown-options" id="dropdownOptions">
-                            <div class="size-box" id="size-3XL" onclick="selectSize('3XL')">3XL</div>
-                            <div class="size-box" id="size-M" onclick="selectSize('M')">M</div>
-                            <div class="size-box" id="size-L" onclick="selectSize('L')">L</div>
-                            <div class="size-box" id="size-XL" onclick="selectSize('XL')">XL</div>
-                            <div class="size-box" id="size-2XL" onclick="selectSize('2XL')">2XL</div>
-                        </div>
-                        {% endif %}
+                    <div class="size-options">
+                        <button class="size-btn" onclick="selectSize('XS', this)" disabled>XS</button>
+                        <button class="size-btn" onclick="selectSize('S', this)">S</button>
+                        <button class="size-btn" onclick="selectSize('M', this)">M</button>
+                        <button class="size-btn" onclick="selectSize('L', this)">L</button>
+                        <button class="size-btn" onclick="selectSize('XL', this)">XL</button>
+                        <button class="size-btn selected" onclick="selectSize('2XL', this)">2XL</button>
+                        <button class="size-btn" onclick="selectSize('3XL', this)" disabled>3XL</button>
                     </div>
+
 
                     <div class="d-flex" id="addToCartm" style="margin: 15px; gap: 5px; z-index: 0;">
                         <div class="input-group" style="max-width: 8rem;">
@@ -591,10 +783,12 @@
                         </button>
                
                     </div>
-                             <div>
-                            <h3>Description</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam voluptatem repudiandae, maxime consequatur similique cupiditate cumque, velit ut mollitia corrupti architecto, atque sit laudantium ex perferendis asperiores dolores dignissimos eius.</p>
-                        </div>
+                            <div>
+                                <h3>Description</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam voluptatem repudiandae, maxime consequatur
+                                    similique cupiditate cumque, velit ut mollitia corrupti architecto, atque sit laudantium ex perferendis
+                                    asperiores dolores dignissimos eius.</p>
+                            </div>
 
 
                 </div>
@@ -762,7 +956,45 @@
         }
     </script>
     
-   
+   <script>
+    // menu slideout
+
+         
+            // Cart slideout panel toggle
+            const cartNav = document.getElementById('cartNav');
+            const cartSlideout = document.getElementById('cartSlideout');
+            const menuSlideout = document.getElementById('menuSlideout')
+            const menuNav = document.getElementById('menu-btn')
+            const closeCartSlideout = document.getElementById('closeCartSlideout');
+            const closeMenuSlideout = document.getElementById('closeMenuSlideout')
+            const overlay = document.getElementById('overlay');
+            // Open slideout when clicking the cart element
+            cartNav.addEventListener('click', function () {
+                cartSlideout.style.right = "0";
+                overlay.classList.toggle('active');
+            });
+            // open menu slideout when clicking the menu element
+            menuNav.addEventListener('click', function () {
+                menuSlideout.style.left = "0";
+                overlay.classList.toggle('active');
+            });
+
+            // Close slideout when clicking the close button
+            closeCartSlideout.addEventListener('click', function () {
+                cartSlideout.style.right = "-100%";
+                overlay.classList.remove('active');
+            });
+            closeMenuSlideout.addEventListener('click', function () {
+                menuSlideout.style.left = "-100%"
+                overlay.classList.remove('active');
+            })
+            overlay.addEventListener('click', () => {
+                overlay.classList.remove('active'); // close overlay on click
+                menuSlideout.style.left = "-100%";
+                cartSlideout.style.right = "-100%"; // close cart slideout
+            });
+
+   </script>
     <script>
         // Function to format the price
         function formatPrice(price) {
@@ -862,7 +1094,7 @@
             const quantity = document.getElementById('inputQuantity').value;
 
             // Select the currently selected size
-            const selectedBox = document.querySelector('.size-box.selected');
+    const selectedBox = document.querySelector('.size-btn.selected');
             const selectedSize = selectedBox ? selectedBox.innerText : null;
 
             // If no size is selected, alert the user and exit
@@ -871,8 +1103,7 @@
             }
 
             // Calculate the total price
-            const price = Number(quantity) * {{ product.price }
-        };
+            const price = Number(quantity) * {{ product.price }};
 
         // Create the new item object to add or update in the cart
         const newItem = {
@@ -925,21 +1156,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS -->
     <script src="js/productDetail.js"></script>
-    <script>
-        function selectSize(size) {
-            // Remove 'selected' class from all size boxes
-            const sizeBoxes = document.querySelectorAll('.size-box');
-            sizeBoxes.forEach(function (box) {
-                box.classList.remove('selected');
-            });
+<script>
+    function selectSize(size, el) {
+        // Remove 'selected' from all
+        document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('selected'));
+        // Add 'selected' to clicked
+        el.classList.add('selected');
+    }
+</script>
 
-            // Add 'selected' class to the clicked size box
-            const selectedBox = document.getElementById('size-' + size);
-            selectedBox.classList.add('selected');
-            document.getElementById('drop-down-select').innerText = selectedBox.innerText
-            document.getElementById('dropdownOptions').style.display = 'none'
-        }
-    </script>
 
 </body>
 
