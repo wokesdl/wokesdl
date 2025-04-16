@@ -6,11 +6,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Modern Lookbook</title>
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
     <style>
-        a{
+        a {
             text-decoration: none;
             color: black;
         }
+
+        a.active {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -99,6 +106,30 @@
             border: 2px solid #e74c3c;
         }
 
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 6px solid rgba(255, 255, 255, 0.3);
+            border-top: 6px solid #e74c3c;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -117,70 +148,246 @@
 </head>
 
 <body>
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Navbar -->
+    <div class="nav" style="display: flex; align-items: center;">
+        <span><img src="{% static 'images/sdlstar.png' %}" alt="" class="sdlStar" /></span>
+
+        <div class="main-store-controls" style="color: white;">
+            <div>
+                <span class="dropdown-toggle" id="menu-btn">
+                    <div class="menu-details">
+                        <span><a href="{% url 'lookbook' 'mob2023' %}">Lookbook</a></span>
+                        <span><a href="#">Films</a></span>
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+    <span style="display: flex; justify-content: center;">
+        <img src="{% static 'images/wokesdl_logo.png' %}" alt="" class="responsive-image">
+    </span>
+
     <div class="container">
         <div class="main-image">
-            <img id="activeImage" src='{% static "mob2023/IMG_" %}' alt="Lookbook Image" />
+            <img id="activeImage" src="" alt="Lookbook Image" loading="lazy" />
+            <div class="loading-spinner" id="loadingSpinner"></div>
             <button class="nav-btn prev" onclick="prevImage()">&#8592;</button>
             <button class="nav-btn next" onclick="nextImage()">&#8594;</button>
         </div>
-        <div class="thumbnails"></div>
+        <div class="thumbnails" id="thumbnails"></div>
     </div>
     <div style="display: flex; justify-content: center; gap:15px;">
         <div style="display: flex;">
-            <img src="{% static 'images/wokesdl_logo.png' %}" style="width: 100px;" alt="wokesdl_logo">
+            <img src="{% static 'images/wokesdl_logo.png' %}" style="width: 200px; height: auto;" alt="wokesdl_logo">
         </div>
-        <div style="display: flex; flex-direction: column; gap: 5px;">
-            {% for data in imageSets %}
-            <a href="{% url 'lookbook' data.accessCode %}">{{data.name}}</a>
-            {% endfor %}
+        <div style="display: flex; flex-direction: column; gap: 5px;" id="imageSetLinks">
+            <a href="#" data-folder="mob2023" data-count="13" onclick="changeImageSet(event, 'mob2023', 13)">mob2023</a>
+            <a href="#" data-folder="painShoot" data-count="33"
+                onclick="changeImageSet(event, 'painShoot', 33)">painShoot</a>
+            <a href="#" data-folder="tankCrop" data-count="44"
+                onclick="changeImageSet(event, 'tankCrop', 44)">tankCrop</a>
+            <a href="#" data-folder="tanksTwo" data-count="31"
+                onclick="changeImageSet(event, 'tanksTwo', 31)">tanksTwo</a>
+            <a href="#" data-folder="wokeUse" data-count="57" onclick="changeImageSet(event, 'wokeUse', 57)">wokeUse</a>
         </div>
     </div>
     <script>
-        const images = [
-            {% for count in countRange %}
-        '{% static accessCode %}/IMG_{{ count }}.jpg',
-            {% endfor %}
-        ];
+        // Base URL for Google Cloud Storage
+        const baseURL = "https://storage.googleapis.com/wokesdl/";
 
+        // Current folder and image count
+        let currentFolder = "mob2023";
+        let imageCount = 13;
         let currentIndex = 0;
+
+        // Cache for preloaded images
+        const imageCache = {};
+
+        // Elements
         const mainImage = document.getElementById("activeImage");
+        const thumbnailsContainer = document.getElementById("thumbnails");
+        const loadingSpinner = document.getElementById("loadingSpinner");
 
+        // Generate image URLs for the current folder
+        function generateImageUrls() {
+            const urls = [];
+            for (let i = 1; i <= imageCount; i++) {
+                urls.push(`${baseURL}${currentFolder}/IMG_${i}.jpg`);
+            }
+            return urls;
+        }
+
+        // Get current images array
+        function getImages() {
+            return generateImageUrls();
+        }
+
+        // Preload a set of images (for thumbnails and nearby main images)
+        function preloadImages(startIdx, count) {
+            const images = getImages();
+            const endIdx = Math.min(startIdx + count, images.length);
+
+            for (let i = startIdx; i < endIdx; i++) {
+                if (!imageCache[images[i]]) {
+                    const img = new Image();
+                    img.src = images[i];
+                    imageCache[images[i]] = img;
+                }
+            }
+        }
+
+        // Update the active image with loading indicator
         function updateActiveImage() {
-            mainImage.src = images[currentIndex];
+            const images = getImages();
+            loadingSpinner.style.display = 'block';
 
-            // Remove active class from all thumbnails
+            // If image is already cached, use it immediately
+            if (imageCache[images[currentIndex]]) {
+                mainImage.src = images[currentIndex];
+                loadingSpinner.style.display = 'none';
+            } else {
+                // Otherwise load it
+                const img = new Image();
+                img.onload = function () {
+                    mainImage.src = images[currentIndex];
+                    loadingSpinner.style.display = 'none';
+                    imageCache[images[currentIndex]] = img;
+                };
+                img.src = images[currentIndex];
+            }
+
+            // Update active thumbnail
             document.querySelectorAll(".thumbnails img").forEach(img => img.classList.remove("active"));
+            const activeThumbnail = document.querySelector(`.thumbnails img[data-index="${currentIndex}"]`);
+            if (activeThumbnail) {
+                activeThumbnail.classList.add("active");
 
-            // Add active class to the current thumbnail
-            document.querySelector(`.thumbnails img[data-index="${currentIndex}"]`).classList.add("active");
+                // Make sure active thumbnail is visible (auto-scroll)
+                activeThumbnail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            // Preload next few images for smoother navigation
+            preloadImages(currentIndex + 1, 3);
         }
 
-        function changeImage(src, element) {
-            mainImage.src = src;
-            currentIndex = images.indexOf(src);
-
-            document.querySelectorAll(".thumbnails img").forEach(img => img.classList.remove("active"));
-            element.classList.add("active");
+        // Change the main image when clicking a thumbnail
+        function changeImage(idx, element) {
+            currentIndex = idx;
+            updateActiveImage();
         }
 
+        // Navigation functions
         function prevImage() {
+            const images = getImages();
             currentIndex = (currentIndex - 1 + images.length) % images.length;
             updateActiveImage();
         }
 
         function nextImage() {
+            const images = getImages();
             currentIndex = (currentIndex + 1) % images.length;
             updateActiveImage();
         }
 
-        // Generate the thumbnail grid dynamically
-        document.querySelector('.thumbnails').innerHTML = images.map((src, index) =>
-            `<img src="${src}" data-index="${index}" onclick="changeImage('${src}', this)" ${index === 0 ? 'class="active"' : ''} />`
-        ).join('');
+        // Change the image set when clicking on a folder link
+        function changeImageSet(event, folder, count) {
+            event.preventDefault();
 
-        // Ensure the first image is set as active initially
-        updateActiveImage();
+            // Update active link
+            document.querySelectorAll("#imageSetLinks a").forEach(link => link.classList.remove("active"));
+            event.target.classList.add("active");
+
+            // Update current folder and count
+            currentFolder = folder;
+            imageCount = count;
+            currentIndex = 0;
+
+            // Clear thumbnails and regenerate them
+            generateThumbnails();
+
+            // Update the main image
+            updateActiveImage();
+        }
+
+        // Generate thumbnails for the current folder
+        function generateThumbnails() {
+            const images = getImages();
+            thumbnailsContainer.innerHTML = '';
+
+            // Create thumbnail grid with lazy loading
+            for (let i = 0; i < Math.min(images.length, 20); i++) {
+                const thumbnail = document.createElement('img');
+                thumbnail.setAttribute('data-src', images[i]);
+                thumbnail.setAttribute('data-index', i);
+                thumbnail.onclick = function () { changeImage(i, this); };
+
+                if (i === currentIndex) {
+                    thumbnail.classList.add('active');
+                }
+
+                thumbnailsContainer.appendChild(thumbnail);
+            }
+
+            // Lazy load the thumbnails that are visible
+            lazyLoadThumbnails();
+        }
+
+        // Lazy load thumbnails as they become visible
+        function lazyLoadThumbnails() {
+            const thumbnails = document.querySelectorAll('.thumbnails img[data-src]');
+
+            thumbnails.forEach(thumbnail => {
+                if (isElementInViewport(thumbnail)) {
+                    thumbnail.src = thumbnail.getAttribute('data-src');
+                    thumbnail.removeAttribute('data-src');
+                }
+            });
+        }
+
+        // Check if element is in viewport
+        function isElementInViewport(el) {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        // Add scroll event for lazy loading
+        window.addEventListener('scroll', lazyLoadThumbnails);
+        window.addEventListener('resize', lazyLoadThumbnails);
+
+        // Initialize the page
+        function init() {
+            // Set the first folder as active
+            document.querySelector("#imageSetLinks a").classList.add("active");
+
+            // Generate thumbnails for initial folder
+            generateThumbnails();
+
+            // Load the first image
+            updateActiveImage();
+
+            // Preload the next few images
+            preloadImages(1, 5);
+        }
+
+        // Start everything when the page loads
+        window.addEventListener('load', init);
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowLeft') {
+                prevImage();
+            } else if (e.key === 'ArrowRight') {
+                nextImage();
+            }
+        });
     </script>
 </body>
 
-</html>
+</html> 

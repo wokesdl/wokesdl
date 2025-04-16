@@ -626,12 +626,12 @@
         <div class="product-container">
            {% for product in products %}
             <a href="{% url 'productDetail' product.unique_id %}">
-                    <div class="product-card" data-img="{% static 'images/products/1a.png' %}" data-title="Product 1" data-price="GHS25.00"
+                    <div class="product-card" data-img="{{product.image.url}}" data-title="{{product.price}}" data-price="GHS{{product.price}}"
                         data-description="This is a detailed description for Product 1. High-quality, comfortable, and stylish."
                         data-sizes="Small,Medium,Large,XL">
-                        <img src="{% static 'images/products/1a.png' %}" alt="Product 1">
-                        <h3>Product 1</h3>
-                        <p>GHS25.00</p>
+                        <img src="{{product.image.url}}" alt="{{product.name}}">
+                        <h3>{{product.name}}</h3>
+                        <p>{{product.price}}</p>
                     </div>
             </a>
             {% endfor %}
