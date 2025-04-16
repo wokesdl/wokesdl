@@ -4,296 +4,930 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+
     <title>Checkout Page</title>
     <style>
-        /* Base styles - Mobile First */
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f8f8f8;
-            height: 100vh;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #000000;
+            color: #333;
+            line-height: 1.6;
         }
 
         .checkout-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
             display: flex;
-            flex-direction: column;
-            max-width: 100%;
+            flex-wrap: wrap;
+            gap: 30px;
         }
 
-        .form-section {
-            background: white;
+        .checkout-form {
+            flex: 1 1 65%;
+            background-color: white;
+            border-radius: 10px;
             padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
-        .form-section h2 {
-            font-size: 20px;
-            margin-bottom: 15px;
+        .cart-summary {
+            flex: 1 1 30%;
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            align-self: flex-start;
+            position: sticky;
+            top: 20px;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+            display: block;
+            width: 100px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin: 25px 0 15px;
+            color: #333;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
         }
 
         .form-group {
             margin-bottom: 15px;
         }
 
-        .form-group label {
-            font-size: 14px;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .payment-buttons {
+        .form-row {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             margin-bottom: 15px;
         }
 
-        .payment-buttons button {
+        .form-row .form-group {
             flex: 1;
-            border: none;
-            padding: 12px;
-            font-size: 16px;
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        button {
+            background-color: #4a90e2;
             color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            width: auto;
         }
 
-        .shop-pay {
-            background: #5a31f4;
-        }
-
-        .google-pay {
-            background: black;
+        button:hover {
+            background-color: #3a7bc8;
         }
 
         .checkout-footer {
-            text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
+            display: flex;
+            justify-content: flex-end;
         }
 
-        .checkout-footer button {
-            width: 100%;
-            padding: 12px;
-            background: #0070d2;
-            color: white;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .order-summary {
-            background: #f5f5f5;
-            padding: 30px;
-        }
-
-        .order-summary h2 {
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-
-        .order-item {
+        .cart-item {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
         }
 
-        .order-item img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-            border-radius: 5px;
-            margin-right: 10px;
+        .cart-item:last-child {
+            border-bottom: none;
         }
 
-        .order-item div {
-            flex-grow: 1;
+        .item-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            margin-right: 15px;
+            background-color: #f0f0f0;
+            object-fit: cover;
         }
 
-        .total {
-            font-weight: bold;
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .item-variant {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .item-price {
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .subtotal-row,
+        .shipping-row,
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        .subtotal-row,
+        .shipping-row {
+            color: #777;
+        }
+
+        .total-row {
+            font-weight: 600;
+            padding-top: 15px;
+            margin-top: 15px;
+            border-top: 1px solid #eee;
             font-size: 18px;
-            color: black;
         }
 
-        .separator {
-            width: 2px;
-            background: #b0b0b0;
-            display: none;
+        .breadcrumb {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            color: #777;
+            font-size: 14px;
+            flex-wrap: wrap;
         }
 
-        @media screen and (min-width: 900px) {
-            body {
-                overflow: hidden;
-            }
+        .breadcrumb span {
+            color: #333;
+            font-weight: 500;
+        }
 
+        .payment-methods {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .payment-methods img {
+            height: 30px;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .payment-methods img:hover {
+            opacity: 1;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
             .checkout-container {
-                display: flex;
-                flex-direction: row;
-                height: 100vh;
+                flex-direction: column;
             }
 
-            .form-section {
-                flex: 1;
-                max-width: 50%;
-                box-sizing: border-box;
-                overflow-y: auto;
-                height: 100vh;
-            }
-
-            .order-summary {
-                flex: 1;
-                max-width: 50%;
-                box-sizing: border-box;
-                background: #f5f5f5;
-                padding: 30px;
-                position: sticky;
+            .cart-summary {
+                order: -1;
+                position: relative;
                 top: 0;
-                height: 100vh;
-                overflow-y: auto;
+                width: 100%;
             }
 
-            .separator {
-                display: block;
-                width: 2px;
-                background: #b0b0b0;
-                height: 100vh;
+            .checkout-form {
+                width: 100%;
             }
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .checkout-form,
+            .cart-summary {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            h2 {
+                font-size: 17px;
+            }
+
+            .checkout-footer {
+                justify-content: center;
+            }
+
+            button {
+                width: 100%;
+                padding: 12px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .checkout-container {
+                padding: 10px;
+                gap: 15px;
+            }
+
+            .checkout-form,
+            .cart-summary {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .cart-item {
+                padding: 10px 0;
+            }
+
+            .item-image {
+                width: 50px;
+                height: 50px;
+            }
+
+            .item-name {
+                font-size: 14px;
+            }
+
+            .item-variant {
+                font-size: 12px;
+            }
+
+            .item-price {
+                font-size: 14px;
+            }
+
+            input,
+            select {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+
+            label {
+                font-size: 13px;
+            }
+        }
+        .menu-details a{
+            color: white;
+            text-decoration: none;
         }
     </style>
 </head>
 
 <body>
+        <div class="overlay" id="overlay"></div>
+        <div></div>
+        
+        <!-- Navbar -->
+        <div class="nav" style="display: flex; align-items: center;">
+            <span><img src="{% static 'images/sdlstar.png' %}" alt="" class="sdlStar" /></span>
+         
+            <div class="main-store-controls" style="color: white;">
+                <div>
+                    <span class="dropdown-toggle" id="menu-btn">
+                        <div class="menu-details">
+                           
+                            <span><a href="{% url 'lookbook' 'mob2023' %}">Lookbook</a></span>
+                            <span><a href="#">Films</a></span>
+                        </div>
+                    </span>
+                  
+                    
+                </div>
+            </div>
+        </div>
+        <span style="display: flex; justify-content: center;"> 
+            <img src="{% static 'images/wokesdl_logoo_white.png' %}" alt="" class="responsive-image">
+        </span>
+        
+        <div id="overlay"></div>
+        
+
+        
+    
 
     <div class="checkout-container">
-        <!-- LEFT SIDE: Checkout Form -->
-        <div class="form-section">
-            <div class="payment-buttons" style="display: flex; justify-content: center;">
-                <img src="{% static  'images/wokesdl_logo.png' %}" width="100px" alt="">
+        <div class="checkout-form">
+            <img src="{% static 'images/wokesdl_logo.png' %}" alt="logo" class="logo">
+
+            <div class="breadcrumb">
+                Cart > <span>Information</span> > Shipping & Payment
             </div>
 
-            <h2>Contact</h2>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" placeholder="Enter your email">
-            </div>
+            <h1>Checkout</h1>
 
-            <h2>Shipping Address</h2>
-            <div class="form-group">
-                <label>Country/Region</label>
-                <select>
-                    <option>Ghana</option>
-                    <option>United States</option>
-                    <option>Canada</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>First Name</label>
-                <input type="text" placeholder="First Name">
-            </div>
-
-            <div class="form-group">
-                <label>Last Name</label>
-                <input type="text" placeholder="Last Name">
-            </div>
-
-            <div class="form-group">
-                <label>Address</label>
-                <input type="text" placeholder="Street Address">
-            </div>
-
-            <div class="form-group">
-                <label>Apartment, suite, etc. (optional)</label>
-                <input type="text" placeholder="Apartment, suite, etc.">
-            </div>
-
-            <div class="form-group">
-                <label>City</label>
-                <input type="text" placeholder="City">
-            </div>
-
-            <div class="form-group">
-                <label>State</label>
-                <input type="text" placeholder="State">
-            </div>
-
-            <div class="form-group">
-                <label>ZIP Code</label>
-                <input type="text" placeholder="ZIP Code">
-            </div>
-
-            <div class="form-group">
-                <label>Phone (optional)</label>
-                <input type="text" placeholder="Phone Number">
-            </div>
-
-            <div class="checkout-footer">
-                <button>Continue to Shipping</button>
-            </div>
+        <form action="" method="POST">
+            {% csrf_token %}
+                <div class="form-section">
+                    <h2>Contact Information</h2>
+                    <div class="form-group">
+                        <input type="text" id="cartData" name="cartData" hidden>
+                        <label>Email</label>
+                        <input type="email" placeholder="Enter your email" name="email" />
+                    </div>
+                
+                    <h2>Shipping Address</h2>
+                    <div class="form-group">
+                        <label>Country/Region</label>
+                        <select id="destination-country" name="destination_country" required="">
+                            <option value="" disabled="" selected="" style="color: #dddddd;">Select a country</option>
+                            <option value="Afghanistan">Afghanistan</option>
+                            <option value="Åland Islands">Åland Islands</option>
+                            <option value="Albania">Albania</option>
+                            <option value="Algeria">Algeria</option>
+                            <option value="American Samoa">American Samoa</option>
+                            <option value="Andorra">Andorra</option>
+                            <option value="Angola">Angola</option>
+                            <option value="Anguilla">Anguilla</option>
+                            <option value="Antarctica">Antarctica</option>
+                            <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                            <option value="Argentina">Argentina</option>
+                            <option value="Armenia">Armenia</option>
+                            <option value="Aruba">Aruba</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Austria">Austria</option>
+                            <option value="Azerbaijan">Azerbaijan</option>
+                            <option value="Bahamas">Bahamas</option>
+                            <option value="Bahrain">Bahrain</option>
+                            <option value="Bangladesh">Bangladesh</option>
+                            <option value="Barbados">Barbados</option>
+                            <option value="Belarus">Belarus</option>
+                            <option value="Belgium">Belgium</option>
+                            <option value="Belize">Belize</option>
+                            <option value="Benin">Benin</option>
+                            <option value="Bermuda">Bermuda</option>
+                            <option value="Bhutan">Bhutan</option>
+                            <option value="Bolivia">Bolivia</option>
+                            <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                            <option value="Botswana">Botswana</option>
+                            <option value="Bouvet Island">Bouvet Island</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="British Indian Ocean Territory">British Indian Ocean Territory</option>
+                            <option value="British Virgin Islands">British Virgin Islands</option>
+                            <option value="Brunei">Brunei</option>
+                            <option value="Bulgaria">Bulgaria</option>
+                            <option value="Burkina Faso">Burkina Faso</option>
+                            <option value="Burundi">Burundi</option>
+                            <option value="Cambodia">Cambodia</option>
+                            <option value="Cameroon">Cameroon</option>
+                            <option value="Canada">Canada</option>
+                            <option value="Cape Verde">Cape Verde</option>
+                            <option value="Caribbean Netherlands">Caribbean Netherlands</option>
+                            <option value="Cayman Islands">Cayman Islands</option>
+                            <option value="Central African Republic">Central African Republic</option>
+                            <option value="Chad">Chad</option>
+                            <option value="Chile">Chile</option>
+                            <option value="China">China</option>
+                            <option value="Christmas Island">Christmas Island</option>
+                            <option value="Cocos (Keeling) Islands">Cocos (Keeling) Islands</option>
+                            <option value="Colombia">Colombia</option>
+                            <option value="Comoros">Comoros</option>
+                            <option value="Cook Islands">Cook Islands</option>
+                            <option value="Costa Rica">Costa Rica</option>
+                            <option value="Croatia">Croatia</option>
+                            <option value="Cuba">Cuba</option>
+                            <option value="Curaçao">Curaçao</option>
+                            <option value="Cyprus">Cyprus</option>
+                            <option value="Czechia">Czechia</option>
+                            <option value="Denmark">Denmark</option>
+                            <option value="Djibouti">Djibouti</option>
+                            <option value="Dominica">Dominica</option>
+                            <option value="Dominican Republic">Dominican Republic</option>
+                            <option value="DR Congo">DR Congo</option>
+                            <option value="Ecuador">Ecuador</option>
+                            <option value="Egypt">Egypt</option>
+                            <option value="El Salvador">El Salvador</option>
+                            <option value="Equatorial Guinea">Equatorial Guinea</option>
+                            <option value="Eritrea">Eritrea</option>
+                            <option value="Estonia">Estonia</option>
+                            <option value="Eswatini">Eswatini</option>
+                            <option value="Ethiopia">Ethiopia</option>
+                            <option value="Falkland Islands">Falkland Islands</option>
+                            <option value="Faroe Islands">Faroe Islands</option>
+                            <option value="Fiji">Fiji</option>
+                            <option value="Finland">Finland</option>
+                            <option value="France">France</option>
+                            <option value="French Guiana">French Guiana</option>
+                            <option value="French Polynesia">French Polynesia</option>
+                            <option value="French Southern and Antarctic Lands">French Southern and Antarctic Lands</option>
+                            <option value="Gabon">Gabon</option>
+                            <option value="Gambia">Gambia</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Ghana">Ghana</option>
+                            <option value="Gibraltar">Gibraltar</option>
+                            <option value="Greece">Greece</option>
+                            <option value="Greenland">Greenland</option>
+                            <option value="Grenada">Grenada</option>
+                            <option value="Guadeloupe">Guadeloupe</option>
+                            <option value="Guam">Guam</option>
+                            <option value="Guatemala">Guatemala</option>
+                            <option value="Guernsey">Guernsey</option>
+                            <option value="Guinea">Guinea</option>
+                            <option value="Guinea-Bissau">Guinea-Bissau</option>
+                            <option value="Guyana">Guyana</option>
+                            <option value="Haiti">Haiti</option>
+                            <option value="Heard Island and McDonald Islands">Heard Island and McDonald Islands</option>
+                            <option value="Honduras">Honduras</option>
+                            <option value="Hong Kong">Hong Kong</option>
+                            <option value="Hungary">Hungary</option>
+                            <option value="Iceland">Iceland</option>
+                            <option value="India">India</option>
+                            <option value="Indonesia">Indonesia</option>
+                            <option value="Iran">Iran</option>
+                            <option value="Iraq">Iraq</option>
+                            <option value="Ireland">Ireland</option>
+                            <option value="Isle of Man">Isle of Man</option>
+                            <option value="Israel">Israel</option>
+                            <option value="Italy">Italy</option>
+                            <option value="Ivory Coast">Ivory Coast</option>
+                            <option value="Jamaica">Jamaica</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Jersey">Jersey</option>
+                            <option value="Jordan">Jordan</option>
+                            <option value="Kazakhstan">Kazakhstan</option>
+                            <option value="Kenya">Kenya</option>
+                            <option value="Kiribati">Kiribati</option>
+                            <option value="Kosovo">Kosovo</option>
+                            <option value="Kuwait">Kuwait</option>
+                            <option value="Kyrgyzstan">Kyrgyzstan</option>
+                            <option value="Laos">Laos</option>
+                            <option value="Latvia">Latvia</option>
+                            <option value="Lebanon">Lebanon</option>
+                            <option value="Lesotho">Lesotho</option>
+                            <option value="Liberia">Liberia</option>
+                            <option value="Libya">Libya</option>
+                            <option value="Liechtenstein">Liechtenstein</option>
+                            <option value="Lithuania">Lithuania</option>
+                            <option value="Luxembourg">Luxembourg</option>
+                            <option value="Macau">Macau</option>
+                            <option value="Madagascar">Madagascar</option>
+                            <option value="Malawi">Malawi</option>
+                            <option value="Malaysia">Malaysia</option>
+                            <option value="Maldives">Maldives</option>
+                            <option value="Mali">Mali</option>
+                            <option value="Malta">Malta</option>
+                            <option value="Marshall Islands">Marshall Islands</option>
+                            <option value="Martinique">Martinique</option>
+                            <option value="Mauritania">Mauritania</option>
+                            <option value="Mauritius">Mauritius</option>
+                            <option value="Mayotte">Mayotte</option>
+                            <option value="Mexico">Mexico</option>
+                            <option value="Micronesia">Micronesia</option>
+                            <option value="Moldova">Moldova</option>
+                            <option value="Monaco">Monaco</option>
+                            <option value="Mongolia">Mongolia</option>
+                            <option value="Montenegro">Montenegro</option>
+                            <option value="Montserrat">Montserrat</option>
+                            <option value="Morocco">Morocco</option>
+                            <option value="Mozambique">Mozambique</option>
+                            <option value="Myanmar">Myanmar</option>
+                            <option value="Namibia">Namibia</option>
+                            <option value="Nauru">Nauru</option>
+                            <option value="Nepal">Nepal</option>
+                            <option value="Netherlands">Netherlands</option>
+                            <option value="New Caledonia">New Caledonia</option>
+                            <option value="New Zealand">New Zealand</option>
+                            <option value="Nicaragua">Nicaragua</option>
+                            <option value="Niger">Niger</option>
+                            <option value="Nigeria">Nigeria</option>
+                            <option value="Niue">Niue</option>
+                            <option value="Norfolk Island">Norfolk Island</option>
+                            <option value="North Korea">North Korea</option>
+                            <option value="North Macedonia">North Macedonia</option>
+                            <option value="Northern Mariana Islands">Northern Mariana Islands</option>
+                            <option value="Norway">Norway</option>
+                            <option value="Oman">Oman</option>
+                            <option value="Pakistan">Pakistan</option>
+                            <option value="Palau">Palau</option>
+                            <option value="Palestine">Palestine</option>
+                            <option value="Panama">Panama</option>
+                            <option value="Papua New Guinea">Papua New Guinea</option>
+                            <option value="Paraguay">Paraguay</option>
+                            <option value="Peru">Peru</option>
+                            <option value="Philippines">Philippines</option>
+                            <option value="Pitcairn Islands">Pitcairn Islands</option>
+                            <option value="Poland">Poland</option>
+                            <option value="Portugal">Portugal</option>
+                            <option value="Puerto Rico">Puerto Rico</option>
+                            <option value="Qatar">Qatar</option>
+                            <option value="Republic of the Congo">Republic of the Congo</option>
+                            <option value="Réunion">Réunion</option>
+                            <option value="Romania">Romania</option>
+                            <option value="Russia">Russia</option>
+                            <option value="Rwanda">Rwanda</option>
+                            <option value="Saint Barthélemy">Saint Barthélemy</option>
+                            <option value="Saint Helena, Ascension and Tristan da Cunha">Saint Helena, Ascension and Tristan da Cunha
+                            </option>
+                            <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                            <option value="Saint Lucia">Saint Lucia</option>
+                            <option value="Saint Martin">Saint Martin</option>
+                            <option value="Saint Pierre and Miquelon">Saint Pierre and Miquelon</option>
+                            <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                            <option value="Samoa">Samoa</option>
+                            <option value="San Marino">San Marino</option>
+                            <option value="São Tomé and Príncipe">São Tomé and Príncipe</option>
+                            <option value="Saudi Arabia">Saudi Arabia</option>
+                            <option value="Senegal">Senegal</option>
+                            <option value="Serbia">Serbia</option>
+                            <option value="Seychelles">Seychelles</option>
+                            <option value="Sierra Leone">Sierra Leone</option>
+                            <option value="Singapore">Singapore</option>
+                            <option value="Sint Maarten">Sint Maarten</option>
+                            <option value="Slovakia">Slovakia</option>
+                            <option value="Slovenia">Slovenia</option>
+                            <option value="Solomon Islands">Solomon Islands</option>
+                            <option value="Somalia">Somalia</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="South Georgia">South Georgia</option>
+                            <option value="South Korea">South Korea</option>
+                            <option value="South Sudan">South Sudan</option>
+                            <option value="Spain">Spain</option>
+                            <option value="Sri Lanka">Sri Lanka</option>
+                            <option value="Sudan">Sudan</option>
+                            <option value="Suriname">Suriname</option>
+                            <option value="Svalbard and Jan Mayen">Svalbard and Jan Mayen</option>
+                            <option value="Sweden">Sweden</option>
+                            <option value="Switzerland">Switzerland</option>
+                            <option value="Syria">Syria</option>
+                            <option value="Taiwan">Taiwan</option>
+                            <option value="Tajikistan">Tajikistan</option>
+                            <option value="Tanzania">Tanzania</option>
+                            <option value="Thailand">Thailand</option>
+                            <option value="Timor-Leste">Timor-Leste</option>
+                            <option value="Togo">Togo</option>
+                            <option value="Tokelau">Tokelau</option>
+                            <option value="Tonga">Tonga</option>
+                            <option value="Trinidad and Tobago">Trinidad and Tobago</option>
+                            <option value="Tunisia">Tunisia</option>
+                            <option value="Turkey">Turkey</option>
+                            <option value="Turkmenistan">Turkmenistan</option>
+                            <option value="Turks and Caicos Islands">Turks and Caicos Islands</option>
+                            <option value="Tuvalu">Tuvalu</option>
+                            <option value="Uganda">Uganda</option>
+                            <option value="Ukraine">Ukraine</option>
+                            <option value="United Arab Emirates">United Arab Emirates</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="United States">United States</option>
+                            <option value="United States Minor Outlying Islands">United States Minor Outlying Islands</option>
+                            <option value="United States Virgin Islands">United States Virgin Islands</option>
+                            <option value="Uruguay">Uruguay</option>
+                            <option value="Uzbekistan">Uzbekistan</option>
+                            <option value="Vanuatu">Vanuatu</option>
+                            <option value="Vatican City">Vatican City</option>
+                            <option value="Venezuela">Venezuela</option>
+                            <option value="Vietnam">Vietnam</option>
+                            <option value="Wallis and Futuna">Wallis and Futuna</option>
+                            <option value="Western Sahara">Western Sahara</option>
+                            <option value="Yemen">Yemen</option>
+                            <option value="Zambia">Zambia</option>
+                            <option value="Zimbabwe">Zimbabwe</option>
+                        </select>
+                    </div>
+                
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" placeholder="First Name" name="fname" />
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" placeholder="Last Name" name="lname" />
+                        </div>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Street Address 1</label>
+                        <input type="text" placeholder="Street Address" name="street_address_1" required />
+                
+                    </div>
+                    <div class="form-group">
+                        <label>Street Address 2 (optional)</label>
+                        <input type="text" placeholder="Street Address" name="street_address_2"  />
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Apartment (optional)</label>
+                        <input type="text" placeholder="Suite, etc." name='apartment' />
+                    </div>
+                
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>City</label>
+                            <input type="text" placeholder="City" name="city" />
+                        </div>
+                        <div class="form-group">
+                            <label>State</label>
+                            <input type="text" placeholder="State" name="state" />
+                        </div>
+                        <div class="form-group">
+                            <label>ZIP Code</label>
+                            <input type="text" placeholder="ZIP Code" name="zip" />
+                        </div>
+                    </div>
+                
+                    <div class="form-group">
+                        <label>Phone (optional)</label>
+                        <input type="text" placeholder="Phone Number" name="phone" />
+                        <small>in international format</small>
+                    </div>
+                    <input type="number" name="cart-total" id="cart-total-sub" hidden>
+                    <div class="checkout-footer">
+                        <button type="submit" name="checkout">Continue to Shipping</button>
+                    </div>
+                </div>
+        </form>
         </div>
 
-        <!-- Vertical Separator -->
-        <div class="separator"></div>
-
-        <!-- RIGHT SIDE: Order Summary -->
-        <div class="order-summary">
+        <div class="cart-summary">
             <h2>Order Summary</h2>
-            <div id="order-items"></div>
-            <hr>
-            <p id="subtotal">Subtotal: $0.00</p>
-            <p>Shipping: <span style="color: gray;">Calculated at next step</span></p>
-            <p class="total" id="total">Total: <strong>$0.00</strong></p>
+
+            <div class="cart-items">
+                <span>Nothing in cart</span>
+            </div>
+
+
+       
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const orderItemsContainer = document.getElementById('order-items');
-            const subtotalEl = document.getElementById('subtotal');
-            const totalEl = document.getElementById('total');
-
-            let subtotal = 0;
-            let totalPrice = 0;
-
-            cart.forEach(item => {
-                const price = parseFloat(item.price) || 0;
-                const quantity = parseInt(item.quantity) || 0;
-                const itemTotal = price * quantity;
-                subtotal += itemTotal;
-                totalPrice += Number(item.quantity) * parseFloat(item.price.replace('GHS', ''));
-
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'order-item';
-
-                itemDiv.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}">
-                    <div>
-                        <strong>${item.name}</strong><br>
-                        ${item.variation || ''} x${quantity}
+        <div class="store-footer">
+            <div class="sf-h1">
+                <div class="sf-h1-1">
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>SIGN UP FOR EARLY ACCESS & DISCOUNTS </div>
+                        <div class="mailFooterBox">
+                            <input type="text" placeholder="Email" class="emailBox mailFooter" style="width: 230px;">
+                            <input type="submit" value="Submit">
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="display: flex; flex-direction: column;">
+                                <span>Country/Region</span>
+                                <span>Ghana(GHS)</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column;">
+                                <span>Language</span>
+                                <span>English</span>
+                            </div>
+                        </div>
                     </div>
-                    <span style="color: green;">GHS ${parseFloat(item.price.replace('GHS', '')) * Number(item.quantity)}</span>
-                `;
-
-                orderItemsContainer.appendChild(itemDiv);
-            });
-
-          
-            totalEl.innerHTML = `Total: GHS ${totalPrice.toFixed(2)}`;
-        });
-
-    </script>
-
+                    <div>
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <span><svg width="30px" height="40px" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path stroke="#c31c30" stroke-width="12"
+                                            d="M96 162c-14.152 0-24.336-.007-32.276-.777-7.849-.761-12.87-2.223-16.877-4.741a36 36 0 0 1-11.33-11.329c-2.517-4.007-3.98-9.028-4.74-16.877C30.007 120.336 30 110.152 30 96c0-14.152.007-24.336.777-32.276.76-7.849 2.223-12.87 4.74-16.877a36 36 0 0 1 11.33-11.33c4.007-2.517 9.028-3.98 16.877-4.74C71.663 30.007 81.847 30 96 30c14.152 0 24.336.007 32.276.777 7.849.76 12.87 2.223 16.877 4.74a36 36 0 0 1 11.329 11.33c2.518 4.007 3.98 9.028 4.741 16.877.77 7.94.777 18.124.777 32.276 0 14.152-.007 24.336-.777 32.276-.761 7.849-2.223 12.87-4.741 16.877a36 36 0 0 1-11.329 11.329c-4.007 2.518-9.028 3.98-16.877 4.741-7.94.77-18.124.777-32.276.777Z">
+                                        </path>
+                                        <circle cx="96" cy="96" r="30" stroke="#c31c30" stroke-width="12"></circle>
+                                        <circle cx="135" cy="57" r="9" fill="#c31c30"></circle>
+                                    </g>
+                                </svg>
+                            </span>
+                            <span>
+                                <svg width="44px" height="44px" fill="#c31c30" viewBox="0 0 32 32"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path
+                                            d="M24.325 8.309s-2.655-.334-8.357-.334c-5.517 0-8.294.334-8.294.334A2.675 2.675 0 0 0 5 10.984v10.034a2.675 2.675 0 0 0 2.674 2.676s2.582.332 8.294.332c5.709 0 8.357-.332 8.357-.332A2.673 2.673 0 0 0 27 21.018V10.982a2.673 2.673 0 0 0-2.675-2.673zM13.061 19.975V12.03L20.195 16l-7.134 3.975z">
+                                        </path>
+                                    </g>
+                                </svg>
+                            </span>
+                            <span>
+                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="15px" height="53px"
+                                    viewBox="0 0 64.000000 65.000000" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(0.000000,65.000000) scale(0.100000,-0.100000)" fill="#c31c30"
+                                        stroke="none">
+                                        <path d="M43 588 c212 -300 207 -292 194 -308 -7 -8 -64 -72 -126 -142 -107
+                                        -123 -111 -128 -83 -128 25 0 45 18 132 118 57 64 108 117 114 117 5 0 46 -52
+                                        91 -115 l81 -115 98 -3 99 -3 -25 33 c-13 18 -57 80 -98 138 -40 58 -88 126
+                                        -107 151 l-33 47 115 130 c63 72 115 134 115 137 0 3 -11 5 -23 5 -18 0 -51
+                                        -30 -127 -116 -56 -64 -106 -112 -111 -107 -4 4 -41 55 -81 113 l-74 105 -98
+                                        3 -98 3 45 -63z m272 -190 c83 -117 172 -242 198 -280 l48 -68 -43 0 -43 0
+                                        -180 252 c-99 138 -188 264 -198 280 l-19 28 44 0 43 -1 150 -211z" />
+                                    </g>
+                                </svg>
+                            </span>
+                        </div>
+                        <div class="paymentBox">
+                            <span>
+                                <img src="{% static 'images/airteltigo.png' %}" style="height: 30px; width: auto;" alt="">
+                            </span>
+                            <span>
+                                <img src="{% static 'images/telecel.png' %}" alt="" style="height: 30px; width: auto;">
+                            </span>
+                            <span>
+                                <svg width="55px" height="55px" viewBox="0 0 1920 1280" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M960 320c-353.46 0-640 143.27-640 320s286.54 320 640 320 640-143.27 640-320-286.54-320-640-320zm0 589.48c-325.56 0-589.48-120.65-589.48-269.48S634.44 370.52 960 370.52 1549.48 491.17 1549.48 640 1285.56 909.48 960 909.48zm-80.71-325.62v-50.53h180.55v50.53h-65v162.81H944.3V583.86zm398.49-50.53v213.34h-50.52l-91.63-127v127h-50.52V533.33h50.52l91.63 127v-127zM640.72 746.67V533.33h50.52l56.13 86.34 56.13-86.34H854v213.34h-50.5V626l-38.32 58.9h-35.62L691.24 626v120.67z"
+                                        fill="#ffcb05" />
+                                    <g fill="none">
+                                        <path
+                                            d="M0 1280c176.73 0 320-286.54 320-640S176.73 0 0 0M1920 0c-176.73 0-320 286.54-320 640s143.27 640 320 640M1600 1280c0-176.73-286.54-320-640-320s-640 143.27-640 320M320 0c0 176.73 286.54 320 640 320s640-143.27 640-320" />
+                                        <path d="M0 0h1920v1280H0z" />
+                                    </g>
+                                </svg>
+                            </span>
+                            <span>
+                                <svg width="55px" height="55px" viewBox="0 0 141.732 141.732" xmlns="http://www.w3.org/2000/svg"
+                                    fill="#000000">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <g fill="#2566af">
+                                            <path
+                                                d="M62.935 89.571h-9.733l6.083-37.384h9.734zM45.014 52.187L35.735 77.9l-1.098-5.537.001.002-3.275-16.812s-.396-3.366-4.617-3.366h-15.34l-.18.633s4.691.976 10.181 4.273l8.456 32.479h10.141l15.485-37.385H45.014zM121.569 89.571h8.937l-7.792-37.385h-7.824c-3.613 0-4.493 2.786-4.493 2.786L95.881 89.571h10.146l2.029-5.553h12.373l1.14 5.553zm-10.71-13.224l5.114-13.99 2.877 13.99h-7.991zM96.642 61.177l1.389-8.028s-4.286-1.63-8.754-1.63c-4.83 0-16.3 2.111-16.3 12.376 0 9.658 13.462 9.778 13.462 14.851s-12.075 4.164-16.06.965l-1.447 8.394s4.346 2.111 10.986 2.111c6.642 0 16.662-3.439 16.662-12.799 0-9.72-13.583-10.625-13.583-14.851.001-4.227 9.48-3.684 13.645-1.389z">
+                                            </path>
+                                        </g>
+                                        <path
+                                            d="M34.638 72.364l-3.275-16.812s-.396-3.366-4.617-3.366h-15.34l-.18.633s7.373 1.528 14.445 7.253c6.762 5.472 8.967 12.292 8.967 12.292z"
+                                            fill="#e6a540"></path>
+                                        <path fill="none" d="M0 0h141.732v141.732H0z"></path>
+                                    </g>
+                                </svg>
+                            </span>
+                            <svg width="40px" height="40px" viewBox="0 -140 780 780" enable-background="new 0 0 780 500"
+                                version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M40,0h700c22.092,0,40,17.909,40,40v420c0,22.092-17.908,40-40,40H40c-22.091,0-40-17.908-40-40V40 C0,17.909,17.909,0,40,0z"
+                                        fill="#16366F"></path>
+                                    <path
+                                        d="m449.01 250c0 99.143-80.37 179.5-179.51 179.5s-179.5-80.361-179.5-179.5c0-99.133 80.362-179.5 179.5-179.5 99.137 0 179.51 80.37 179.51 179.5"
+                                        fill="#D9222A"></path>
+                                    <path
+                                        d="m510.49 70.496c-46.38 0-88.643 17.596-120.5 46.466-6.49 5.889-12.548 12.237-18.125 18.996h36.266c4.966 6.037 9.536 12.388 13.685 19.013h-63.635c-3.827 6.121-7.28 12.469-10.341 19.008h84.312c2.893 6.185 5.431 12.53 7.6 19.004h-99.512c-2.091 6.235-3.832 12.581-5.217 19.009h109.94c2.689 12.49 4.044 25.231 4.041 38.008 0 19.934-3.254 39.113-9.254 57.02h-99.512c2.164 6.479 4.7 12.825 7.595 19.01h84.317c-3.064 6.54-6.52 12.889-10.347 19.013h-63.625c4.154 6.629 8.73 12.979 13.685 18.996h36.258c-5.57 6.772-11.63 13.126-18.13 19.012 31.86 28.867 74.118 46.454 120.5 46.454 99.138-1e-3 179.51-80.362 179.51-179.5 0-99.13-80.37-179.5-179.51-179.5"
+                                        fill="#EE9F2D"></path>
+                                    <path
+                                        d="m666.08 350.06c0-3.201 2.592-5.801 5.796-5.801s5.796 2.6 5.796 5.801c0 3.199-2.592 5.799-5.796 5.799-3.202-1e-3 -5.797-2.598-5.796-5.799zm5.796 4.408c2.435-1e-3 4.407-1.975 4.408-4.408 0-2.433-1.972-4.404-4.404-4.404h-4e-3c-2.429-4e-3 -4.4 1.963-4.404 4.392v0.013c-3e-3 2.432 1.967 4.406 4.399 4.408 1e-3 -1e-3 3e-3 -1e-3 5e-3 -1e-3zm-0.783-1.86h-1.188v-5.094h2.149c0.45 0 0.908 0 1.305 0.254 0.413 0.278 0.646 0.77 0.646 1.278 0 0.57-0.337 1.104-0.883 1.312l0.937 2.25h-1.315l-0.78-2.016h-0.87v2.016h-1e-3zm0-2.89h0.658c0.246 0 0.504 0.02 0.725-0.1 0.196-0.125 0.296-0.359 0.296-0.584 0-0.195-0.12-0.42-0.288-0.516-0.207-0.131-0.536-0.101-0.758-0.101h-0.633v1.301zm-443.5-80.063c-2.045-0.237-2.945-0.301-4.35-0.301-11.045 0-16.637 3.789-16.637 11.268 0 4.611 2.73 7.546 6.987 7.546 7.938 0 13.659-7.56 14-18.513zm14.171 32.996h-16.146l0.371-7.676c-4.925 6.067-11.496 8.95-20.425 8.95-10.562 0-17.804-8.25-17.804-20.229 0-18.024 12.596-28.54 34.217-28.54 2.208 0 5.041 0.2 7.941 0.569 0.605-2.441 0.763-3.486 0.763-4.8 0-4.908-3.396-6.738-12.5-6.738-9.533-0.108-17.396 2.271-20.625 3.334 0.204-1.23 2.7-16.658 2.7-16.658 9.712-2.846 16.117-3.917 23.325-3.917 16.733 0 25.596 7.512 25.58 21.712 0.032 3.805-0.597 8.5-1.58 14.671-1.692 10.731-5.32 33.718-5.817 39.322zm-62.158 0h-19.488l11.163-69.997-24.925 69.997h-13.28l-1.64-69.597-11.734 69.597h-18.242l15.238-91.054h28.02l1.7 50.966 17.092-50.966h31.167l-15.071 91.054m354.98-32.996c-2.037-0.237-2.942-0.301-4.342-0.301-11.041 0-16.634 3.789-16.634 11.268 0 4.611 2.726 7.546 6.983 7.546 7.939 0 13.664-7.56 13.993-18.513zm14.183 32.996h-16.145l0.365-7.676c-4.925 6.067-11.5 8.95-20.42 8.95-10.566 0-17.8-8.25-17.8-20.229 0-18.024 12.587-28.54 34.212-28.54 2.208 0 5.037 0.2 7.934 0.569 0.604-2.441 0.763-3.486 0.763-4.8 0-4.908-3.392-6.738-12.496-6.738-9.537-0.108-17.395 2.272-20.63 3.334 0.205-1.23 2.709-16.658 2.709-16.658 9.713-2.846 16.113-3.917 23.312-3.917 16.741 0 25.604 7.512 25.588 21.712 0.032 3.805-0.597 8.5-1.58 14.671-1.682 10.731-5.32 33.718-5.812 39.322zm-220.39-1.125c-5.334 1.68-9.492 2.399-14 2.399-9.963 0-15.4-5.725-15.4-16.267-0.142-3.27 1.433-11.879 2.67-19.737 1.125-6.917 8.45-50.53 8.45-50.53h19.371l-2.262 11.209h11.7l-2.643 17.796h-11.742c-2.25 14.083-5.454 31.625-5.491 33.95 0 3.817 2.037 5.483 6.67 5.483 2.221 0 3.941-0.226 5.255-0.7l-2.578 16.397m59.391-0.6c-6.654 2.033-13.075 3.017-19.879 3-21.683-0.021-32.987-11.346-32.987-33.032 0-25.313 14.38-43.947 33.9-43.947 15.97 0 26.17 10.433 26.17 26.796 0 5.429-0.7 10.729-2.387 18.212h-38.575c-1.304 10.742 5.57 15.217 16.837 15.217 6.935 0 13.188-1.43 20.142-4.663l-3.221 18.417zm-10.887-43.9c0.107-1.543 2.054-13.217-9.013-13.217-6.171 0-10.583 4.704-12.38 13.217h21.393zm-123.42-5.017c0 9.367 4.541 15.825 14.841 20.676 7.892 3.709 9.113 4.809 9.113 8.17 0 4.617-3.48 6.7-11.192 6.7-5.812 0-11.22-0.907-17.458-2.92 0 0-2.563 16.32-2.68 17.101 4.43 0.966 8.38 1.861 20.28 2.19 20.562 0 30.058-7.829 30.058-24.75 0-10.175-3.975-16.146-13.737-20.633-8.171-3.75-9.109-4.588-9.109-8.046 0-4.004 3.238-6.046 9.538-6.046 3.825 0 9.05 0.408 14 1.113l2.775-17.175c-5.046-0.8-12.696-1.442-17.15-1.442-21.8 0-29.346 11.387-29.279 25.062m229.09-23.116c5.413 0 10.459 1.42 17.413 4.92l3.187-19.762c-2.854-1.12-12.904-7.7-21.416-7.7-13.042 0-24.066 6.47-31.82 17.15-11.31-3.746-15.959 3.825-21.659 11.367l-5.062 1.179c0.383-2.483 0.73-4.95 0.613-7.446h-17.896c-2.445 22.917-6.779 46.13-10.171 69.075l-0.884 4.976h19.496c3.254-21.143 5.038-34.681 6.121-43.842l7.342-4.084c1.096-4.08 4.529-5.458 11.416-5.292-0.926 5.008-1.389 10.09-1.383 15.184 0 24.225 13.071 39.308 34.05 39.308 5.404 0 10.042-0.712 17.221-2.657l3.431-20.76c-6.46 3.18-11.761 4.676-16.561 4.676-11.328 0-18.183-8.362-18.183-22.184-1e-3 -20.05 10.195-34.108 24.745-34.108">
+                                    </path>
+                                    <path
+                                        d="m185.21 297.24h-19.491l11.17-69.988-24.925 69.988h-13.282l-1.642-69.588-11.733 69.588h-18.243l15.238-91.042h28.02l0.788 56.362 18.904-56.362h30.267l-15.071 91.042"
+                                        fill="#ffffff"></path>
+                                    <path
+                                        d="m647.52 211.6l-4.319 26.308c-5.33-7.012-11.054-12.087-18.612-12.087-9.834 0-18.784 7.454-24.642 18.425-8.158-1.692-16.597-4.563-16.597-4.563l-4e-3 0.067c0.658-6.133 0.92-9.875 0.862-11.146h-17.9c-2.437 22.917-6.77 46.13-10.157 69.075l-0.893 4.976h19.492c2.633-17.097 4.65-31.293 6.133-42.551 6.659-6.017 9.992-11.267 16.721-10.917-2.979 7.206-4.725 15.504-4.725 24.017 0 18.513 9.367 30.725 23.534 30.725 7.141 0 12.62-2.462 17.966-8.17l-0.912 6.884h18.433l14.842-91.043h-19.222zm-24.37 73.942c-6.634 0-9.983-4.909-9.983-14.597 0-14.553 6.271-24.875 15.112-24.875 6.695 0 10.32 5.104 10.32 14.508 1e-3 14.681-6.369 24.964-15.449 24.964z">
+                                    </path>
+                                    <path
+                                        d="m233.19 264.26c-2.042-0.236-2.946-0.3-4.346-0.3-11.046 0-16.634 3.788-16.634 11.267 0 4.604 2.73 7.547 6.98 7.547 7.945-1e-3 13.666-7.559 14-18.514zm14.179 32.984h-16.146l0.367-7.663c-4.921 6.054-11.5 8.95-20.421 8.95-10.567 0-17.804-8.25-17.804-20.229 0-18.032 12.591-28.542 34.216-28.542 2.209 0 5.042 0.2 7.938 0.571 0.604-2.442 0.762-3.487 0.762-4.808 0-4.908-3.391-6.73-12.496-6.73-9.537-0.108-17.395 2.272-20.629 3.322 0.204-1.226 2.7-16.638 2.7-16.638 9.709-2.858 16.121-3.93 23.321-3.93 16.738 0 25.604 7.518 25.588 21.705 0.029 3.82-0.605 8.512-1.584 14.675-1.687 10.725-5.32 33.725-5.812 39.317zm261.38-88.592l-3.192 19.767c-6.95-3.496-12-4.921-17.407-4.921-14.551 0-24.75 14.058-24.75 34.107 0 13.821 6.857 22.181 18.183 22.181 4.8 0 10.096-1.492 16.554-4.677l-3.42 20.75c-7.184 1.959-11.816 2.672-17.226 2.672-20.976 0-34.05-15.084-34.05-39.309 0-32.55 18.059-55.3 43.888-55.3 8.507 1e-3 18.562 3.609 21.42 4.73m31.442 55.608c-2.041-0.236-2.941-0.3-4.346-0.3-11.042 0-16.634 3.788-16.634 11.267 0 4.604 2.729 7.547 6.984 7.547 7.937-1e-3 13.662-7.559 13.996-18.514zm14.179 32.984h-16.15l0.37-7.663c-4.924 6.054-11.5 8.95-20.42 8.95-10.563 0-17.804-8.25-17.804-20.229 0-18.032 12.595-28.542 34.212-28.542 2.213 0 5.042 0.2 7.941 0.571 0.601-2.442 0.763-3.487 0.763-4.808 0-4.908-3.392-6.73-12.496-6.73-9.533-0.108-17.396 2.272-20.629 3.322 0.204-1.226 2.704-16.638 2.704-16.638 9.709-2.858 16.116-3.93 23.316-3.93 16.742 0 25.604 7.518 25.583 21.705 0.034 3.82-0.595 8.512-1.579 14.675-1.682 10.725-5.324 33.725-5.811 39.317zm-220.39-1.122c-5.338 1.68-9.496 2.409-14 2.409-9.963 0-15.4-5.726-15.4-16.266-0.138-3.281 1.437-11.881 2.675-19.738 1.12-6.926 8.446-50.533 8.446-50.533h19.367l-2.259 11.212h9.942l-2.646 17.788h-9.975c-2.25 14.091-5.463 31.619-5.496 33.949 0 3.83 2.042 5.483 6.671 5.483 2.22 0 3.938-0.217 5.254-0.692l-2.579 16.388m59.392-0.591c-6.65 2.033-13.08 3.013-19.88 3-21.684-0.021-32.987-11.346-32.987-33.033 0-25.321 14.38-43.95 33.9-43.95 15.97 0 26.17 10.429 26.17 26.8 0 5.433-0.7 10.733-2.382 18.212h-38.575c-1.306 10.741 5.569 15.221 16.837 15.221 6.93 0 13.188-1.434 20.137-4.676l-3.22 18.426zm-10.892-43.912c0.117-1.538 2.059-13.217-9.013-13.217-6.166 0-10.579 4.717-12.375 13.217h21.388zm-123.42-5.004c0 9.365 4.542 15.816 14.842 20.675 7.891 3.708 9.112 4.812 9.112 8.17 0 4.617-3.483 6.7-11.187 6.7-5.817 0-11.225-0.908-17.467-2.92 0 0-2.554 16.32-2.67 17.1 4.42 0.967 8.374 1.85 20.274 2.191 20.567 0 30.059-7.829 30.059-24.746 0-10.18-3.971-16.15-13.738-20.637-8.167-3.758-9.112-4.583-9.112-8.046 0-4.004 3.245-6.058 9.541-6.058 3.821 0 9.046 0.42 14.004 1.125l2.771-17.18c-5.041-0.8-12.691-1.441-17.146-1.441-21.804 0-29.345 11.379-29.283 25.067m398.45 50.629h-18.437l0.917-6.893c-5.347 5.717-10.825 8.18-17.967 8.18-14.168 0-23.53-12.213-23.53-30.725 0-24.63 14.521-45.393 31.709-45.393 7.558 0 13.28 3.088 18.604 10.096l4.325-26.308h19.221l-14.842 91.043zm-28.745-17.109c9.075 0 15.45-10.283 15.45-24.953 0-9.405-3.63-14.509-10.325-14.509-8.838 0-15.116 10.317-15.116 24.875-1e-3 9.686 3.357 14.587 9.991 14.587zm-56.843-56.929c-2.439 22.917-6.773 46.13-10.162 69.063l-0.891 4.975h19.491c6.971-45.275 8.658-54.117 19.588-53.009 1.742-9.266 4.982-17.383 7.399-21.479-8.163-1.7-12.721 2.913-18.688 11.675 0.471-3.787 1.334-7.466 1.163-11.225h-17.9m-160.42 0c-2.446 22.917-6.78 46.13-10.167 69.063l-0.887 4.975h19.5c6.962-45.275 8.646-54.117 19.569-53.009 1.75-9.266 4.992-17.383 7.4-21.479-8.154-1.7-12.716 2.913-18.678 11.675 0.47-3.787 1.325-7.466 1.162-11.225h-17.899m254.57 68.242c0-3.214 2.596-5.8 5.796-5.8 3.197-3e-3 5.792 2.587 5.795 5.785v0.015c-1e-3 3.2-2.595 5.794-5.795 5.796-3.2-2e-3 -5.794-2.596-5.796-5.796zm5.796 4.404c2.432 1e-3 4.403-1.97 4.403-4.401v-2e-3c3e-3 -2.433-1.968-4.406-4.399-4.408h-4e-3c-2.435 1e-3 -4.408 1.974-4.409 4.408 3e-3 2.432 1.976 4.403 4.409 4.403zm-0.784-1.87h-1.188v-5.084h2.154c0.446 0 0.908 8e-3 1.296 0.254 0.416 0.283 0.654 0.767 0.654 1.274 0 0.575-0.338 1.113-0.888 1.317l0.941 2.236h-1.319l-0.78-2.008h-0.87v2.008 3e-3zm0-2.88h0.654c0.245 0 0.513 0.018 0.729-0.1 0.195-0.125 0.295-0.361 0.295-0.587-9e-3 -0.21-0.115-0.404-0.287-0.524-0.204-0.117-0.542-0.085-0.763-0.085h-0.629v1.296h1e-3z">
+                                    </path>
+                            </svg>
+                            <span></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sf-h2" style="display: flex; flex-direction: column; gap: 10px;">
+                <span>Shipping Policies & Return</span>
+                <span>Terms and Conditions</span>
+                <span>Contact</span>
+                <span>About</span>
+            </div>
+            <div class="sf-h3" style="display: flex; justify-content: center;">
+                <span> +2025. LONG LIVE SDL</span>
+            </div>
+        </div>
 </body>
 
+<script>
+    wokecart =  JSON.parse(localStorage.getItem('wokesdlCart1')) || [];
+      document.getElementById('cartData').value = JSON.stringify(wokecart)
+    document.addEventListener('DOMContentLoaded', function () {
+        displayCartItems();
+    });
+
+    // Display cart items
+    function displayCartItems() {
+        const cartSummaryDiv = document.querySelector('.cart-summary');
+        cartSummaryDiv.innerHTML = '';
+        let cart = JSON.parse(localStorage.getItem('wokesdlCart1')) || [];
+        let subtotal = 0;
+        const shippingCost = 4.99; // Set your default shipping cost
+
+
+        // Add Order Summary header
+        cartSummaryDiv.innerHTML = `
+            <h2>Order Summary</h2>
+            <div class="cart-items"></div>
+        `;
+
+        const cartItemsContainer = cartSummaryDiv.querySelector('.cart-items');
+
+        if (cart.length > 0) {
+            // Add each cart item with the existing design
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
+                const cartItemDiv = `
+                <div class="cart-item">
+                    <img src="${item.image_url}" alt="${item.product_name}" class="item-image">
+                    <div class="item-details">
+                        <div class="item-name">${item.product_name}</div>
+                        <div class="item-variant">${item.selectedSize} × ${item.quantity}</div>
+                    </div>
+                    <div class="item-price">GH₵ ${formatPrice(itemTotal)}</div>
+                </div>`;
+
+                cartItemsContainer.innerHTML += cartItemDiv;
+            });
+
+            // Calculate total
+            const total = subtotal ;
+             
+            document.getElementById('cart-total-sub').value = total
+
+            // Add order totals section
+            cartSummaryDiv.innerHTML += `
+                <div class="order-totals">
+                    <div class="subtotal-row">
+                        <div>Subtotal</div>
+                        <div>GH₵ ${formatPrice(subtotal)}</div>
+                    </div>
+                    <div class="shipping-row">
+                        <div>Shipping</div>
+                        <div>GH₵ ${formatPrice(shippingCost)}</div>
+                    </div>
+                    <div class="total-row">
+                        <div>Total</div>
+                        <div>GH₵ ${formatPrice(total)}</div>
+                    </div>
+                </div>
+                
+                  `;
+        } else {
+            cartItemsContainer.innerHTML = `
+                <div style="text-align: center; padding: 20px; color: #777;">
+                    <div style="font-size: 18px; margin-bottom: 10px;">Your cart is empty</div>
+                    <p>Looks like you haven't added any items to your cart yet.</p>
+                </div>`;
+        }
+    }
+
+    // Helper function to format price
+    function formatPrice(price) {
+        return price.toFixed(2);
+    }
+
+    // Helper function to get total items in cart
+    function getCartTotalItems(cart) {
+        return cart.reduce((total, item) => total + (item.quantity || 1), 0);
+    }
+    
+</script>
 </html>

@@ -19,6 +19,7 @@
     </script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <style>
         body,
         html {
@@ -69,20 +70,7 @@
   opacity: 1;
 }
 
-        .emailBox {
-            background-color: #241e20;
-            border: 2px solid white;
-            padding: 12px;
-            color: white;
-        }
-
-        input[type=submit] {
-            background-color: #c31c30;
-            color: white;
-            border: 2px solid #c31c30;
-            padding: 12px;
-        }
-
+    
         .container {
             display: flex;
             justify-content: center;
@@ -192,60 +180,14 @@
             font-size: 12px;
         }
     
-        .store-footer {
-            background-color: #000;
-            position: relative;
-            bottom: 0;
-            padding: 20px;
-            color: #c31c30;
-            font-size: 12px;
-        }
-    
-        .sf-h1-1 {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-        }
-    
+       
         .responsive-image {
             max-width: 30%;
             height: auto;
         }
     
-        .paymentBox {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
     
-        @media screen and (max-width:850px) {
-            .paymentBox {
-                flex-direction: column;
-            }
-    
-            .mailFooter {
-                width: 160px !important;
-            }
-    
-            .mailFooter {
-                display: flex;
-                flex-direction: column;
-            }
-    
-            .mailFooterBox input[type=submit] {
-                width: 188px !important;
-            }
-    
-            .sf-h1-1 {
-                flex-direction: column;
-            }
-    
-            .paymentBox {
-                flex-direction: row;
-                justify-content: space-around;
-            }
-        }
+        
     </style>
     <style>
         .product-container {
@@ -967,107 +909,72 @@
             });
 
     </script>
+
     <script>
-        // Update cart count and total price
-        function updateCartCountAndTotal() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let totalItems = 0;
-            let totalPrice = 0;
+    // Update cart count and total price
+   // Update cart count and total price
+function updateCartCountAndTotal() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let totalItems = 0;
+    let totalPrice = 0;
 
-            cart.forEach(item => {
-                totalItems += Number(item.quantity);
-                totalPrice += Number(item.quantity) * parseFloat(item.price.replace('GHS', ''));
-            });
+    cart.forEach(item => {
+        totalItems += Number(item.quantity);
+        totalPrice += Number(item.quantity) * Number(item.price); // ← FIXED HERE
+    });
 
-          
-            document.getElementById('cartNav').textContent = `Cart(${totalItems})`;
-            document.getElementById('cartTotal').textContent = `Total: GHS ${totalPrice.toFixed(2)}`;
-        }
+    document.getElementById('cartNav').textContent = `Cart(${totalItems})`;
+    document.getElementById('cartTotal').textContent = `Total: GHS ${totalPrice.toFixed(2)}`;
+}
 
-        // Render cart items in the slideout panel
-        function renderCartItems() {
-            const cartItemsDiv = document.getElementById('cartItems');
-            cartItemsDiv.innerHTML = "";
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    // Render cart items in the slideout panel
+    function renderCartItems() {
+        const cartItemsDiv = document.getElementById('cartItems');
+        cartItemsDiv.innerHTML = "";
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-            cart.forEach((item, index) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = "cart-item";
-                itemDiv.style.display = "flex";
-                itemDiv.style.alignItems = "center";
-                itemDiv.style.justifyContent = "space-between";
-                itemDiv.style.padding = "10px";
-            
+        cart.forEach((item, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = "cart-item";
+            itemDiv.style.display = "flex";
+            itemDiv.style.alignItems = "center";
+            itemDiv.style.justifyContent = "space-between";
+            itemDiv.style.padding = "10px";
 
-                itemDiv.innerHTML = `
-                    <img src="${item.image}" alt="${item.title}" style="width: 100px; height: 100px; object-fit: contain;">
-                    <div style="flex-grow: 1; margin-left: 10px;">
-                        <div><strong>${item.title}</strong></div>
-                        <div>${item.size}</div>
-                        <div>Qty: ${item.quantity}</div>
-                      
-                    </div>
-                    <div style="display:flex; flex-direction:column;align-items:center;gap:40px;">
-                          <span onclick="removeFromCart(${index})" style="color:#c31c30;font-size:30px;cursor:pointer;" >&times;</span>
-                        <span >GHS ${parseFloat(item.price.replace('GHS', '')) * Number(item.quantity)}</span>
-                  
-                    </div>
-                `;
-                cartItemsDiv.appendChild(itemDiv);
-            });
+            itemDiv.innerHTML = `
+                <img src="${item.image_url}" alt="${item.product_name}" style="width: 100px; height: 100px; object-fit: contain;">
+                <div style="flex-grow: 1; margin-left: 10px;">
+                    <div><strong>${item.product_name}</strong></div>
+                    <div>${item.selectedSize}</div>
+                    <div>Qty: ${item.quantity}</div>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:40px;">
+                    <span onclick="removeFromCart(${index})" style="color:#c31c30; font-size:30px; cursor:pointer;">&times;</span>
+                <span>GHS ${(Number(item.price) * Number(item.quantity)).toFixed(2)}</span>
 
-            updateCartCountAndTotal();
-        }
-
-        // Function to remove an item from the cart
-        function removeFromCart(index) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.splice(index, 1);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            renderCartItems();
-        }
-
-        // "Add to Cart" functionality
-        addToCartBtn.addEventListener('click', function () {
-            const selectedSize = modalSizeSelect.value;
-            const quantity = modalQuantity.value;
-            const price = modalPrice.textContent.replace("Price: ", "");
-            const title = modalTitle.textContent;
-            const image = modalImg.src;
-
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-            // Check if item with the same title and size exists, if so, update quantity
-            const existingIndex = cart.findIndex(cartItem => cartItem.title === title && cartItem.size === selectedSize);
-            if (existingIndex !== -1) {
-                cart[existingIndex].quantity = Number(cart[existingIndex].quantity) + Number(quantity);
-            } else {
-                cart.push({ title, size: selectedSize, quantity, price, image });
-            }
-
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCountAndTotal();
-            renderCartItems();
-            modal.style.display = "none";
+                </div>
+            `;
+            cartItemsDiv.appendChild(itemDiv);
         });
 
-        // Open cart slideout
-        cartNav.addEventListener('click', function () {
-            cartSlideout.style.right = "0";
-        });
+        updateCartCountAndTotal();
+    }
 
-        // Close cart slideout
-        closeCartSlideout.addEventListener('click', function () {
-            cartSlideout.style.right = "-100%";
-        });
+    // Function to remove an item from the cart
+    function removeFromCart(index) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        renderCartItems();
+    }
 
-        // Load cart items when page loads
-        window.onload = function () {
-            updateCartCountAndTotal();
-            renderCartItems();
-        };
-    </script>
-    
+    // Load cart items when page loads
+    window.onload = function () {
+        updateCartCountAndTotal();
+        renderCartItems();
+    };
+</script>
+
     <script>
         closeBtn = document.getElementById('close-btn')
         menuBtn = document.getElementById('menu-btn')
