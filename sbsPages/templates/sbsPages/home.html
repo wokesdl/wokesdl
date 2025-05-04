@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SOUNDSBYSDL Replica</title>
+    <title>SOUNDSBYSDL</title>
     <style>
                 @font-face {
             font-family: 'WideLatin';
@@ -272,7 +272,7 @@
             <div class="dropdown-menu" id="dropdownMenu">
                 <a href="{% url 'artistPage' %}">Artist</a>
                 <a href="#">Music</a>
-                <a href="#">Videos</a>
+                <a href="{% url 'videos' %}">Videos</a>
             </div>
         </div>
 
@@ -357,15 +357,7 @@
         }
     }
 
-    // Close menu when clicking outside it
-    document.addEventListener('click', (event) => {
-        const isClickInsideMenu = menu.contains(event.target);
-        const isClickOnToggle = toggleBtn.contains(event.target);
-
-        if (!isClickInsideMenu && !isClickOnToggle) {
-            menu.style.display = 'none';
-        }
-    });
+   
 
     // Reset dropdown style when resizing to desktop
     window.addEventListener('resize', () => {

@@ -1,0 +1,395 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOUNDSBYSDL</title>
+    <style>
+        @font-face {
+            font-family: 'WideLatin';
+            src: url('{% static "fonts/LATINWD.TTF" %}');
+        }
+
+        html {
+            font-size: clamp(12px, 2vw, 16px);
+            overflow-x: hidden;
+        }
+
+        /* Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'WideLatin';
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Top bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px;
+            background-color: #fff;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 100;
+        }
+
+        .top-bar .left-text {
+            color: #00f;
+        }
+
+        .top-bar .center-text {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .top-bar .right-text {
+            color: #000;
+        }
+
+        /* Main content area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 0;
+        }
+
+        /* Videos Section */
+        .videos-section {
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+
+        .videos-title {
+            text-transform: uppercase;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.8rem;
+            position: relative;
+        }
+
+        .videos-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #fff, transparent);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .video-card {
+            background-color: #111;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            /* 16:9 Aspect Ratio */
+            height: 0;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            padding: 20px;
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .video-director {
+            font-size: 0.9rem;
+            color: #999;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+        }
+
+        .video-director:before {
+            content: '•';
+            margin-right: 6px;
+            color: #666;
+        }
+
+        /* Footer */
+        .footer-text {
+            padding: 20px;
+            text-transform: uppercase;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 20px;
+            border-top: 1px solid #222;
+        }
+
+        /* Menu Toggle */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #000;
+        }
+
+        .dropdown-menu {
+            display: flex;
+            gap: 15px;
+            color: #000;
+        }
+
+        .dropdown-menu a {
+            text-decoration: none;
+            color: inherit;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .dropdown-menu a:hover {
+            color: #00f;
+        }
+
+        .navbar-logo {
+            max-width: 100px;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Media Queries */
+        @media screen and (max-width: 768px) {
+            .dropdown-menu {
+                display: none;
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                background-color: #fff;
+                flex-direction: column;
+                padding: 10px;
+                border-radius: 4px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .navbar-logo {
+                max-width: 80px;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .videos-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .navbar-logo {
+                max-width: 60px;
+            }
+
+            .main-content {
+                padding: 20px 0;
+            }
+
+            .video-info {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="left-text">WOKEDVD</div>
+        <div class="center-text"><img src="{% static 'sbsPages/sbslogo.png' %}" class="navbar-logo"
+                alt="SOUNDSBYSDL Logo"></div>
+        <div class="right-text">
+            <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="{% url 'artistPage' %}">Artist</a>
+                <a href="#">Music</a>
+                <a href="#">Videos</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content">
+        <!-- Videos Section -->
+        <div class="videos-section">
+            <h2 class="videos-title">Featured Music Videos</h2>
+
+            <div class="video-grid">
+                <!-- Video 1 -->
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/LZ9zeQRbhsE" title="Music Video" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Music Video</h3>
+                        <p class="video-director">Directed by Wofa Rockson</p>
+                    </div>
+                </div>
+
+                <!-- Video 2 -->
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/E3oK9H1kZVc" title="Music Video" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Music Video</h3>
+                        <p class="video-director">Directed by Kevlar</p>
+                    </div>
+                </div>
+
+                <!-- Video 3 -->
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/3twxcd97Ddc" title="Music Video" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Music Video</h3>
+                        <p class="video-director">Directed by Kevlar</p>
+                    </div>
+                </div>
+
+                <!-- Video 4 -->
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/Ot7b-TeQh_Y" title="Music Video" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Music Video</h3>
+                        <p class="video-director">Directed by Kevlar</p>
+                    </div>
+                </div>
+
+                <!-- Video 5 -->
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/MZgNOHWas5Q" title="Music Video" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Music Video</h3>
+                        <p class="video-director">Directed by Kevlar</p>
+                    </div>
+                </div>
+                    <div class="video-card">
+                        <div class="video-container">
+                            <iframe src="{% static 'videos/eust.mp4' %}" title="Music Video" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title">Music Video</h3>
+                            <p class="video-director">Directed by Kevlar</p>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer text -->
+    <div class="footer-text">
+        SOUNDSBYSDL © 2025
+    </div>
+
+    <!-- JavaScript for menu -->
+    <script>
+        const menu = document.getElementById('dropdownMenu');
+        const toggleBtn = document.querySelector('.menu-toggle');
+
+        function toggleMenu() {
+            if (menu.style.display === 'flex') {
+                menu.style.display = 'none';
+            } else {
+                menu.style.display = 'flex';
+            }
+        }
+
+        // Close menu when clicking outside it
+        document.addEventListener('click', (event) => {
+            const isClickInsideMenu = menu.contains(event.target);
+            const isClickOnToggle = toggleBtn.contains(event.target);
+
+            if (!isClickInsideMenu && !isClickOnToggle) {
+                menu.style.display = 'none';
+            }
+        });
+
+        // Reset dropdown style when resizing to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                // Remove inline display style to let CSS take over again
+                menu.style.display = '';
+            }
+        });
+    </script>
+</body>
+
+</html>

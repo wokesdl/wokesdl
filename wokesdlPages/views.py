@@ -25,7 +25,6 @@ class Store(View):
         }
         return render(request,'wokesdlPages/store.html',context)
 
-
 class LookBook(View):
 
     def get(self,request,accessCode):

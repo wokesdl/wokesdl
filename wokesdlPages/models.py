@@ -30,7 +30,7 @@ class Category(models.Model):
     class Meta:
         ordering = ['order']  # Ascending order; use ['-order'] for descending
 
-    
+
 
     
 class Product(models.Model):   
@@ -76,7 +76,22 @@ class Product(models.Model):
             return get
         else:
             return 0
+
+
+class SizeSet(models.Model):
+    product = models.OneToOneField(Product,on_delete=models.CASCADE)
+  
+
+class Size(models.Model):
+    size = models.CharField(max_length=255)
+    stock = models.CharField(max_length=255,null=True,blank=True)
+    sizeSet = models.ForeignKey(SizeSet,on_delete=models.SET_NULL,null=True,blank=True, related_name='sizes')
         
+    def __str__(self):
+        return f'{self.size}'
+
+
+
 class Payment(models.Model):
     # personal details 
     first_name = models.CharField(max_length=255,blank=True)

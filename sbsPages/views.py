@@ -23,3 +23,7 @@ class Santana(View):
 class Montana(View):
     def get(self,request):
         return render(request,'sbsPages/montana.html')
+
+class Videos(View):
+    def get(self,request):
+        return render(request,'sbsPages/videos.html')
