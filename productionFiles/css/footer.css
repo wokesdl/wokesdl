@@ -1,0 +1,63 @@
+ .store-footer {
+     background-color: #000;
+     position: relative;
+     bottom: 0;
+     padding: 20px;
+     color: #c31c30;
+     font-size: 12px;
+ }
+
+ .sf-h1-1 {
+     display: flex;
+     justify-content: space-between;
+     padding: 20px;
+ }
+         .paymentBox {
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             gap: 10px;
+         }
+.socials span{
+    cursor: pointer;
+}
+@media screen and (max-width:850px) {
+    .paymentBox {
+        flex-direction: column;
+    }
+
+    .mailFooter {
+        width: 160px !important;
+    }
+
+    .mailFooter {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mailFooterBox input[type=submit] {
+        width: 188px !important;
+    }
+
+    .sf-h1-1 {
+        flex-direction: column;
+    }
+
+    .paymentBox {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}
+        .emailBox {
+            background-color: #241e20;
+            border: 2px solid white;
+            padding: 12px;
+            color: white;
+        }
+    
+        input[type=submit] {
+            background-color: #c31c30;
+            color: white;
+            border: 2px solid #c31c30;
+            padding: 12px;
+        }

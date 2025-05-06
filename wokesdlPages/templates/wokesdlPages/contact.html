@@ -6,6 +6,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LONG LIVE SDL</title>
+    <!-- Favicon for most browsers -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/sdl32.png' %}">
+    
+    <!-- Apple Touch Icon (optional if supporting mobile home screen icons) -->
+    <link rel="apple-touch-icon" href="{% static 'images/sdl32.png' %}">
+
     <style>
         body {
             margin: 0;
@@ -90,6 +96,46 @@
             color: black;
         }
 
+        /* Messages styling */
+        .messages-container {
+            width: 400px;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            animation: fadeOut 5s forwards;
+        }
+
+        .message.success {
+            background-color: rgba(0, 128, 0, 0.7);
+            border: 1px solid lime;
+        }
+
+        .message.error {
+            background-color: rgba(128, 0, 0, 0.7);
+            border: 1px solid red;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            70% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
         /* Responsive styles */
         img {
             max-width: 100%;
@@ -104,9 +150,11 @@
                 justify-content: flex-start;
             }
 
-            .form-container {
+            .form-container,
+            .messages-container {
                 width: 100%;
                 padding: 15px;
+                box-sizing: border-box;
             }
 
             h1 {
@@ -128,30 +176,52 @@
 </head>
 
 <body>
-
     <div>
         <img src="{% static 'wokesdlPages/lls.png' %}" alt="">
     </div>
-    <h2>CONTACT</h2>
 
+    <!-- Django messages container -->
+    {% if messages %}
+    <div class="messages-container">
+        {% for message in messages %}
+        <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <h2>CONTACT</h2>
     <div class="form-container">
-        <form>
+        <form method="POST">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="email">EMAIL</label>
-                <input type="email" id="email" name="email" />
+                <input type="email" id="email" name="email" required />
             </div>
             <div class="form-group">
                 <label for="subject">SUBJECT</label>
-                <input type="text" id="subject" name="subject" />
+                <input type="text" id="subject" name="subject" required />
             </div>
             <div class="form-group">
                 <label for="message">MESSAGE</label>
-                <textarea id="message" name="message"></textarea>
+                <textarea id="message" name="message" required></textarea>
             </div>
-            <button class="send-btn" type="submit">SEND</button>
+            <button class="send-btn" type="submit" name="contact">SEND</button>
         </form>
     </div>
 
+    <script>
+        // Optional: Auto-hide messages after animation completes
+        document.addEventListener('DOMContentLoaded', function () {
+            const messages = document.querySelectorAll('.message');
+            messages.forEach(message => {
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 5000);
+            });
+        });
+    </script>
 </body>
 
 </html>

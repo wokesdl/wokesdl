@@ -18,9 +18,35 @@
 <link rel="stylesheet" href="{% static 'css/productDetailInline.css' %}">
 <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 
+      <style>
+        .popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #444;
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            display: none;
+        }
+    
+        .popup.success {
+            background-color: #c31c30;
+        }
+    
+        .popup.error {
+            background-color:#c31c30;
+        }
+        a{
+            cursor: pointer;
+        }
+    </style>
+
 </head>
 
 <body>
+    <div id="popup" class="popup"></div>
     <div class="overlay" id="overlay"></div>
     <div></div>
     <!-- Header -->
@@ -30,7 +56,7 @@
                 <div>
                     <span class="dropdown-toggle" onclick="" id="menu-btn">Menu</span>
                     <span id="cartNav">Cart(0)</span>
-                    <span>Checkout</span>
+                    <span><a href="{% url 'checkout' %}">Checkout</a></span>
                 </div>
             </div>
         </div>
@@ -134,10 +160,11 @@
                 <div class="sf-h1-1">
                     <div style="display: flex; flex-direction: column; gap: 20px;">
                         <div>SIGN UP FOR EARLY ACCESS & DISCOUNTS </div>
-                        <div class="mailFooterBox">
-                            <input type="text" placeholder="Email" class="emailBox mailFooter" style="width: 230px;">
-                            <input type="submit" value="Submit">
-                        </div>
+                        <form class="mailFooterBox" method="POST">
+                            {% csrf_token %}
+                            <input type="text" placeholder="Email" class="emailBox mailFooter" name="email" style="width: 230px;">
+                            <input type="submit" value="Submit" name="subscribe">
+                        </form>
                         <div style="display: flex; justify-content: space-between;">
                             <div style="display: flex; flex-direction: column;">
                                 <span>Country/Region</span>
@@ -150,8 +177,8 @@
                         </div>
                     </div>
                     <div>
-                        <div style="display: flex; justify-content: center; align-items: center;">
-                            <span><svg width="30px" height="40px" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg"
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 5px;">
+                            <a href="https://www.instagram.com/wokesdl/"><svg width="30px" height="40px" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg"
                                     fill="none">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -163,20 +190,9 @@
                                         <circle cx="135" cy="57" r="9" fill="#c31c30"></circle>
                                     </g>
                                 </svg>
-                            </span>
-                            <span>
-                                <svg width="44px" height="44px" fill="#c31c30" viewBox="0 0 32 32"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <path
-                                            d="M24.325 8.309s-2.655-.334-8.357-.334c-5.517 0-8.294.334-8.294.334A2.675 2.675 0 0 0 5 10.984v10.034a2.675 2.675 0 0 0 2.674 2.676s2.582.332 8.294.332c5.709 0 8.357-.332 8.357-.332A2.673 2.673 0 0 0 27 21.018V10.982a2.673 2.673 0 0 0-2.675-2.673zM13.061 19.975V12.03L20.195 16l-7.134 3.975z">
-                                        </path>
-                                    </g>
-                                </svg>
-                            </span>
-                            <span>
+                            </a>
+                  
+                            <a href="https://x.com/wokesdl">
                                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="15px" height="53px"
                                     viewBox="0 0 64.000000 65.000000" preserveAspectRatio="xMidYMid meet">
                                     <g transform="translate(0.000000,65.000000) scale(0.100000,-0.100000)" fill="#c31c30"
@@ -190,7 +206,7 @@
                                         -180 252 c-99 138 -188 264 -198 280 l-19 28 44 0 43 -1 150 -211z" />
                                     </g>
                                 </svg>
-                            </span>
+                            </a>
                         </div>
                         <div class="paymentBox">
                             <span>
@@ -265,8 +281,8 @@
             <div class="sf-h2" style="display: flex; flex-direction: column; gap: 10px;">
                 <span>Shipping Policies & Return</span>
                 <span>Terms and Conditions</span>
-                <span>Contact</span>
-                <span>About</span>
+                <span><a href="{% url 'contact' %}" style="color:  #c31c30;">Contact</a></span>
+                <span><a href="{% url 'about' %}" style="color: #c31c30;">About</a></span>    
             </div>
             <div class="sf-h3" style="display: flex; justify-content: center;">
                 <span> +2025. LONG LIVE SDL</span>
@@ -456,6 +472,23 @@ sideImages.forEach(side => {
 });
 
 </script>
+{% if messages %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var popup = document.getElementById("popup");
+        {% for message in messages %}
+        popup.textContent = "{{ message }}";
+        popup.classList.add("{{ message.tags }}"); // success or error
+        popup.style.display = "block";
+
+        setTimeout(function () {
+            popup.style.display = "none";
+            popup.classList.remove("{{ message.tags }}");
+        }, 3000);
+        {% endfor %}
+    });
+</script>
+{% endif %}
 </body>
 
 </html>

@@ -2,7 +2,9 @@ import ast
 
 from django.shortcuts import render,redirect
 from django.views import View
-from .models import ImageSet, Product, Payment, Cart, CartObject
+from .models import ImageSet, Product, Payment, Cart, CartObject, ContactRequest, Newsletter
+from django.contrib import messages
+from django.db import IntegrityError   
 # Create your views here.
 
 
@@ -16,15 +18,38 @@ class WokeSdlHome(View):
     def get(self,request):
         return render(request,'wokesdlPages/wokesdlHome.html')
 
+
 class Store(View):
 
-    def get(self,request):
-        products = Product.objects.all()
-        context ={
-            'products':products,
+    def get(self, request):
+        context = {
+            'products': Product.objects.all(),
         }
-        return render(request,'wokesdlPages/store.html',context)
+        return render(request, 'wokesdlPages/store.html', context)
 
+    def post(self, request):
+        """
+        Handles the <form method="post"> that submits the newsletter address.
+        """
+        if 'subscribe' in request.POST:
+            email = request.POST.get('email', '').strip().lower()  # Lowercased for consistency
+
+            # — very light server‑side validation —
+            if not email:
+                messages.error(request, "E-mail address is required.")
+                return redirect('store')
+
+            try:
+                Newsletter.objects.create(email=email)
+            except IntegrityError:
+                messages.error(request, "That address is already on the list.")
+                return redirect('store')  # Ensure early return after error
+            else:
+                messages.success(request, "Thanks! You’re on the list")
+                return redirect('store')  # Early return after success
+
+        # fallback if POST does not include 'subscribe'
+        return redirect('store')  
 class LookBook(View):
 
     def get(self,request,accessCode):
@@ -52,6 +77,30 @@ class MakePayment(View):
         }
 
         return render(request,'wokesdlPages/makePayment.html',context)
+    def post(self,request,unique_id):
+        """
+        Handles the <form method="post"> that submits the newsletter address.
+        """
+        if 'subscribe' in request.POST:
+            email = request.POST.get('email', '').strip().lower()  # Lowercased for consistency
+
+            # — very light server‑side validation —
+            if not email:
+                messages.error(request, "E-mail address is required.")
+                return redirect('store')
+
+            try:
+                Newsletter.objects.create(email=email)
+            except IntegrityError:
+                messages.error(request, "That address is already on the list.")
+                return redirect('store')  # Ensure early return after error
+            else:
+                messages.success(request, "Thanks! You’re on the list")
+                return redirect(f'/makePayment/{unique_id}')  # Early return after success
+
+        # fallback if POST does not include 'subscribe'
+        return redirect(f'/makePayment/{unique_id}')  
+
     
 class OrderSuccess(View):
     def get(self, request, unique_id):
@@ -104,13 +153,51 @@ class Checkout(View):
 
 
             return redirect(f'/makePayment/{payment.ref}')
+        
 
+        if 'subscribe' in request.POST:
+            email = request.POST.get('email', '').strip().lower()  # Lowercased for consistency
 
-    
+            # — very light server‑side validation —
+            if not email:
+                messages.error(request, "E-mail address is required.")
+                return redirect('store')
+
+            try:
+                Newsletter.objects.create(email=email)
+            except IntegrityError:
+                messages.error(request, "That address is already on the list.")
+                return redirect('store')  # Ensure early return after error
+            else:
+                messages.success(request, "Thanks! You’re on the list")
+                return redirect('/checkout/')  # Early return after success
+
+        # fallback if POST does not include 'subscribe'
+        return redirect('checkout')  
+
 class Contact(View):
     
-    def get(self,request):
-        return render(request,'wokesdlPages/contact.html')
+    def get(self, request):
+        return render(request, 'wokesdlPages/contact.html')
+    
+    def post(self, request):
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        if email and subject and message:
+            try:
+                contactRequest = ContactRequest(email=email, subject=subject, message=message)
+                contactRequest.save()
+                messages.success(request, 'Your message was successfully sent.')
+            except Exception as e:
+                messages.error(request, f'Something went wrong: {str(e)}')
+        else:
+            messages.error(request, 'Please fill out all fields.')
+
+        return redirect('/contact/')
+
+
 
 class ProductDetail(View):
 
@@ -120,3 +207,27 @@ class ProductDetail(View):
             'product':product,
         }
         return render(request,'wokesdlPages/productDetail.html',context)
+    
+    def post(self,request,unique_id):
+        """
+        Handles the <form method="post"> that submits the newsletter address.
+        """
+        if 'subscribe' in request.POST:
+            email = request.POST.get('email', '').strip().lower()  # Lowercased for consistency
+
+            # — very light server‑side validation —
+            if not email:
+                messages.error(request, "E-mail address is required.")
+                return redirect('store')
+
+            try:
+                Newsletter.objects.create(email=email)
+            except IntegrityError:
+                messages.error(request, "That address is already on the list.")
+                return redirect('store')  # Ensure early return after error
+            else:
+                messages.success(request, "Thanks! You’re on the list")
+                return redirect(f'/productDetail/{unique_id}')  # Early return after success
+
+        # fallback if POST does not include 'subscribe'
+        return redirect('store')  

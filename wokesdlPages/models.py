@@ -168,3 +168,15 @@ class CartObject(models.Model):
     def price(self):
         return self.quantity * self.product.price
     
+
+# contact model to store email subject and message
+class ContactRequest(models.Model):
+    email = models.CharField(max_length=255)
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.email + ' ' + self.subject
+    
+class Newsletter(models.Model):
+    email = models.CharField(max_length=255)

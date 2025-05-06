@@ -18,7 +18,9 @@
              align-items: center;
              gap: 10px;
          }
-
+.socials span{
+    cursor: pointer;
+}
 @media screen and (max-width:850px) {
     .paymentBox {
         flex-direction: column;

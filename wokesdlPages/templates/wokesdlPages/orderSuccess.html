@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+<!-- Favicon for most browsers -->
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/sdl32.png' %}">
+
+<!-- Apple Touch Icon (optional if supporting mobile home screen icons) -->
+<link rel="apple-touch-icon" href="{% static 'images/sdl32.png' %}">
 
     <title>Order Success</title>
     <style>
@@ -180,7 +185,7 @@
         }
 
         .responsive-image {
-            max-width: 200px;
+            max-width: 30%;
             height: auto;
             margin-bottom: 20px;
         }
@@ -249,6 +254,9 @@
         .check-mark {
             width: 60px;
             height: 60px;
+        }
+        a{
+            text-decoration: none;
         }
     </style>
 </head>
@@ -338,9 +346,9 @@
                         </div>
                     </div>
                     <div>
-                        <div style="display: flex; justify-content: center; align-items: center;">
-                            <span><svg width="30px" height="40px" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none">
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 5px;" class="socials">
+                            <a href="https://www.instagram.com/wokesdl/"><svg width="30px" height="40px" viewBox="0 0 192 192"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                                     <g id="SVGRepo_iconCarrier">
@@ -351,34 +359,22 @@
                                         <circle cx="135" cy="57" r="9" fill="#c31c30"></circle>
                                     </g>
                                 </svg>
-                            </span>
-                            <span>
-                                <svg width="44px" height="44px" fill="#c31c30" viewBox="0 0 32 32"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                    <g id="SVGRepo_iconCarrier">
-                                        <path
-                                            d="M24.325 8.309s-2.655-.334-8.357-.334c-5.517 0-8.294.334-8.294.334A2.675 2.675 0 0 0 5 10.984v10.034a2.675 2.675 0 0 0 2.674 2.676s2.582.332 8.294.332c5.709 0 8.357-.332 8.357-.332A2.673 2.673 0 0 0 27 21.018V10.982a2.673 2.673 0 0 0-2.675-2.673zM13.061 19.975V12.03L20.195 16l-7.134 3.975z">
-                                        </path>
-                                    </g>
-                                </svg>
-                            </span>
-                            <span>
+                            </a>
+                        
+                            <a href="https://x.com/wokesdl">
                                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="15px" height="53px"
                                     viewBox="0 0 64.000000 65.000000" preserveAspectRatio="xMidYMid meet">
-                                    <g transform="translate(0.000000,65.000000) scale(0.100000,-0.100000)" fill="#c31c30"
-                                        stroke="none">
+                                    <g transform="translate(0.000000,65.000000) scale(0.100000,-0.100000)" fill="#c31c30" stroke="none">
                                         <path d="M43 588 c212 -300 207 -292 194 -308 -7 -8 -64 -72 -126 -142 -107
-                                                -123 -111 -128 -83 -128 25 0 45 18 132 118 57 64 108 117 114 117 5 0 46 -52
-                                                91 -115 l81 -115 98 -3 99 -3 -25 33 c-13 18 -57 80 -98 138 -40 58 -88 126
-                                                -107 151 l-33 47 115 130 c63 72 115 134 115 137 0 3 -11 5 -23 5 -18 0 -51
-                                                -30 -127 -116 -56 -64 -106 -112 -111 -107 -4 4 -41 55 -81 113 l-74 105 -98
-                                                3 -98 3 45 -63z m272 -190 c83 -117 172 -242 198 -280 l48 -68 -43 0 -43 0
-                                                -180 252 c-99 138 -188 264 -198 280 l-19 28 44 0 43 -1 150 -211z" />
+                                                        -123 -111 -128 -83 -128 25 0 45 18 132 118 57 64 108 117 114 117 5 0 46 -52
+                                                        91 -115 l81 -115 98 -3 99 -3 -25 33 c-13 18 -57 80 -98 138 -40 58 -88 126
+                                                        -107 151 l-33 47 115 130 c63 72 115 134 115 137 0 3 -11 5 -23 5 -18 0 -51
+                                                        -30 -127 -116 -56 -64 -106 -112 -111 -107 -4 4 -41 55 -81 113 l-74 105 -98
+                                                        3 -98 3 45 -63z m272 -190 c83 -117 172 -242 198 -280 l48 -68 -43 0 -43 0
+                                                        -180 252 c-99 138 -188 264 -198 280 l-19 28 44 0 43 -1 150 -211z" />
                                     </g>
                                 </svg>
-                            </span>
+                            </a>
                         </div>
                         <div class="paymentBox">
                             <span>
@@ -453,8 +449,8 @@
             <div class="sf-h2" style="display: flex; flex-direction: column; gap: 10px;">
                 <span>Shipping Policies & Return</span>
                 <span>Terms and Conditions</span>
-                <span>Contact</span>
-                <span>About</span>
+<span><a href="{% url 'contact' %}" style="color:  #c31c30;">Contact</a></span>
+<span><a href="{% url 'about' %}" style="color: #c31c30;">About</a></span>
             </div>
             <div class="sf-h3" style="display: flex; justify-content: center;">
                 <span> +2025. LONG LIVE SDL</span>
