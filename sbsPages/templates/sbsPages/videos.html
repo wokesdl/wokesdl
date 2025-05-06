@@ -262,8 +262,8 @@
     <!-- Top Bar -->
     <div class="top-bar">
         <div class="left-text">WOKEDVD</div>
-        <div class="center-text"><img src="{% static 'sbsPages/sbslogo.png' %}" class="navbar-logo"
-                alt="SOUNDSBYSDL Logo"></div>
+        <a href="{% url 'sbsHome' %}" class="center-text"><img src="{% static 'sbsPages/sbslogo.png' %}" class="navbar-logo"
+                alt="SOUNDSBYSDL Logo"></a>
         <div class="right-text">
             <div class="menu-toggle" onclick="toggleMenu()">☰</div>
             <div class="dropdown-menu" id="dropdownMenu">
@@ -289,7 +289,7 @@
                             allowfullscreen></iframe>
                     </div>
                     <div class="video-info">
-                        <h3 class="video-title">Music Video</h3>
+                        <h3 class="video-title">F U Pay Me</h3>
                         <p class="video-director">Directed by Wofa Rockson</p>
                     </div>
                 </div>
@@ -302,7 +302,7 @@
                             allowfullscreen></iframe>
                     </div>
                     <div class="video-info">
-                        <h3 class="video-title">Music Video</h3>
+                        <h3 class="video-title">!DWM</h3>
                         <p class="video-director">Directed by Kevlar</p>
                     </div>
                 </div>
@@ -315,7 +315,7 @@
                             allowfullscreen></iframe>
                     </div>
                     <div class="video-info">
-                        <h3 class="video-title">Music Video</h3>
+                        <h3 class="video-title"> Luv Lost</h3>
                         <p class="video-director">Directed by Kevlar</p>
                     </div>
                 </div>
@@ -328,7 +328,7 @@
                             allowfullscreen></iframe>
                     </div>
                     <div class="video-info">
-                        <h3 class="video-title">Music Video</h3>
+                        <h3 class="video-title">Xx! </h3>
                         <p class="video-director">Directed by Kevlar</p>
                     </div>
                 </div>
@@ -341,19 +341,71 @@
                             allowfullscreen></iframe>
                     </div>
                     <div class="video-info">
-                        <h3 class="video-title">Music Video</h3>
+                        <h3 class="video-title">Kwelit - Lone On Valentine</h3>
                         <p class="video-director">Directed by Kevlar</p>
                     </div>
                 </div>
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe width="100%" height="315" src="https://www.youtube.com/embed/WbCOWb8SyKg" title="YouTube video"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">FlintStone</h3>
+                        <p class="video-director">Directed by Kevlar</p>
+                    </div>
+                </div>
+
                     <div class="video-card">
                         <div class="video-container">
-                            <iframe src="{% static 'videos/eust.mp4' %}" title="Music Video" frameborder="0"
+                        <iframe width="100%" height="315" src="https://www.youtube.com/embed/gMICRARy2H0" title="YouTube video" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                        </iframe>
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title">Set it off</h3>
+                            <p class="video-director">Directed by Kevlar</p>
+                        </div>
+                    </div>
+
+                        <div class="video-card">
+                            <div class="video-container">
+                            <iframe width="100%" height="315" src="https://www.youtube.com/embed/vKycTWAn_yY" title="YouTube video" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen>
+                            </iframe>
+
+                            </div>
+                            <div class="video-info">
+                                <h3 class="video-title">2onthewrist*</h3>
+                                <p class="video-director">Directed by Kevlar</p>
+                            </div>
+                        </div>
+
+                    <div class="video-card">
+                        <div class="video-container">
+                            <iframe src="https://storage.googleapis.com/wokesdl/videos/eust.mp4" title="Music Video" frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen></iframe>
                         </div>
                         <div class="video-info">
-                            <h3 class="video-title">Music Video</h3>
-                            <p class="video-director">Directed by Kevlar</p>
+                            <h3 class="video-title">Estudia</h3>
+                            <p class="video-director">Directed by Kwelit</p>
+                        </div>
+                    </div>
+                    <div class="video-card">
+                        <div class="video-container">
+                            <iframe src="https://storage.googleapis.com/wokesdl/videos/rollerCoaster.mp4" title="Music Video" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                        </div>
+                        <div class="video-info">
+                            <h3 class="video-title">Roller Coaster</h3>
+                            <p class="video-director">Directed by Cupid Universe</p>
                         </div>
                     </div>
             </div>
@@ -378,16 +430,7 @@
             }
         }
 
-        // Close menu when clicking outside it
-        document.addEventListener('click', (event) => {
-            const isClickInsideMenu = menu.contains(event.target);
-            const isClickOnToggle = toggleBtn.contains(event.target);
-
-            if (!isClickInsideMenu && !isClickOnToggle) {
-                menu.style.display = 'none';
-            }
-        });
-
+      
         // Reset dropdown style when resizing to desktop
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {

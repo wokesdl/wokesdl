@@ -27,3 +27,7 @@ class Montana(View):
 class Videos(View):
     def get(self,request):
         return render(request,'sbsPages/videos.html')
+
+class Music(View):
+    def get(self,request):
+        return render(request,'sbsPages/music.html')

@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SOUNDSBYSDL</title>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/sdl32.png' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/sdl32.png' %}">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        @font-face {
+            font-family: 'WideLatin';
+            src: url('{% static "fonts/LATINWD.TTF" %}');
+        }
+
+        body {
+            color: #ffffff;
+            font-family: 'WideLatin';
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .top-section {
+            background-color: black;
+            position: relative;
+            min-height: calc(100vh - 50px);
+            padding: 40px 20px;
+        }
+
+        .logo-shape {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 60px;
+        }
+
+        .logo-shape img {
+            width: 150px;
+            height: auto;
+        }
+
+        /* Album section container */
+        .albums-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* "ALBUMS" heading */
+        .albums-container h2 {
+            text-decoration: underline;
+            margin-bottom: 20px;
+        }
+
+        /* Album grid container */
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        /* Individual album item */
+        .album-item {
+            text-align: center;
+        }
+
+        /* Album cover images */
+        .album-item img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Album titles and metadata */
+        .album-item p {
+            font-style: italic;
+            color: #dde2d8;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        .bottom-bar {
+            background-color: #000000;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .bottom-bar p {
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            .album-item p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .album-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Section -->
+    <div class="top-section">
+        <!-- Logo Shape (top-left corner) -->
+        <div class="logo-shape">
+            <a href="{% url 'sbsHome' %}">
+                <img src="{% static 'sbsPages/sllblack.png' %}" alt="Star Image">
+            </a>
+        </div>
+
+        <!-- Albums Container -->
+        <div class="albums-container">
+            <h2>Music</h2>
+            <div class="album-grid">
+                <div class="album-item">
+                    <img src="{% static 'images/m1.jpg' %}" alt="SEX UNMASTERED W/ KWELIT">
+                    <p>SEX UNMASTERED W/ KWELIT</p>
+                    <p>2024</p>
+                </div>
+                <div class="album-item">
+                    <img src="{% static 'images/m2.jpg' %}" alt="SEX">
+                    <p>SEX</p>
+                    <p>2024</p>
+                </div>
+                <div class="album-item">
+                    <img src="{% static 'images/m3.jpg' %}" alt="I HEART YOU, I LOVE MYSELF">
+                    <p>I HEART YOU, I LOVE MYSELF</p>
+                    <p>2025</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer (bottom bar) -->
+    <div class="bottom-bar">
+        <p>2025, SOUNDSBYSDL</p>
+    </div>
+</body>
+
+</html>

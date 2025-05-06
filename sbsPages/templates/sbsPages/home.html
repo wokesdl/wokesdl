@@ -272,7 +272,7 @@
     <!-- Top Bar -->
     <div class="top-bar">
         <div class="left-text">WOKEDVD</div>
-        <div class="center-text"><img src="{% static 'sbsPages/sbslogo.png' %}" class="navbar-logo" alt="SOUNDSBYSDL Logo"></div>
+        <a href="{% url 'sbsHome' %}" class="center-text"><img src="{% static 'sbsPages/sbslogo.png' %}" class="navbar-logo" alt="SOUNDSBYSDL Logo"></a>
         <div class="right-text">
             <div class="menu-toggle" onclick="toggleMenu()">☰</div>
             <div class="dropdown-menu" id="dropdownMenu">

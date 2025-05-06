@@ -158,7 +158,7 @@
         
             .message-box {
                 width: 300px;
-                background-color: #d90000;
+                background-color: #411e50;
                 color: #ffffff;
                 padding: 20px;
             }
@@ -174,7 +174,7 @@
                 width: 100%;
                 padding: 12px;
                 border: none;
-                background-color: #910d0d;
+                background-color:  #773c91;
                 color: #ffffff;
                 margin-bottom: 10px;
             }
@@ -195,14 +195,14 @@
             }
         
             .message-box input[type="submit"]:hover {
-                background-color: #7c0a0a;
+                background-color:  #2d1a35;
             }
         
             /* FOOTER */
             .footer {
                 margin-top: 60px;
                 padding-bottom: 20px;
-                color: #910d0d;
+                color: #4f2a5f;
                 font-size: 0.9rem;
             }
         
@@ -315,7 +315,9 @@
     <!-- Header / Top Section -->
     <header>
         <div class="logo-shape">
-            <img src="{% static 'art/sllblack.png' %}" alt="Star Image">
+            <a href="{% url 'sbsHome' %}">
+                <img src="{% static 'art/sllblack.png' %}" alt="Star Image">
+            </a>
         </div>
     </header>
 
