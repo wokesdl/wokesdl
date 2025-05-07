@@ -261,7 +261,7 @@
             .close {
                 position: absolute;
                 top: 15px;
-                right: 15px;
+                right:0px;
                 font-size: 30px;
                 color: #fff;
                 cursor: pointer;
@@ -310,6 +310,7 @@
         <div class="image-container">
             <img src="" alt="Album Cover" id="modal-img">
         </div>
+        <h2 id="modal-title" style="color: #fff; margin-bottom: 15px; font-size: 1.5rem; text-transform: uppercase;"></h2>
     <div id="streaming-links">
         <a id="spotify-link" href="#" target="_blank"><svg viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
             fill="#000000">
@@ -354,27 +355,30 @@
                 clip-rule="evenodd" fill-rule="evenodd" />
         </svg></a><br>
         <a id="boomplay-link" href="#" target="_blank">
-        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"  viewBox="0 0 48 48">
-            <circle cx="24" cy="24" r="20"></circle>
-            <linearGradient id="w_sXz0MvkHDPtn-5F9Xlua_UwU9lrtosej6_gr1" x1="8.848" x2="39.152" y1="32.748" y2="15.252"
-                gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#05509b"></stop>
-                <stop offset=".271" stop-color="#0083de"></stop>
-                <stop offset=".877" stop-color="#5fd2b0"></stop>
-            </linearGradient>
-            <path fill="url(#w_sXz0MvkHDPtn-5F9Xlua_UwU9lrtosej6_gr1)"
-                d="M24,6.5C14.351,6.5,6.5,14.351,6.5,24S14.351,41.5,24,41.5S41.5,33.649,41.5,24 S33.649,6.5,24,6.5z M24,39.5c-8.547,0-15.5-6.953-15.5-15.5S15.453,8.5,24,8.5S39.5,15.453,39.5,24S32.547,39.5,24,39.5z">
-            </path>
-            <linearGradient id="w_sXz0MvkHDPtn-5F9Xlub_UwU9lrtosej6_gr2" x1="12.796" x2="32.364" y1="28.528" y2="17.23"
-                gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#05509b"></stop>
-                <stop offset=".271" stop-color="#0083de"></stop>
-                <stop offset=".877" stop-color="#5fd2b0"></stop>
-            </linearGradient>
-            <path fill="url(#w_sXz0MvkHDPtn-5F9Xlub_UwU9lrtosej6_gr2)"
-                d="M26.663,12.004h-4.712c-0.875-0.058-1.657,0.545-1.831,1.411l-0.472,1.594h4.122 c0.903-0.086,2.059,0.408,2.703,1.706c0.724,1.443,0.453,2.762-0.506,3.25c-0.958,0.488-2.236-0.043-2.96-1.48 c-0.479-0.965-0.571-1.832-0.14-2.546h-3.402l-2.468,8.087h5.193c1.129,0,2.729,0.594,3.591,2.278 c0.969,1.893,0.74,3.62-0.532,4.291c-1.272,0.67-3.061,0-4.03-1.899c-0.735-1.432-0.609-2.936-0.188-3.727h-4.259 c0,0-1.601,5.652-1.627,5.856c-0.072,0.294-0.122,0.594-0.149,0.896c0,1.259,1.013,2.279,2.263,2.279h0.532h2.96 c4.525-0.241,7.485-2.376,8.907-6.355c0.625-3.014-0.44-4.802-3.194-5.363c0,0,3.516-1.263,4.435-4.87 C31.401,14.236,30.06,12.243,26.663,12.004z">
-            </path>
-        </svg>
+    <svg viewBox="3.7439999999999998 3.7439999999999998 40.608 40.608" y="0px" x="0px" xmlns="http://www.w3.org/2000/svg"
+        style="max-height: 500px" width="40.608" height="40.608">
+        <circle r="20" cy="24" cx="24" />
+        <linearGradient gradientUnits="userSpaceOnUse" y2="15.252" y1="32.748" x2="39.152" x1="8.848"
+            id="w_sXz0MvkHDPtn-5F9Xlua_UwU9lrtosej6_gr1">
+            <stop stop-color="#05509b" offset="0" />
+            <stop stop-color="#0083de" offset=".271" />
+            <stop stop-color="#5fd2b0" offset=".877" />
+        </linearGradient>
+        <path
+            d="M24,6.5C14.351,6.5,6.5,14.351,6.5,24S14.351,41.5,24,41.5S41.5,33.649,41.5,24 S33.649,6.5,24,6.5z M24,39.5c-8.547,0-15.5-6.953-15.5-15.5S15.453,8.5,24,8.5S39.5,15.453,39.5,24S32.547,39.5,24,39.5z"
+            fill="url(#w_sXz0MvkHDPtn-5F9Xlua_UwU9lrtosej6_gr1)">
+        </path>
+        <linearGradient gradientUnits="userSpaceOnUse" y2="17.23" y1="28.528" x2="32.364" x1="12.796"
+            id="w_sXz0MvkHDPtn-5F9Xlub_UwU9lrtosej6_gr2">
+            <stop stop-color="#05509b" offset="0" />
+            <stop stop-color="#0083de" offset=".271" />
+            <stop stop-color="#5fd2b0" offset=".877" />
+        </linearGradient>
+        <path
+            d="M26.663,12.004h-4.712c-0.875-0.058-1.657,0.545-1.831,1.411l-0.472,1.594h4.122 c0.903-0.086,2.059,0.408,2.703,1.706c0.724,1.443,0.453,2.762-0.506,3.25c-0.958,0.488-2.236-0.043-2.96-1.48 c-0.479-0.965-0.571-1.832-0.14-2.546h-3.402l-2.468,8.087h5.193c1.129,0,2.729,0.594,3.591,2.278 c0.969,1.893,0.74,3.62-0.532,4.291c-1.272,0.67-3.061,0-4.03-1.899c-0.735-1.432-0.609-2.936-0.188-3.727h-4.259 c0,0-1.601,5.652-1.627,5.856c-0.072,0.294-0.122,0.594-0.149,0.896c0,1.259,1.013,2.279,2.263,2.279h0.532h2.96 c4.525-0.241,7.485-2.376,8.907-6.355c0.625-3.014-0.44-4.802-3.194-5.363c0,0,3.516-1.263,4.435-4.87 C31.401,14.236,30.06,12.243,26.663,12.004z"
+            fill="url(#w_sXz0MvkHDPtn-5F9Xlub_UwU9lrtosej6_gr2)">
+        </path>
+    </svg>
     </a>
     </div>
 
@@ -520,34 +524,52 @@
     <h2 class="discography-title">DISCOGRAPHY</h2>
     <div class="overlay-images" id="overlay-images">
         <!-- Replace with your album cover paths and add data-album-link for each -->
-            <img src="{% static 'kal/cover8.jpg' %}" alt="Cover 1" data-album-link="http://example.com/album1" data-spotify="https://open.spotify.com/album/XYZ"
-     data-apple="https://music.apple.com/album/XYZ"
-     data-deezer="https://www.deezer.com/album/XYZ"
-     data-boomplay="https://www.boomplay.com/albums/XYZ">
-        <img src="{% static 'kal/cover1.jpg' %}" alt="Cover 1" data-album-link="http://example.com/album1" data-spotify="https://open.spotify.com/album/XYZ"
-     data-apple="https://music.apple.com/album/XYZ"
-     data-deezer="https://www.deezer.com/album/XYZ"
-     data-boomplay="https://www.boomplay.com/albums/XYZ">
-        <img src="{% static 'kal/cover2.jpg' %}" alt="Cover 2" data-album-link="http://example.com/album2" data-spotify="https://open.spotify.com/album/XYZ"
-     data-apple="https://music.apple.com/album/XYZ"
-     data-deezer="https://www.deezer.com/album/XYZ"
-     data-boomplay="https://www.boomplay.com/albums/XYZ">
-        <img src="{% static 'kal/cover3.jpg' %}" alt="Cover 3" data-album-link="http://example.com/album3" data-spotify="https://open.spotify.com/album/XYZ"
-     data-apple="https://music.apple.com/album/XYZ"
-     data-deezer="https://www.deezer.com/album/XYZ"
-     data-boomplay="https://www.boomplay.com/albums/XYZ">
-        <img src="{% static 'kal/cover4.jpg' %}" alt="Cover 4" data-album-link="http://example.com/album4" data-spotify="https://open.spotify.com/album/XYZ"
-     data-apple="https://music.apple.com/album/XYZ"
-     data-deezer="https://www.deezer.com/album/XYZ"
-     data-boomplay="https://www.boomplay.com/albums/XYZ">
-        <img src="{% static 'kal/cover5.jpg' %}" alt="Cover 5" data-album-link="http://example.com/album5" data-spotify="https://open.spotify.com/album/XYZ"
-     data-apple="https://music.apple.com/album/XYZ"
-     data-deezer="https://www.deezer.com/album/XYZ"
-     data-boomplay="https://www.boomplay.com/albums/XYZ">
-        <img src="{% static 'kal/cover6.jpg' %}" alt="Cover 6" data-album-link="http://example.com/album6" data-spotify="https://open.spotify.com/album/XYZ"
-     data-apple="https://music.apple.com/album/XYZ"
-     data-deezer="https://www.deezer.com/album/XYZ"
-     data-boomplay="https://www.boomplay.com/albums/XYZ">
+            <img src="{% static 'kal/cover9.jpg' %}" alt="Cover 1" data-album-title="xxtended cuts."
+                data-album-link="#" data-spotify="https://open.spotify.com/album/5qMmHEl37R31W6jCOYcQpz?si=Fi5A0N9tTCahOXW-7QcTLw"
+                data-apple="https://music.apple.com/gh/album/xxtended-cuts-single/1807429847" data-deezer="https://www.deezer.com/album/XYZ"
+                data-boomplay="https://www.boomplay.com/albums/XYZ">
+
+            <img src="{% static 'kal/cover10.jpg' %}" alt="Cover 2" data-album-title="Luv*" data-album-link="#"
+                data-spotify="https://open.spotify.com/album/1Hnpusv8UmGGqSsq0I2mNG?si=rgghLIJQTwSco5DyH4WHOw"
+                data-apple="https://music.apple.com/gh/album/luv/1799147819" data-deezer="https://dzr.page.link/KK6dq9NapyCg5ytX8"
+                data-boomplay="https://www.boomplay.com/albums/XYZ">
+         
+            <img src="{% static 'kal/cover8.jpg' %}" alt="Cover 1"  data-album-title="Estudia." data-album-link="#" data-spotify="https://open.spotify.com/album/4u4KfnlLQvusFx36cCha4e?si=ifLYrDiVS32TM69NjtwmUg"
+     data-apple="https://music.apple.com/gh/album/estudia-single/1796992719"
+     data-deezer="https://dzr.page.link/5W1xSNaG7jsLn6SX8"
+     data-boomplay="https://www.boomplay.com/songs/199873775?from=artists">
+
+            <img src="{% static 'kal/cover3.jpg' %}" alt="Cover 3" data-album-title="P"
+                data-album-link="#" data-spotify="https://open.spotify.com/album/4IoLSvrjylrIY6mpib8uer?si=P4J2e2oSRV6OIyjPLoodxQ"
+                data-apple="https://music.apple.com/gh/album/p-feat-noqlue-xx-single/1761330654" data-deezer="https://dzr.page.link/27dQPCZgD6j356d59"
+                data-boomplay="https://www.boomplay.com/albums/95487813?from=artists">
+
+        <img src="{% static 'kal/cover2.jpg' %}" alt="Cover 2" data-album-title="Ich Tote Dich"
+            data-album-link="#" data-spotify="https://open.spotify.com/album/5UyH1riV2UYPMS0TIL4YsY?si=yT4Td9VCRfGZ_rMxcjSJmQ"
+            data-apple="https://music.apple.com/gh/album/ich-tote-dich-single/1737361973" data-deezer="https://dzr.page.link/HNXNfhnFdNUQtngg9"
+            data-boomplay="https://www.boomplay.com/songs/203449750?from=artists">
+
+        <img src="{% static 'kal/cover1.jpg' %}" alt="Cover 1"  data-album-title="Past Hoes" data-album-link="#" data-spotify="https://open.spotify.com/album/1eU3bAYweovQxDlGFMLN9W?si=pG9JkRClRUKNXA_zle3T4w"
+     data-apple="https://music.apple.com/gh/album/past-hoes-feat-thatdokuguy-single/1734493580"
+     data-deezer="https://dzr.page.link/uBA4xfMiHKTD2jR68"
+     data-boomplay="https://www.boomplay.com/albums/86265993?from=artists">
+
+    <img src="{% static 'kal/cover6.jpg' %}" alt="Cover 6" data-album-title="Pa!n"
+        data-album-link="#" data-spotify="https://open.spotify.com/album/3YDUPN44CCjxug4rNQop9b?si=jTCjXQcCRRC559Y1R4XGFA"
+        data-apple="https://music.apple.com/gh/album/pa-n/1716443681" data-deezer="https://dzr.page.link/14RiY8HGyTByDy9QA"
+        data-boomplay="https://www.boomplay.com/albums/80137087?from=artists">
+
+    <img src="{% static 'kal/cover5.jpg' %}" alt="Cover 5" data-album-title="Bullet Proof"
+        data-album-link="#" data-spotify="https://open.spotify.com/album/2MxncXFQ4KMYftcWOZWAJj?si=kftk-gBLQYCDTXZfbE3CNg"
+        data-apple="https://music.apple.com/gh/album/bullet-proof-feat-tyler-leigh-single/1715148263" data-deezer="https://dzr.page.link/P9xNCLgAB9zYprfMA"
+        data-boomplay="https://www.boomplay.com/albums/79639939?from=artists">
+
+        <img src="{% static 'kal/cover4.jpg' %}" alt="Cover 4"  data-album-title="Paigon" data-album-link="#" data-spotify="https://open.spotify.com/album/0zNCUGcRJXeNgYbMomU4WC?si=y9IKMNHaSUCeTZU2Eha8gA"
+     data-apple="https://music.apple.com/gh/album/paigon-feat-a-youngin-single/1573353251"
+     data-deezer="#"
+     data-boomplay="https://www.boomplay.com/albums/27316970?from=artists">
+        
+
     </div>
 
     <!-- Message Box -->
@@ -598,22 +620,26 @@
         const albumLink = document.getElementById('album-link');
         const mainContent = document.getElementById('main-content');
         const overlayImages = document.getElementById('overlay-images');
-    overlayImages.addEventListener('click', function (e) {
-            if (e.target.tagName.toLowerCase() === 'img') {
-                modal.style.display = 'flex';
-                modalImg.src = e.target.src;
+   overlayImages.addEventListener('click', function (e) {
+        if (e.target.tagName.toLowerCase() === 'img') {
+            modal.style.display = 'flex';
+            modalImg.src = e.target.src;
 
-                // Set individual streaming links
-                document.getElementById('spotify-link').href = e.target.getAttribute('data-spotify') || '#';
-                document.getElementById('apple-link').href = e.target.getAttribute('data-apple') || '#';
-                document.getElementById('deezer-link').href = e.target.getAttribute('data-deezer') || '#';
-                document.getElementById('boomplay-link').href = e.target.getAttribute('data-boomplay') || '#';
+            // Set album title
+            const albumTitle = e.target.getAttribute('data-album-title') || 'Album';
+            document.getElementById('modal-title').textContent = albumTitle;
 
-                // Blur the main content
-                document.querySelector('header').classList.add('blur');
-                document.getElementById('main-content').classList.add('blur');
-            }
-        });
+            // Set streaming platform links
+            document.getElementById('spotify-link').href = e.target.getAttribute('data-spotify') || '#';
+            document.getElementById('apple-link').href = e.target.getAttribute('data-apple') || '#';
+            document.getElementById('deezer-link').href = e.target.getAttribute('data-deezer') || '#';
+            document.getElementById('boomplay-link').href = e.target.getAttribute('data-boomplay') || '#';
+
+            // Blur background
+            document.querySelector('header').classList.add('blur');
+            document.getElementById('main-content').classList.add('blur');
+        }
+    });
 
         document.getElementById('modal-close').addEventListener('click', function () {
             modal.style.display = 'none';
