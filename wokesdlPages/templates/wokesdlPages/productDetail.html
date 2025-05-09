@@ -115,13 +115,11 @@
                         <span>GH₵{{product.price}}0</span>
                     </div>
                     <div class="size-options">
-                        <button class="size-btn" onclick="selectSize('XS', this)" disabled>XS</button>
-                        <button class="size-btn" onclick="selectSize('S', this)">S</button>
-                        <button class="size-btn" onclick="selectSize('M', this)">M</button>
-                        <button class="size-btn" onclick="selectSize('L', this)">L</button>
-                        <button class="size-btn" onclick="selectSize('XL', this)">XL</button>
-                        <button class="size-btn selected" onclick="selectSize('2XL', this)">2XL</button>
-                        <button class="size-btn" onclick="selectSize('3XL', this)" disabled>3XL</button>
+                        {% for item in product.sizeset.sizes.all %}
+                        <button class="size-btn" onclick="selectSize('{{item}}', this)" {% if item.stock == '0' %}disabled{%endif%}>{{item}}</button>
+
+                        {% endfor %}
+ 
                     </div>
 
 

@@ -268,8 +268,8 @@
             <div class="menu-toggle" onclick="toggleMenu()">☰</div>
             <div class="dropdown-menu" id="dropdownMenu">
                 <a href="{% url 'artistPage' %}">Artist</a>
-                <a href="#">Music</a>
-                <a href="#">Videos</a>
+                <a href="{% url 'music' %}">Music</a>
+                <a href="{% url 'videos' %}">Videos</a>
             </div>
         </div>
     </div>
@@ -281,42 +281,41 @@
             <h2 class="videos-title">Featured Music Videos</h2>
 
             <div class="video-grid">
-                <!-- Video 1 -->
                 <div class="video-card">
                     <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/LZ9zeQRbhsE" title="Music Video" frameborder="0"
+                        <iframe src="https://www.youtube.com/embed/eic0bE8Ya78" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen></iframe>
                     </div>
                     <div class="video-info">
-                        <h3 class="video-title">F U Pay Me</h3>
-                        <p class="video-director">Directed by Wofa Rockson</p>
+                        <h3 class="video-title">Roller Coaster</h3>
+                        <p class="video-director">Directed by Cupid Universe</p>
                     </div>
                 </div>
+                        <div class="video-card">
+                            <div class="video-container">
+                                <iframe src="https://www.youtube.com/embed/MZgNOHWas5Q" title="Music Video" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen></iframe>
+                            </div>
+                            <div class="video-info">
+                                <h3 class="video-title">Kwelit - Lone On Valentine</h3>
+                                <p class="video-director">Directed by Kevlar</p>
+                            </div>
+                        </div>
 
-                <!-- Video 2 -->
                 <div class="video-card">
                     <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/E3oK9H1kZVc" title="Music Video" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen></iframe>
+                        <iframe width="100%" height="315" src="https://www.youtube.com/embed/vKycTWAn_yY" title="YouTube video"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                        </iframe>
+                
                     </div>
                     <div class="video-info">
-                        <h3 class="video-title">!DWM</h3>
-                        <p class="video-director">Directed by Kevlar</p>
-                    </div>
-                </div>
-
-                <!-- Video 3 -->
-                <div class="video-card">
-                    <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/3twxcd97Ddc" title="Music Video" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen></iframe>
-                    </div>
-                    <div class="video-info">
-                        <h3 class="video-title"> Luv Lost</h3>
-                        <p class="video-director">Directed by Kevlar</p>
+                        <h3 class="video-title">2onthewrist*</h3>
+                        <p class="video-director">Directed by Onetake</p>
                     </div>
                 </div>
 
@@ -332,63 +331,75 @@
                         <p class="video-director">Directed by Kevlar</p>
                     </div>
                 </div>
-
-                <!-- Video 5 -->
+                
                 <div class="video-card">
                     <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/MZgNOHWas5Q" title="Music Video" frameborder="0"
+                        <iframe src="https://www.youtube.com/embed/3twxcd97Ddc" title="Music Video" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen></iframe>
                     </div>
                     <div class="video-info">
-                        <h3 class="video-title">Kwelit - Lone On Valentine</h3>
+                        <h3 class="video-title"> Luv Lost</h3>
                         <p class="video-director">Directed by Kevlar</p>
                     </div>
                 </div>
-                <div class="video-card">
-                    <div class="video-container">
-                        <iframe width="100%" height="315" src="https://www.youtube.com/embed/WbCOWb8SyKg" title="YouTube video"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <div class="video-info">
-                        <h3 class="video-title">FlintStone</h3>
-                        <p class="video-director">Directed by Kevlar</p>
-                    </div>
-                </div>
-
-                    <div class="video-card">
-                        <div class="video-container">
-                        <iframe width="100%" height="315" src="https://www.youtube.com/embed/gMICRARy2H0" title="YouTube video" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen>
-                        </iframe>
-                        </div>
-                        <div class="video-info">
-                            <h3 class="video-title">Set it off</h3>
-                            <p class="video-director">Directed by Kevlar</p>
-                        </div>
-                    </div>
-
                         <div class="video-card">
                             <div class="video-container">
-                            <iframe width="100%" height="315" src="https://www.youtube.com/embed/vKycTWAn_yY" title="YouTube video" frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowfullscreen>
-                            </iframe>
-
+                                <iframe src="https://www.youtube.com/embed/E3oK9H1kZVc" title="Music Video" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen></iframe>
                             </div>
                             <div class="video-info">
-                                <h3 class="video-title">2onthewrist*</h3>
+                                <h3 class="video-title">!DWM</h3>
                                 <p class="video-director">Directed by Kevlar</p>
                             </div>
                         </div>
+                                    <div class="video-card">
+                                        <div class="video-container">
+                                            <iframe width="100%" height="315" src="https://www.youtube.com/embed/WbCOWb8SyKg" title="YouTube video"
+                                                frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                allowfullscreen>
+                                            </iframe>
+                                        </div>
+                                        <div class="video-info">
+                                            <h3 class="video-title">FlintStone</h3>
+                                            <p class="video-director">Directed by Cupid Universe</p>
+                                        </div>
+                                    </div>
+
+                                            <div class="video-card">
+                                                <div class="video-container">
+                                                    <iframe width="100%" height="315" src="https://www.youtube.com/embed/gMICRARy2H0" title="YouTube video"
+                                                        frameborder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                        allowfullscreen>
+                                                    </iframe>
+                                                </div>
+                                                <div class="video-info">
+                                                    <h3 class="video-title">Set it off</h3>
+                                                    <p class="video-director">Directed by Cupid Universe</p>
+                                                </div>
+                                            </div>
+
+                <div class="video-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/LZ9zeQRbhsE" title="Music Video" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">F U Pay Me</h3>
+                        <p class="video-director">Directed by Wofa Rockson</p>
+                    </div>
+                </div>
+
+
+          
 
                     <div class="video-card">
                         <div class="video-container">
-                            <iframe src="https://storage.googleapis.com/wokesdl/videos/eust.mp4" title="Music Video" frameborder="0"
+                            <iframe src="https://storage.googleapis.com/wokesdl/videos/ESTUDIA%20EDIT.mov" title="Music Video" frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen></iframe>
                         </div>
@@ -397,17 +408,19 @@
                             <p class="video-director">Directed by Kwelit</p>
                         </div>
                     </div>
-                    <div class="video-card">
-                        <div class="video-container">
-                            <iframe src="https://storage.googleapis.com/wokesdl/videos/rollerCoaster.mp4" title="Music Video" frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen></iframe>
-                        </div>
-                        <div class="video-info">
-                            <h3 class="video-title">Roller Coaster</h3>
-                            <p class="video-director">Directed by Cupid Universe</p>
-                        </div>
-                    </div>
+                  
+                                <div class="video-card">
+                                    <div class="video-container">
+                                        <iframe src="https://storage.googleapis.com/wokesdl/videos/ESTUDIA%20EDIT.mov" title="Music Video"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen></iframe>
+                                    </div>
+                                    <div class="video-info">
+                                        <h3 class="video-title">Habibi</h3>
+                                        <p class="video-director">Directed by Kwelit</p>
+                                    </div>
+                                </div>
             </div>
         </div>
     </div>
