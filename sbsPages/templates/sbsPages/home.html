@@ -6,84 +6,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>SOUNDSBYSDL</title>
-    <!-- Favicon for most browsers -->
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/sdl32.png' %}">
-    
-    <!-- Apple Touch Icon (optional if supporting mobile home screen icons) -->
     <link rel="apple-touch-icon" href="{% static 'images/sdl32.png' %}">
 
     <style>
-                @font-face {
+        @font-face {
             font-family: 'WideLatin';
             src: url('{% static "fonts/LATINWD.TTF" %}');
         }
+
         html {
-    font-size: clamp(12px, 2vw, 16px);
-    overflow-x: hidden}
+            font-size: clamp(12px, 2vw, 16px);
+            overflow-x: hidden;
+        }
 
-
-        /* Reset */
         * {
             margin: 0;
             padding: 0;
         }
 
         body {
-            /* Black background, white text */
             background-color: #000;
             color: #fff;
             font-family: 'WideLatin';
-            /* Ensure the body can fill the viewport */
             min-height: 100vh;
-            /* Make the body a flex container */
             display: flex;
             flex-direction: column;
             position: relative;
-            /* So footer's absolute positioning stays in the page */
         }
 
-        /* Top bar (black, with three text sections) */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 20px;
-            background-color:#fff;
-            /* Keep the navbar black */
+            background-color: #fff;
             text-transform: uppercase;
             font-size: 0.9rem;
             flex-shrink: 0;
-           
         }
 
         .top-bar .left-text {
             color: #00f;
-            /* "WOKEDVD" in blue, as in screenshot */
         }
 
         .top-bar .center-text {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             color: #ccc;
-            /* Slightly gray for "SOUNDSBYSDL" */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .top-bar .right-text {
             color: #000;
-            /* White for "ARTIST MUSIC VIDEOS" */
         }
 
-        /* Main content area to center the album rotation + text */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            /* vertically center */
             align-items: center;
-            /* horizontally center */
             text-align: center;
         }
 
-        /* Container for the three album images + arrows */
         .album-section {
             display: flex;
             align-items: center;
@@ -97,7 +86,6 @@
             user-select: none;
         }
 
-        /* Remove inline margins; instead, define separate classes for left/right arrow margins */
         .arrow-left {
             margin-right: 20px;
         }
@@ -106,7 +94,6 @@
             margin-left: 20px;
         }
 
-        /* Increase arrow margins on larger screens so they don't overlap the center image */
         @media screen and (min-width: 992px) {
             .arrow-left {
                 margin-right: 40px;
@@ -127,7 +114,6 @@
             }
         }
 
-        /* Albums container (left, center, right) */
         .albums {
             display: flex;
             align-items: center;
@@ -142,14 +128,12 @@
             width: 100%;
         }
 
-        /* Center album is “popped out” */
         .album.center {
             transform: scale(1.25);
             width: 170px;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
-        /* Text under the center album */
         .bottom-text {
             margin-top: 20px;
         }
@@ -164,7 +148,6 @@
             text-transform: uppercase;
         }
 
-        /* Footer text at the bottom-left */
         .footer-text {
             position: absolute;
             bottom: 10px;
@@ -173,9 +156,6 @@
             text-transform: uppercase;
         }
 
-        /* MEDIA QUERIES for bigger screens */
-
-        /* Increase album sizes on laptop-sized screens */
         @media screen and (min-width: 992px) {
             .album {
                 width: 200px;
@@ -187,7 +167,6 @@
             }
         }
 
-        /* Even larger on desktop screens */
         @media screen and (min-width: 1200px) {
             .album {
                 width: 240px;
@@ -198,81 +177,71 @@
                 transform: scale(1.35);
             }
         }
-        /* Hide dropdown and show hamburger on small screens */
-.menu-toggle {
-    display: none;
-    cursor: pointer;
-    font-size: 1.5rem;
-    color: #000;
-}
 
-.dropdown-menu {
-    display: flex;
-    gap: 15px;
-    color: #000;
-}
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #000;
+        }
 
-.dropdown-menu a {
-    text-decoration: none;
-    color: inherit;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-}
+        .dropdown-menu {
+            display: flex;
+            gap: 15px;
+            color: #000;
+        }
 
-@media screen and (max-width: 768px) {
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        top: 60px;
-        right: 20px;
-        background-color: #fff;
-        flex-direction: column;
-        padding: 10px;
-        border-radius: 4px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    }
+        .dropdown-menu a {
+            text-decoration: none;
+            color: inherit;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
 
-    .menu-toggle {
-        display: block;
-    }
-}
-.navbar-logo {
-    max-width: 100px;
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-}
+        @media screen and (max-width: 768px) {
+            .dropdown-menu {
+                display: none;
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                background-color: #fff;
+                flex-direction: column;
+                padding: 10px;
+                border-radius: 4px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            }
 
-@media screen and (max-width: 768px) {
-    .navbar-logo {
-        max-width: 80px;
-    }
-}
+            .menu-toggle {
+                display: block;
+            }
+        }
 
-@media screen and (max-width: 480px) {
-    .navbar-logo {
-        max-width: 60px;
-    }
-}
-.top-bar .center-text {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    color: #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        .navbar-logo {
+            max-width: 100px;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
 
+        @media screen and (max-width: 768px) {
+            .navbar-logo {
+                max-width: 80px;
+            }
+        }
 
+        @media screen and (max-width: 480px) {
+            .navbar-logo {
+                max-width: 60px;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <!-- Top Bar -->
     <div class="top-bar">
         <div class="left-text">WOKEDVD</div>
-        <a href="{% url 'sbsHome' %}" class="center-text"><img src="{% static 'sbsPages/sbslogo.png' %}" class="navbar-logo" alt="SOUNDSBYSDL Logo"></a>
+        <a href="{% url 'sbsHome' %}" class="center-text"><img src="{% static 'sbsPages/sbslogo.png' %}"
+                class="navbar-logo" alt="SOUNDSBYSDL Logo"></a>
         <div class="right-text">
             <div class="menu-toggle" onclick="toggleMenu()">☰</div>
             <div class="dropdown-menu" id="dropdownMenu">
@@ -281,118 +250,89 @@
                 <a href="{% url 'videos' %}">Videos</a>
             </div>
         </div>
-
     </div>
 
-    <!-- Main Content Wrapper -->
     <div class="main-content">
-        <!-- Albums + Arrows -->
         <div class="album-section">
             <div class="albums">
-                <!-- Left album cover -->
                 <div class="album">
-                    <img id="leftImg" src="" alt="Left Album Cover">
+                    <a id="leftLink" href="#"><img id="leftImg" src="" alt="Left Album Cover"></a>
                 </div>
-
-                <!-- Left arrow -->
                 <div class="arrow arrow-left" onclick="previousImage()">
-                    <svg width="64px" height="64px" viewBox="0 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                        class="si-glyph si-glyph-triangle-left" fill="#000000">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <title>1235</title>
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <path
-                                    d="M3.446,10.052 C2.866,9.471 2.866,8.53 3.446,7.948 L9.89,1.506 C10.471,0.924 11.993,0.667 11.993,2.506 L11.993,15.494 C11.993,17.395 10.472,17.076 9.89,16.495 L3.446,10.052 Z"
-                                    fill="#ffffff" class="si-glyph-fill"></path>
-                            </g>
-                        </g>
+                    <svg width="64px" height="64px" viewBox="0 0 17 17" xmlns="http://www.w3.org/2000/svg"
+                        fill="#000000">
+                        <path
+                            d="M3.446,10.052 C2.866,9.471 2.866,8.53 3.446,7.948 L9.89,1.506 C10.471,0.924 11.993,0.667 11.993,2.506 L11.993,15.494 C11.993,17.395 10.472,17.076 9.89,16.495 L3.446,10.052 Z"
+                            fill="#ffffff"></path>
                     </svg>
                 </div>
-
-                <!-- Center album cover (popped out) -->
                 <div class="album center">
-                    <img id="centerImg" src="" alt="Center Album Cover">
+                    <a id="centerLink" href="#"><img id="centerImg" src="" alt="Center Album Cover"></a>
                 </div>
-
-                <!-- Right arrow -->
                 <div class="arrow arrow-right" onclick="nextImage()">
-                    <svg width="64px" height="64px" viewBox="0 -0.5 17 17" version="1.1"
-                        xmlns="http://www.w3.org/2000/svg" class="si-glyph si-glyph-triangle-right" fill="#000000">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <title>1234</title>
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <path
-                                    d="M6.113,15.495 C5.531,16.076 4.01,16.395 4.01,14.494 L4.01,1.506 C4.01,-0.333 5.531,-0.076 6.113,0.506 L12.557,6.948 C13.137,7.529 13.137,8.47 12.557,9.052 L6.113,15.495 Z"
-                                    fill="#ffffff" class="si-glyph-fill"></path>
-                            </g>
-                        </g>
+                    <svg width="64px" height="64px" viewBox="0 -0.5 17 17" xmlns="http://www.w3.org/2000/svg"
+                        fill="#000000">
+                        <path
+                            d="M6.113,15.495 C5.531,16.076 4.01,16.395 4.01,14.494 L4.01,1.506 C4.01,-0.333 5.531,-0.076 6.113,0.506 L12.557,6.948 C13.137,7.529 13.137,8.47 12.557,9.052 L6.113,15.495 Z"
+                            fill="#ffffff"></path>
                     </svg>
                 </div>
-
-                <!-- Right album cover -->
                 <div class="album">
-                    <img id="rightImg" src="" alt="Right Album Cover">
+                    <a id="rightLink" href="#"><img id="rightImg" src="" alt="Right Album Cover"></a>
                 </div>
             </div>
         </div>
 
-        <!-- Text beneath the center album -->
         <div class="bottom-text" style="padding-top: 20px;">
-            <div class="mixtape-title">The Scarface Mixtape - Danny Montanna</div>
+            <div class="mixtape-title" id="mixtapeTitle">The Scarface Mixtape - Danny Montanna</div>
             <div class="arrivals">New Arrivals</div>
         </div>
     </div>
 
-    <!-- Footer text bottom-left -->
     <div class="footer-text">
         SOUNDSBYSDL 2025
     </div>
-<script>
-    const menu = document.getElementById('dropdownMenu');
-    const toggleBtn = document.querySelector('.menu-toggle');
 
-    function toggleMenu() {
-        if (menu.style.display === 'flex') {
-            menu.style.display = 'none';
-        } else {
-            menu.style.display = 'flex';
-        }
-    }
-
-   
-
-    // Reset dropdown style when resizing to desktop
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 768) {
-            // Remove inline display style to let CSS take over again
-            menu.style.display = '';
-        }
-    });
-</script>
-
-
-    <!-- JavaScript for rotating images -->
     <script>
-        // Put your actual image paths here (or use static tags)
+        const menu = document.getElementById('dropdownMenu');
+        function toggleMenu() {
+            menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+        }
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                menu.style.display = '';
+            }
+        });
+
         const images = [
-            "{% static 'sbsPages/hc1.jpg' %}",
-            "{% static 'sbsPages/hc2.jpg' %}",
-            "{% static 'sbsPages/hc3.jpg' %}"
+            "{% static 'sat/cover2.jpg' %}",
+            "{% static 'sbsPages/ily.jpg' %}",
+            "{% static 'kal/cover9.jpg' %}",
+            "{% static 'kal/cover10.jpg' %}"
+        ];
+        const links = [
+            "{% url 'music' %}",
+            "{% url 'music' %}",
+            "{% url 'music' %}",
+            "{% url 'music' %}"
+        ];
+        const titles = [
+            "Piece of Mind",
+            "I HEART YOU, I LOVE MYSELF ",
+            "XXTENDED CUTS",
+            "Luv"
         ];
 
-        // The 'centerIndex' determines which image is in the center.
-        let centerIndex = 1; // We'll start with the second image as center.
+        let centerIndex = 1;
 
-        // References to the <img> elements
         const leftImg = document.getElementById('leftImg');
         const centerImg = document.getElementById('centerImg');
         const rightImg = document.getElementById('rightImg');
+        const leftLink = document.getElementById('leftLink');
+        const centerLink = document.getElementById('centerLink');
+        const rightLink = document.getElementById('rightLink');
+        const mixtapeTitle = document.getElementById('mixtapeTitle');
 
-        // Update the <img> elements based on the current 'centerIndex'
         function updateImages() {
             const total = images.length;
             const leftIndex = (centerIndex - 1 + total) % total;
@@ -401,6 +341,12 @@
             leftImg.src = images[leftIndex];
             centerImg.src = images[centerIndex];
             rightImg.src = images[rightIndex];
+
+            leftLink.href = links[leftIndex];
+            centerLink.href = links[centerIndex];
+            rightLink.href = links[rightIndex];
+
+            mixtapeTitle.innerText = titles[centerIndex];
         }
 
         function previousImage() {
@@ -413,7 +359,6 @@
             updateImages();
         }
 
-        // Initialize the images on page load
         updateImages();
     </script>
 </body>
