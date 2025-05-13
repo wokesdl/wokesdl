@@ -231,3 +231,7 @@ class ProductDetail(View):
 
         # fallback if POST does not include 'subscribe'
         return redirect('store')  
+
+class Shipping(View):
+    def get(self,request):
+        return render(request,'wokesdlPages/shipping.html')

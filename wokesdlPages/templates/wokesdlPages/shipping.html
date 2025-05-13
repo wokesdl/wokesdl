@@ -1,0 +1,173 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shipping & Returns Policy</title>
+    <style>
+        /* load your WOKESDL fonts here */
+        @font-face {
+            font-family: "WideLatin";
+            src: url("WideLatin.woff2") format("woff2");
+            font-weight: normal;
+            font-style: normal;
+        }
+    
+        @font-face {
+            font-family: "HagridExtraBoldItalic";
+            src: url("HagridExtraBoldItalic.woff2") format("woff2");
+            font-weight: 800;
+            font-style: italic;
+        }
+    
+        :root {
+            --bg: #000;
+            --red: #8f181b;
+            --white: #fff;
+        }
+    
+        * {
+            box-sizing: border-box;
+        }
+    
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--red);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            line-height: 1.5;
+        }
+    
+        .logo {
+            padding: 20px 0 0;
+        }
+    
+        .logo img {
+            max-width: 250px;
+            width: 80%;
+            height: auto;
+        }
+    
+        .policy {
+            margin: 0 auto;
+            padding: 40px 20px;
+            /* Make every piece of text inside .policy uppercase */
+            text-transform: uppercase;
+        }
+    
+        .policy h1 {
+            font-family: "HagridExtraBoldItalic", sans-serif;
+            font-size: 2rem;
+            margin-bottom: 5px;
+            /* No need for an extra text-transform here */
+        }
+    
+        .policy ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto 30px;
+            text-align: left;
+        }
+    
+        .policy ul li {
+            position: relative;
+            padding-left: 1.5em;
+            font-family: "WideLatin", sans-serif;
+            font-size: 1.125rem;
+        }
+    
+        .policy ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--red);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+    
+        .policy .note {
+            font-family: "WideLatin", sans-serif;
+            font-size: 0.9rem;
+            color: var(--red);
+            /* Already uppercase, but this ensures consistency */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    
+        .bottom-logo {
+            margin: 40px auto 20px;
+            max-width: 300px;
+            width: 80%;
+            height: auto;
+        }
+    
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .policy h1 {
+                font-size: 2.5rem;
+            }
+    
+            .policy ul li {
+                font-size: 1rem;
+            }
+        }
+    
+        @media (max-width: 480px) {
+            .policy {
+                padding: 20px 10px;
+            }
+    
+            .policy h1 {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+    
+            .policy ul li {
+                font-size: 0.95rem;
+                margin-bottom: 0.75em;
+            }
+    
+            .policy .note {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+    
+</head>
+
+<body>
+
+    <!-- top WOKESDL logo -->
+    <div class="logo">
+        <img src="{% static 'images/wokesdl_logoo_white.png' %}" alt="WOKESDL Logo">
+    </div>
+
+    <!-- policy content -->
+    <div class="policy">
+        <h1>Shipping &amp; Returns Policy</h1>
+        <ul>
+            <li>Nigerian &amp; Ghanaian domestic orders ship within 1–5 working days</li>
+            <li>International orders 5–14 working days</li>
+            <li>Unless a pre-order ship date is given</li>
+            <li>It’s the customer’s responsibility to pay any import taxes and custom charges</li>
+            <li>Regulations for import duties and taxes may vary and we are unable to control nor predict their amount
+            </li>
+            <li>If you refuse a shipment from us, you are responsible for the original shipping charges and the courier
+                cost</li>
+        </ul>
+        <p class="note">
+            Please note that international shipments may take longer to be delivered due to the customs process <br>in your
+            country
+        </p>
+    </div>
+
+    <!-- bottom LONG LIVE SDL logo -->
+    <img class="bottom-logo" src="{% static 'wokesdlPages/lls.png' %}" alt="LONG LIVE SDL">
+
+</body>
+
+</html>
