@@ -18,6 +18,34 @@ class ArtistPage(View):
 class Kwelit(View):
     def get(self,request):
         return render(request,'sbsPages/kwelit.html')
+    def post(self,request):
+        if "sendMessage" in request.POST:
+            message_text = request.POST.get("message", "").strip()
+
+            if not message_text:
+                messages.error(request, "Please enter a message before sending.")
+                return redirect('/kwelit/')
+
+            # Prepare the email
+            msg = MIMEText(message_text)
+            msg["Subject"] = "Message from fan!!!"
+            msg["From"] = "info@longlivesdl.com"
+            msg["To"] = "kwebaby944@gmail.com"
+
+            try:
+                # Send via Zoho SMTP SSL
+                with smtplib.SMTP_SSL("smtp.zoho.com", 465) as server:
+                    server.login("info@longlivesdl.com", "gyn46qqStugX")
+                    server.sendmail(msg["From"], msg["To"], msg.as_string())
+
+                messages.success(request, "Your message has been sent to Kwelit!")
+            except Exception as e:
+                # Log e if you want
+                messages.error(request, f"Failed to send message: {e}")
+
+        # in all cases, go back to the same page
+        return redirect('/kwelit/')
+
 
 class Santana(View):
     def get(self,request):
