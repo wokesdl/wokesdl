@@ -235,3 +235,7 @@ class ProductDetail(View):
 class Shipping(View):
     def get(self,request):
         return render(request,'wokesdlPages/shipping.html')
+
+class Films(View):
+    def get(self,request):
+        return render(request,'wokesdlPages/films.html')

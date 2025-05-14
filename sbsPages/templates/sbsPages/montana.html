@@ -300,10 +300,49 @@
     a{
         text-decoration: none;
     }
+    /* --------- message-box popup --------- */
+.message-box-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #d90000;    /* updated */
+  color: #ffffff;
+  padding: 15px 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  z-index: 2000;
+  display: none;
+  max-width: 300px;
+}
+
+.message-box-popup p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.close-popup {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #ffffff;               /* updated */
+}
+
     </style>
 </head>
 
 <body>
+    {% if messages %}
+    <div id="sentMessagePopup" class="message-box-popup">
+        <span id="popupClose" class="close-popup">&times;</span>
+        {% for msg in messages %}
+        <p>{{ msg }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
 <div id="modal" class="modal">
     <div class="modal-content">
         <span class="close" id="modal-close">&times;</span>
@@ -600,10 +639,14 @@
     <div class="messageBoxCover">
         <div class="message-box">
             <h3>MESSAGE TO ARTIST</h3>
-            <input type="text" placeholder="type message">
-            <input type="submit" name="Send" value="Send"
-                style="margin: 5px 0px; border: none; padding: 10px; background-color:#910d0d; color: #fff;">
-
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" placeholder="Type message" name="message">
+                <input type="submit" value="Send"
+                    style="margin: 5px 0px; border: none; padding: 10px; background-color:#910d0d; color: #fff;" name="sendMessage">
+    
+            </form>
+          
 
         </div>
     </div>
@@ -680,6 +723,23 @@
             }
         });
     </script>
+    <script>
+        window.addEventListener('load', () => {
+            const popup = document.getElementById('sentMessagePopup');
+            if (!popup) return;
+
+            // show it
+            popup.style.display = 'block';
+
+            // close on × click
+            document.getElementById('popupClose')
+                .addEventListener('click', () => popup.style.display = 'none');
+
+            // optional: auto-dismiss after 5 seconds
+            setTimeout(() => popup.style.display = 'none', 5000);
+        });
+    </script>
+      
 </body>
 
 </html>

@@ -1,0 +1,271 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Videos | Supreme</title>
+    <style>
+        :root {
+            --bg: #000;
+            --red: #8f181b;
+            --white: #fff;
+            --gap: 1rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        header {
+            padding: 20px;
+        }
+
+        header img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        /* ————————————————————————————————————— */
+        /* GRID */
+        /* ————————————————————————————————————— */
+        #video-grid .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--gap);
+            max-width: calc(4 * 200px + 3 * var(--gap));
+            /* 4 cols × 200px + gaps */
+            margin: 20px auto 0;
+        }
+
+        @media (max-width: 1024px) {
+            #video-grid .grid {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: calc(2 * 200px + 1 * var(--gap));
+            }
+        }
+
+        @media (max-width: 480px) {
+            #video-grid .grid {
+                grid-template-columns: repeat(2, 1fr);
+                /* or: repeat(1,1fr) for a single column */
+            }
+        }
+
+        .video-item {
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* use a tiny video as a frozen thumbnail */
+        .video-thumb {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: #000;
+            /* placeholder if frame is dark */
+            object-fit: cover;
+            /* crop-to-fill if desired */
+            cursor: pointer;
+        }
+
+        /* hide old img tags (if any) */
+        .video-item img {
+            display: none;
+        }
+
+        .video-item .title {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            color: var(--red);
+            font-weight: bold;
+        }
+
+        /* ————————————————————————————————————— */
+        /* FULL-SCREEN PLAYER */
+        /* ————————————————————————————————————— */
+        #video-player {
+            display: none;
+            /* toggled via JS */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--bg);
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        #video-player video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* "cover" if you want fill-and-crop */
+            background: #000;
+        }
+
+        #backButton {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--red);
+            border: none;
+            color: var(--white);
+            padding: 0.75em 1.5em;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 480px) {
+            #backButton {
+                bottom: 10px;
+                padding: 0.5em 1em;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <img src="{% static 'images/supreme-logo.png' %}" alt="Supreme Logo">
+        <div style="color:var(--white); margin-top:10px; font-family:monospace; font-size:0.9rem;">
+            {{ now|date:"m/d/Y" }} {{ now|date:"h:ia" }} NYC
+        </div>
+    </header>
+
+    <main>
+        <!-- GRID VIEW -->
+        <section id="video-grid">
+            <div class="grid">
+                <div class="video-item"
+                    data-video-url="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/-4195701190658781493.mp4">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+                
+                <div class="video-item" data-video-url="">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+                <div class="video-item" data-video-url="">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/-9048418231711732996.mp4">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/IMG_0540.mp4">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/IMG_2293(1).mp4">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/IMG_2333.mp4">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/IMG_2603.MP4">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/IMG_2628.mp4">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/IMG_3060.mp4">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/RPReplay_Final1714783821.mp4">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/copy_1D4AB3E7-E932-45BD-8CCB-EC50B44E603E.mp4">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/video-output-0F5166FA-DFF7-4D00-9C16-5D4AD164FD6B.mp4">
+                    <video class="video-thumb" muted preload="metadata"
+                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <div class="title">a</div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PLAYER VIEW -->
+        <section id="video-player">
+            <video id="player" controls poster=""></video>
+            <button id="backButton">more random videos</button>
+        </section>
+    </main>
+
+    <script>
+        const grid = document.getElementById('video-grid');
+        const playerUI = document.getElementById('video-player');
+        const player = document.getElementById('player');
+        const backBtn = document.getElementById('backButton');
+
+        // Thumbnail click → show full-screen player
+        document.querySelectorAll('.video-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const src = item.getAttribute('data-video-url');
+                grid.style.display = 'none';
+                playerUI.style.display = 'block';
+                player.src = src;
+                player.play();
+            });
+        });
+
+        // Back to grid
+        backBtn.addEventListener('click', () => {
+            player.pause();
+            player.src = '';
+            playerUI.style.display = 'none';
+            grid.style.display = '';
+        });
+    </script>
+
+</body>
+
+</html>
