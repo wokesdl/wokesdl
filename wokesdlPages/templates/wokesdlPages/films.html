@@ -48,30 +48,41 @@
         /* GRID */
         /* ————————————————————————————————————— */
         #video-grid .grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: var(--gap);
-            max-width: calc(4 * 200px + 3 * var(--gap));
-            /* 4 cols × 200px + gaps */
-            margin: 20px auto 0;
-        }
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--gap);
+    max-width: 100%; /* Changed from fixed width to 100% */
+    width: 100%;
+    margin: 20px auto 0;
+    padding: 0 15px; /* Added padding for smaller screens */
+    box-sizing: border-box; /* Ensure padding doesn't add to width */
+}
+/* add this to your existing <style> */
+    #video-grid.hidden {
+  display: none;
+}
 
         #video-grid video{
             border: 1px solid black;
         }
         @media (max-width: 1024px) {
-            #video-grid .grid {
-                grid-template-columns: repeat(2, 1fr);
-                max-width: calc(2 * 200px + 1 * var(--gap));
-            }
-        }
+    #video-grid .grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 100%; /* Changed from fixed width to 100% */
+    }
+}
 
-        @media (max-width: 480px) {
-            #video-grid .grid {
-                grid-template-columns: repeat(2, 1fr);
-                /* or: repeat(1,1fr) for a single column */
-            }
-        }
+@media (max-width: 480px) {
+    #video-grid .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px; /* Smaller gap for mobile */
+        padding: 0 10px; /* Smaller padding for mobile */
+    }
+    
+    .video-item .title {
+        font-size: 0.8rem; /* Smaller font for mobile */
+    }
+}
 
         .video-item {
             cursor: pointer;
@@ -105,32 +116,27 @@
         /* ————————————————————————————————————— */
         /* FULL-SCREEN PLAYER */
         /* ————————————————————————————————————— */
-        #video-player {
-            display: none;
-            /* toggled via JS */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: var(--bg);
-            z-index: 1000;
-            overflow: hidden;
-        }
+/* Inline player is hidden until a video is clicked */
+#video-player {
+  display: none;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
+}
 
-        #video-player video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            /* "cover" if you want fill-and-crop */
-            background: #000;
-        }
+#video-player video {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
 
+/* Optional: add a little transition when it appears */
+#video-player.show {
+  display: block;
+}
         #backButton {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
+         
+          
             background: var(--red);
             border: none;
             color: var(--white);
@@ -210,6 +216,13 @@ a{
         <div>
             <img src="{% static 'images/sdlstar.png' %}" alt="">
         </div>
+            <!-- PLAYER VIEW -->
+            <section id="video-player">
+                <video id="player" controls poster=""></video>
+               <div style="display: flex; justify-content: center;">
+                <button id="backButton">more random videos</button>
+               </div>
+            </section>
         <!-- GRID VIEW -->
         <section id="video-grid">
             <div class="grid">
@@ -279,11 +292,7 @@ a{
             </div>
         </section>
 
-        <!-- PLAYER VIEW -->
-        <section id="video-player">
-            <video id="player" controls poster=""></video>
-            <button id="backButton">more random videos</button>
-        </section>
+    
     </main>
     <div class="store-footer">
         <div class="sf-h1">
@@ -425,25 +434,28 @@ a{
         const player = document.getElementById('player');
         const backBtn = document.getElementById('backButton');
 
-        // Thumbnail click → show full-screen player
+        // Thumbnail click → hide grid, show player
         document.querySelectorAll('.video-item').forEach(item => {
             item.addEventListener('click', () => {
-                const src = item.getAttribute('data-video-url');
-                grid.style.display = 'none';
-                playerUI.style.display = 'block';
+                const src = item.dataset.videoUrl;           // shorthand for getAttribute
                 player.src = src;
+                grid.classList.add('hidden');                // hide the grid
+                playerUI.classList.add('show');              // show the inline player
                 player.play();
+                playerUI.scrollIntoView({ behavior: 'smooth' });
+                backBtn
             });
         });
 
-        // Back to grid
+        // Back button → stop video, hide player, show grid
         backBtn.addEventListener('click', () => {
             player.pause();
             player.src = '';
-            playerUI.style.display = 'none';
-            grid.style.display = '';
+            playerUI.classList.remove('show');
+            grid.classList.remove('hidden');
         });
     </script>
+      
     {% if messages %}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
