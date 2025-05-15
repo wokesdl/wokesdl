@@ -9,6 +9,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/sdl32.png' %}">
 
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    ```html
     <style>
         :root {
             --bg: #000;
@@ -16,130 +17,117 @@
             --white: #fff;
             --gap: 1rem;
         }
-
-        * {
+    
+        /* reset */
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
+    
         body {
-          
+            background: var(--bg);
             color: var(--white);
             font-family: Arial, sans-serif;
             text-align: center;
             line-height: 1.5;
+            overflow-x: hidden;
+            /* guard against unwanted scroll */
         }
-
+    
         header {
             padding: 20px;
         }
-
+    
         header img {
             max-width: 200px;
             height: auto;
         }
-
+    
         main {
             padding: 20px;
         }
-
+    
         /* ————————————————————————————————————— */
-        /* GRID */
+        /* FLEXBOX GRID */
         /* ————————————————————————————————————— */
         #video-grid .grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--gap);
-    max-width: 100%; /* Changed from fixed width to 100% */
-    width: 100%;
-    margin: 20px auto 0;
-    padding: 0 15px; /* Added padding for smaller screens */
-    box-sizing: border-box; /* Ensure padding doesn't add to width */
-}
-/* add this to your existing <style> */
-    #video-grid.hidden {
-  display: none;
-}
-
-        #video-grid video{
-            border: 1px solid black;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--gap);
+            max-width: 800px;
+            /* two items (~400px each + gap) */
+            margin: 20px auto 0;
+            padding: 0 15px;
         }
-        @media (max-width: 1024px) {
-    #video-grid .grid {
-        grid-template-columns: repeat(2, 1fr);
-        max-width: 100%; /* Changed from fixed width to 100% */
-    }
-}
-
-@media (max-width: 480px) {
-    #video-grid .grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px; /* Smaller gap for mobile */
-        padding: 0 10px; /* Smaller padding for mobile */
-    }
     
-    .video-item .title {
-        font-size: 0.8rem; /* Smaller font for mobile */
-    }
-    #video-grid .grid {
-    grid-template-columns: 1fr;
-  }
-}
-
+        #video-grid.hidden {
+            display: none;
+        }
+    
         .video-item {
+            flex: 1 1 calc(50% - var(--gap));
+            max-width: calc(50% - var(--gap));
             cursor: pointer;
             position: relative;
+            aspect-ratio: 16 / 9;
+            margin-bottom: 30px;
         }
-
-        /* use a tiny video as a frozen thumbnail */
+    
+        @media (max-width: 480px) {
+            .video-item {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+        }
+    
+        /* thumbnail styling */
         .video-thumb {
             display: block;
             width: 100%;
-            height: auto;
-            background: #000;
-            /* placeholder if frame is dark */
+            height: 100%;
             object-fit: cover;
-            /* crop-to-fill if desired */
+            background: #000;
             cursor: pointer;
+            border: 1px solid black;
         }
-
-        /* hide old img tags (if any) */
+    
+        /* hide any old img fallback */
         .video-item img {
             display: none;
         }
-
+    
         .video-item .title {
             font-size: 0.9rem;
             margin-top: 0.5rem;
             color: var(--red);
             font-weight: bold;
         }
-
+    
         /* ————————————————————————————————————— */
-        /* FULL-SCREEN PLAYER */
+        /* INLINE PLAYER */
         /* ————————————————————————————————————— */
-/* Inline player is hidden until a video is clicked */
-#video-player {
-  display: none;
-  margin: 20px auto;
-  width: 90%;
-  max-width: 800px;
-}
-
-#video-player video {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
-/* Optional: add a little transition when it appears */
-#video-player.show {
-  display: block;
-}
+        #video-player {
+            display: none;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 800px;
+        }
+    
+        #video-player.show {
+            display: block;
+        }
+    
+        #video-player video {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+    
         #backButton {
-         
-          
             background: var(--red);
             border: none;
             color: var(--white);
@@ -147,46 +135,36 @@
             font-size: 1rem;
             cursor: pointer;
             text-transform: uppercase;
+            margin-top: 1rem;
         }
-
+    
         @media (max-width: 480px) {
             #backButton {
-                bottom: 10px;
                 padding: 0.5em 1em;
                 font-size: 0.9rem;
             }
         }
-        /* ————————————————————————————————————— */
-/* RESPONSIVE SDL STAR */
-/* ————————————————————————————————————— */
-main > div > img {
-  display: block;
-  margin: 0 auto 1rem;
-  max-width: 80vw;    /* never wider than 80% of the viewport */
-  width: 100px;       /* fallback “ideal” width */
-  height: auto;       /* preserve aspect ratio */
-}
-
-/* ————————————————————————————————————— */
-/* UNIFORM VIDEO THUMBNAILS */
-/* ————————————————————————————————————— */
-/* 1) Force every .video-item to be a 16:9 container */
-.video-item {
-  aspect-ratio: 16 / 9;
-
-}
-
-/* 2) Stretch the <video> to fill that box, cropping as needed */
-.video-thumb {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-a{
-    text-decoration: none;
     
-}
-.popup {
+        /* ————————————————————————————————————— */
+        /* SDL STAR */
+        /* ————————————————————————————————————— */
+        main>div>img {
+            display: block;
+            margin: 0 auto 1rem;
+            max-width: 80vw;
+            width: 100px;
+            height: auto;
+        }
+    
+        /* ————————————————————————————————————— */
+        /* LINKS & POPUPS */
+        /* ————————————————————————————————————— */
+        a {
+            text-decoration: none;
+            cursor: pointer;
+        }
+    
+        .popup {
             position: fixed;
             top: 20px;
             right: 20px;
@@ -198,19 +176,13 @@ a{
             display: none;
         }
     
-        .popup.success {
+        .popup.success,
+        .popup.error {
             background-color: #c31c30;
         }
-    
-        .popup.error {
-            background-color:#c31c30;
-        }
-        a{
-            cursor: pointer;
-        }
-   
-
     </style>
+    ```
+
 </head>
 
 <body>
