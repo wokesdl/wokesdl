@@ -239,3 +239,27 @@ class Shipping(View):
 class Films(View):
     def get(self,request):
         return render(request,'wokesdlPages/films.html')
+
+    def post(self, request):
+        """
+        Handles the <form method="post"> that submits the newsletter address.
+        """
+        if 'subscribe' in request.POST:
+            email = request.POST.get('email', '').strip().lower()  # Lowercased for consistency
+
+            # — very light server‑side validation —
+            if not email:
+                messages.error(request, "E-mail address is required.")
+                return redirect('/films/')
+
+            try:
+                Newsletter.objects.create(email=email)
+            except IntegrityError:
+                messages.error(request, "That address is already on the list.")
+                return redirect('/films/')  # Ensure early return after error
+            else:
+                messages.success(request, "Thanks! You’re on the list")
+                return redirect('/films/')  # Early return after success
+
+        # fallback if POST does not include 'subscribe'
+        return redirect('/films/')  
