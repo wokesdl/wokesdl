@@ -10,153 +10,171 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/sdl32.png' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 
-    <style>
-        :root {
-            --bg: #000;
-            --red: #8f181b;
-            --white: #fff;
-            --gap: 1rem;
-        }
+  <style>
+    :root {
+    --bg: #fff;       /* white background */
+    --text: #000;     /* black text */
+    --red: #8f181b;
+    --gap: 1rem;
+}
 
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        body {
-            background: var(--bg);
-            color: var(--white);
-            font-family: Arial, sans-serif;
-            text-align: center;
-            line-height: 1.5;
-            overflow-x: hidden;
-        }
+body {
+    background: #000;
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
 
-        header {
-            padding: 20px;
-        }
+header {
+    padding: 20px;
+}
 
-        header img {
-            max-width: 200px;
-            height: auto;
-        }
+header img {
+    max-width: 200px;
+    height: auto;
+}
 
-        main {
-            padding: 20px;
-        }
+main {
+    padding: 20px;
+}
 
-        /* GRID */
-        #video-grid .grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: var(--gap);
-            max-width: 800px;
-            margin: 20px auto 0;
-            padding: 0 15px;
-        }
+/* GRID */
+#video-grid .grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--gap);
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
 
-        #video-grid.hidden {
-            display: none;
-        }
+#video-grid.hidden {
+    display: none;
+}
 
-        .video-item {
-            flex: 1 1 calc(50% - var(--gap));
-            max-width: calc(50% - var(--gap));
-            cursor: pointer;
-            position: relative;
-            aspect-ratio: 16/9;
-            margin-bottom: 50px;
-        }
+/* video item container */
+.video-item {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 calc(25% - var(--gap));      /* 4 columns */
+    max-width: calc(25% - var(--gap));
+    margin-bottom: var(--gap);
+}
 
-        @media (max-width: 480px) {
-            .video-item {
-                flex: 1 1 100%;
-                max-width: 100%;
-            }
-        }
+/* medium screens → 3 columns */
+@media (max-width: 1024px) {
+    .video-item {
+        flex: 1 1 calc(33.333% - var(--gap));
+        max-width: calc(33.333% - var(--gap));
+    }
+}
 
-        .video-thumb {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border: 1px solid black;
-        }
+/* phones → 2 columns */
+@media (max-width: 480px) {
+    .video-item {
+        flex: 1 1 calc(50% - var(--gap));
+        max-width: calc(50% - var(--gap));
+    }
+}
 
-        .video-item .title {
-            font-size: .9rem;
-            margin-top: .5rem;
-            color: var(--red);
-            font-weight: bold;
-        }
+/* lock thumbnail to 16:9 */
+.video-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid black;
+}
 
-        /* INLINE PLAYER */
-        #video-player {
-            display: none;
-            margin: 20px auto;
-            width: 90%;
-            max-width: 800px;
-        }
+/* wrapped title below */
+.video-item .title {
+    margin-top: .5rem;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.2;
+    font-size: .9rem;
+    color: var(--red);
+    font-weight: bold;
+}
 
-        #video-player.show {
-            display: block;
-        }
+/* INLINE PLAYER */
+#video-player {
+    display: none;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 800px;
+}
 
-        #video-player video {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            background: #000;
-        }
+#video-player.show {
+    display: block;
+}
 
-        #backButton {
-            background: var(--red);
-            border: none;
-            color: var(--white);
-            padding: .75em 1.5em;
-            font-size: 1rem;
-            cursor: pointer;
-            text-transform: uppercase;
-            margin-top: 1rem;
-        }
+#video-player video {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    background: #000;
+}
 
-        @media (max-width: 480px) {
-            #backButton {
-                padding: .5em 1em;
-                font-size: .9rem;
-            }
-        }
+/* BACK BUTTON */
+#backButton {
+    background: var(--red);
+    border: none;
+    color: var(--white);
+    padding: .75em 1.5em;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin-top: 1rem;
+}
 
-        /* SDL STAR */
-        main>div>img {
-            display: block;
-            margin: 0 auto 1rem;
-            max-width: 80vw;
-            width: 100px;
-            height: auto;
-        }
+@media (max-width: 480px) {
+    #backButton {
+        padding: .5em 1em;
+        font-size: .9rem;
+    }
+}
 
-        /* POPUP */
-        .popup {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #444;
-            color: #fff;
-            padding: 15px 20px;
-            border-radius: 8px;
-            z-index: 1000;
-            display: none;
-        }
+/* SDL STAR */
+main > div > img {
+    display: block;
+    margin: 0 auto 1rem;
+    max-width: 80vw;
+    width: 100px;
+    height: auto;
+}
 
-        .popup.success,
-        .popup.error {
-            background: #c31c30;
-        }
-    </style>
+/* POPUP */
+.popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #444;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    z-index: 1000;
+    display: none;
+}
+
+.popup.success,
+.popup.error {
+    background: #c31c30;
+}
+
+  </style>
+        
 </head>
 
 <body>
