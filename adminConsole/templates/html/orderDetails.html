@@ -1,0 +1,285 @@
+{% load static %}
+{% load math_extras %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Order Details – Wokesdl</title>
+    <link rel="icon" href="{% static 'images/sdl32.png' %}" sizes="32x32" />
+    <link rel="stylesheet" href="{% static 'css/productDetail.css' %}" />
+    <style>
+        :root {
+            --bg: #000;
+            --panel-bg: #111;
+            --text: #fff;
+            --accent: #8f181b;
+            --border: #333;
+            --muted: #6e7073;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            padding-top: 60px;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--panel-bg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            z-index: 100;
+        }
+
+        header img {
+            max-height: 40px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 1rem auto;
+            padding: 0 1rem;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .order-header b {
+            font-size: 1.1rem;
+        }
+
+        .order-header form input[type="submit"] {
+            background: var(--accent);
+            border: none;
+            padding: 6px 12px;
+            color: var(--text);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .checkout-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cart-items,
+        .checkout-form {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .cart-items h2,
+        .checkout-form h2 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: .75rem;
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .cart-item-details {
+            margin-left: .75rem;
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-size: 1rem;
+        }
+
+        .cart-item-size {
+            font-size: .875rem;
+            color: var(--muted);
+        }
+
+        .cart-item-price {
+            font-weight: bold;
+        }
+
+        .field-group {
+            margin-bottom: 1rem;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: .875rem;
+            color: var(--muted);
+            margin-bottom: .25rem;
+        }
+
+        .field-group .value {
+            background: #222;
+            padding: .5rem;
+            border-radius: 4px;
+            color: var(--text);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: var(--accent);
+            margin-top: 2rem;
+        }
+
+        footer img {
+            max-width: 150px;
+            margin-bottom: 1rem;
+        }
+
+        footer p,
+        footer div {
+            color: var(--text);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="#">
+            <img src="{% static 'images/sdlstar.png' %}" alt="SDL Logo">
+        </a>
+    </header>
+
+    <main>
+        <div class="order-header">
+            <div><b>Order Id:</b> {{ payment.order_id }}</div>
+            <div>
+                {% if request.user.is_authenticated %}
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ DeliveryStatusUpdateFormCreator }}
+                    <input type="submit" name="updateDeliveryStatus" value="Update" />
+                </form>
+                {% else %}
+                <b>Contact us:</b> info@longlivesdl.com
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="checkout-container">
+            <!-- Cart Items -->
+            <div class="cart-items">
+                <h2>Cart Items</h2>
+                {% for item in payment.cart.cart_objects.all %}
+                <div class="cart-item">
+                    <div style="display:flex;align-items:center;">
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        <div class="cart-item-details">
+                            <div class="cart-item-name">{{ item.product.name }} × {{ item.quantity }}</div>
+                            <div class="cart-item-size">{{ item.size }}</div>
+                        </div>
+                    </div>
+                    <div class="cart-item-price">
+                        GHS{% with total=item.quantity|multiply:item.product.price %}{{ total }}{% endwith %}
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- <div style="display:flex;justify-content:space-between;font-weight:bold;">
+                    <div>Total:</div>
+                    <div class="total-price" id="total-price" style="color: #28a745; font-weight: bold;"> 0.00</div>
+                </div> -->
+            </div>
+
+            <!-- Order & Delivery Details -->
+            <div class="checkout-form">
+                <h2>Order Details</h2>
+
+                <div class="field-group">
+                    <label>First Name</label>
+                    <div class="value">{{ payment.first_name }}</div>
+                </div>
+                <div class="field-group">
+                    <label>Last Name</label>
+                    <div class="value">{{ payment.last_name }}</div>
+                </div>
+                <div class="field-group">
+                    <label>Email</label>
+                    <div class="value">{{ payment.email }}</div>
+                </div>
+                <div class="field-group">
+                    <label>Phone</label>
+                    <div class="value">
+                        +{{ payment.country_code }} {{ payment.phone }}
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label>Order Notes</label>
+                    <div class="value">
+                        {{ payment.order_notes|default:"No Order Notes" }}
+                    </div>
+                </div>
+
+                <h2>Delivery Details</h2>
+                <div class="field-group">
+                    <label>Country</label>
+                    <div class="value">{{ payment.destination_country }}</div>
+                </div>
+                <div class="field-group">
+                    <label>Street Address 1</label>
+                    <div class="value">{{ payment.street_address_1 }}</div>
+                </div>
+                <div class="field-group">
+                    <label>Street Address 2</label>
+                    <div class="value">{{ payment.street_address_2|default:"N/A" }}</div>
+                </div>
+                <div class="field-group">
+                    <label>City</label>
+                    <div class="value">{{ payment.city }}</div>
+                </div>
+                <div class="field-group">
+                    <label>State</label>
+                    <div class="value">{{ payment.state }}</div>
+                </div>
+                <div class="field-group">
+                    <label>Zip Code</label>
+                    <div class="value">{{ payment.zip_code }}</div>
+                </div>
+                <div class="field-group">
+                    <label>Additional Info</label>
+                    <div class="value">{{ payment.additional_info|default:"None" }}</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <img src="{% static 'images/sdlstar.png' %}" alt="SDL Logo">
+       
+        <p>&copy; WOKESDL</p>
+    </footer>
+</body>
+
+</html>

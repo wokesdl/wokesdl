@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from wokesdlPages.models import Payment
 from django.contrib.auth.decorators import login_required
+from .forms import DeliveryStatusUpdateForm
 
 # Create your views here.
 
@@ -33,3 +34,25 @@ def orderList(request):
     }
     print(payments)
     return render(request,'html/list.html',context)
+
+def orderDetails(request,ref):
+    payment = Payment.objects.get(ref=ref)
+    DeliveryStatusUpdateFormCreator = DeliveryStatusUpdateForm(instance=payment)
+
+    if request.method == 'POST':
+        if 'updateDeliveryStatus' in request.POST:
+            DeliveryStatusUpdateFormCreator = DeliveryStatusUpdateForm(request.POST, instance=payment)
+            if DeliveryStatusUpdateFormCreator.is_valid():
+                DeliveryStatusUpdateFormCreator.save()
+                return redirect(f'/orders/list/')
+            else:
+                print('Form errors:', DeliveryStatusUpdateFormCreator.errors) 
+            
+
+    context = {
+        'payment':payment,
+        'DeliveryStatusUpdateFormCreator':DeliveryStatusUpdateFormCreator,
+
+    }
+    print(payment)
+    return render(request,'html/orderDetails.html',context)
