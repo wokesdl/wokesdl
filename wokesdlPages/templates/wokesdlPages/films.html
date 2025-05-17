@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -7,9 +8,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Wokesdl</title>
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/sdl32.png' %}">
-
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
- 
+
     <style>
         :root {
             --bg: #000;
@@ -17,8 +17,7 @@
             --white: #fff;
             --gap: 1rem;
         }
-    
-        /* reset */
+
         *,
         *::before,
         *::after {
@@ -26,7 +25,7 @@
             margin: 0;
             padding: 0;
         }
-    
+
         body {
             background: var(--bg);
             color: var(--white);
@@ -34,120 +33,104 @@
             text-align: center;
             line-height: 1.5;
             overflow-x: hidden;
-            /* guard against unwanted scroll */
         }
-    
+
         header {
             padding: 20px;
         }
-    
+
         header img {
             max-width: 200px;
             height: auto;
         }
-    
+
         main {
             padding: 20px;
         }
-    
-        /* ————————————————————————————————————— */
-        /* FLEXBOX GRID */
-        /* ————————————————————————————————————— */
+
+        /* GRID */
         #video-grid .grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: var(--gap);
             max-width: 800px;
-            /* two items (~400px each + gap) */
             margin: 20px auto 0;
             padding: 0 15px;
         }
-    
+
         #video-grid.hidden {
             display: none;
         }
-    
+
         .video-item {
             flex: 1 1 calc(50% - var(--gap));
             max-width: calc(50% - var(--gap));
             cursor: pointer;
             position: relative;
-            aspect-ratio: 16 / 9;
+            aspect-ratio: 16/9;
             margin-bottom: 30px;
         }
-    
+
         @media (max-width: 480px) {
             .video-item {
                 flex: 1 1 100%;
                 max-width: 100%;
             }
         }
-    
-        /* thumbnail styling */
+
         .video-thumb {
-            display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            background: #000;
-            cursor: pointer;
             border: 1px solid black;
         }
-    
-        /* hide any old img fallback */
-        .video-item img {
-            display: none;
-        }
-    
+
         .video-item .title {
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
+            font-size: .9rem;
+            margin-top: .5rem;
             color: var(--red);
             font-weight: bold;
         }
-    
-        /* ————————————————————————————————————— */
+
         /* INLINE PLAYER */
-        /* ————————————————————————————————————— */
         #video-player {
             display: none;
             margin: 20px auto;
             width: 90%;
             max-width: 800px;
         }
-    
+
         #video-player.show {
             display: block;
         }
-    
+
         #video-player video {
             width: 100%;
             height: auto;
             object-fit: contain;
+            background: #000;
         }
-    
+
         #backButton {
             background: var(--red);
             border: none;
             color: var(--white);
-            padding: 0.75em 1.5em;
+            padding: .75em 1.5em;
             font-size: 1rem;
             cursor: pointer;
             text-transform: uppercase;
             margin-top: 1rem;
         }
-    
+
         @media (max-width: 480px) {
             #backButton {
-                padding: 0.5em 1em;
-                font-size: 0.9rem;
+                padding: .5em 1em;
+                font-size: .9rem;
             }
         }
-    
-        /* ————————————————————————————————————— */
+
         /* SDL STAR */
-        /* ————————————————————————————————————— */
         main>div>img {
             display: block;
             margin: 0 auto 1rem;
@@ -155,130 +138,113 @@
             width: 100px;
             height: auto;
         }
-    
-        /* ————————————————————————————————————— */
-        /* LINKS & POPUPS */
-        /* ————————————————————————————————————— */
-        a {
-            text-decoration: none;
-            cursor: pointer;
-        }
-    
+
+        /* POPUP */
         .popup {
             position: fixed;
             top: 20px;
             right: 20px;
-            background-color: #444;
+            background: #444;
             color: #fff;
             padding: 15px 20px;
             border-radius: 8px;
             z-index: 1000;
             display: none;
         }
-    
+
         .popup.success,
         .popup.error {
-            background-color: #c31c30;
+            background: #c31c30;
         }
     </style>
-  
-
 </head>
 
 <body>
     <div id="popup" class="popup"></div>
+
     <main>
         <div>
-            <img src="{% static 'images/sdlstar.png' %}" alt="">
+            <img src="{% static 'images/sdlstar.png' %}" alt="SDL Star">
         </div>
-            <!-- PLAYER VIEW -->
-            <section id="video-player">
-                <video id="player" controls poster=""></video>
-               <div style="display: flex; justify-content: center;">
+
+        <!-- INLINE PLAYER -->
+        <section id="video-player">
+            <video id="player" controls poster=""></video>
+            <div style="display: flex; justify-content: center;">
                 <button id="backButton">more random videos</button>
-               </div>
-            </section>
+            </div>
+        </section>
+
         <!-- GRID VIEW -->
         <section id="video-grid">
             <div class="grid">
                 <div class="video-item"
                     data-video-url="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4">
-                    <video class="video-thumb" muted preload="metadata"
-                        src="https://storage.googleapis.com/wokesdl/films/-3006079225691805502.mp4"></video>
+                    <img class="video-thumb" src="{% static 'films/1.png' %}" alt="Thumbnail 1">
                     <div class="title">PA!N IN FLAMES. KWELIT FEBRUARY, 2024</div>
                 </div>
-                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/-4195701190658781493.mp4">
-                    <video class="video-thumb" muted preload="metadata"
-                        src="https://storage.googleapis.com/wokesdl/films/-4195701190658781493.mp4"></video>
+                <div class="video-item"
+                    data-video-url="https://storage.googleapis.com/wokesdl/films/-4195701190658781493.mp4">
+                    <img class="video-thumb" src="{% static 'films/2.png' %}" alt="Thumbnail 2">
                     <div class="title">YESMINE, I’M THE PRODUCT SHOOT 2025</div>
                 </div>
-                
-                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/-9048418231711732996.mp4">
-                    <video class="video-thumb" muted preload="metadata"
-                        src="https://storage.googleapis.com/wokesdl/films/-9048418231711732996.mp4"></video>
+                <div class="video-item"
+                    data-video-url="https://storage.googleapis.com/wokesdl/films/-9048418231711732996.mp4">
+                    <img class="video-thumb" src="{% static 'films/3.png' %}" alt="Thumbnail 3">
                     <div class="title">L1TRENDSETTER, I’M THE PRODUCT SHOOT 2025</div>
                 </div>
                 <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/IMG_0540.mp4">
-                    <video class="video-thumb" muted preload="metadata"
-                        src="https://storage.googleapis.com/wokesdl/films/IMG_0540.mp4"></video>
+                    <img class="video-thumb" src="{% static 'films/4.png' %}" alt="Thumbnail 4">
                     <div class="title">a</div>
                 </div>
                 <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/IMG_2293(1).mp4">
-                    <video class="video-thumb" muted preload="metadata"
-                        src="https://storage.googleapis.com/wokesdl/films/IMG_2293(1).mp4"></video>
+                    <img class="video-thumb" src="{% static 'films/5.png' %}" alt="Thumbnail 5">
                     <div class="title">HARLEY QUINN SHOOT, RIIPER JUNE, 2023</div>
                 </div>
                 <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/IMG_2333.mp4">
-                    <video class="video-thumb" muted preload="metadata"
-                        src="https://storage.googleapis.com/wokesdl/films/IMG_2333.mp4"></video>
+                    <img class="video-thumb" src="{% static 'films/6.png' %}" alt="Thumbnail 6">
                     <div class="title">GOIN’ GHOST RECORDING SESH. TRAP MONTANNA</div>
                 </div>
                 <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/IMG_2603.MP4">
-                    <video class="video-thumb" muted preload="metadata"
-                        src="https://storage.googleapis.com/wokesdl/films/IMG_2603.MP4"></video>
+                    <img class="video-thumb" src="{% static 'films/7.png' %}" alt="Thumbnail 7">
                     <div class="title">THE SOUNDBYSDL X BLESCHCARTE</div>
                 </div>
                 <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/IMG_2628.mp4">
-                    <video class="video-thumb" muted preload="metadata"
-                        src="https://storage.googleapis.com/wokesdl/films/IMG_2628.mp4"></video>
+                    <img class="video-thumb" src="{% static 'films/8.png' %}" alt="Thumbnail 8">
                     <div class="title">THE SHEHU SHAGARI</div>
                 </div>
                 <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/IMG_3060.mp4">
-                    <video class="video-thumb" muted preload="metadata"
-                        src="https://storage.googleapis.com/wokesdl/films/IMG_3060.mp4"></video>
+                    <img class="video-thumb" src="{% static 'films/9.png' %}" alt="Thumbnail 9">
                     <div class="title">KOME FREESTYLE JULY, 2023</div>
                 </div>
-                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/RPReplay_Final1714783821.mp4">
-                    <video class="video-thumb" muted preload="metadata"
-                        src="https://storage.googleapis.com/wokesdl/films/RPReplay_Final1714783821.mp4"></video>
+                <div class="video-item"
+                    data-video-url="https://storage.googleapis.com/wokesdl/films/RPReplay_Final1714783821.mp4">
+                    <img class="video-thumb" src="{% static 'films/10.png' %}" alt="Thumbnail 10">
                     <div class="title">SULLY & DUSHANE. TOP BOY</div>
                 </div>
-                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/copy_1D4AB3E7-E932-45BD-8CCB-EC50B44E603E.mp4">
-                    <video class="video-thumb" muted preload="metadata"
-                        src="https://storage.googleapis.com/wokesdl/films/copy_1D4AB3E7-E932-45BD-8CCB-EC50B44E603E.mp4"></video>
+                <div class="video-item"
+                    data-video-url="https://storage.googleapis.com/wokesdl/films/copy_1D4AB3E7-E932-45BD-8CCB-EC50B44E603E.mp4">
+                    <img class="video-thumb" src="{% static 'films/11.png' %}" alt="Thumbnail 11">
                     <div class="title">SPRAY ON ‘EM TRAP KYD APRIL, 2024</div>
                 </div>
-                <div class="video-item" data-video-url="https://storage.googleapis.com/wokesdl/films/video-output-0F5166FA-DFF7-4D00-9C16-5D4AD164FD6B.mp4">
-                    <video class="video-thumb" muted preload="metadata"
-                        src="https://storage.googleapis.com/wokesdl/films/video-output-0F5166FA-DFF7-4D00-9C16-5D4AD164FD6B.mp4"></video>
+                <div class="video-item"
+                    data-video-url="https://storage.googleapis.com/wokesdl/films/video-output-0F5166FA-DFF7-4D00-9C16-5D4AD164FD6B.mp4">
+                    <img class="video-thumb" src="{% static 'films/12.png' %}" alt="Thumbnail 12">
                     <div class="title">BEVERLY, JAVAN SANTANA OCTOBER, 2024</div>
                 </div>
-
             </div>
         </section>
-
-    
     </main>
+
     <div class="store-footer">
         <div class="sf-h1">
             <div class="sf-h1-1">
                 <div style="display: flex; flex-direction: column; gap: 20px;">
                     <div>SIGN UP FOR EARLY ACCESS & DISCOUNTS </div>
-                    <form method="POST" class="mailFooterBox">
+                    <form method="POST" class="mailFooterBox" style="display: flex; flex-direction: column;">
                         {% csrf_token %}
-                        <input type="text" placeholder="Email" class="emailBox mailFooter" name="email"
-                            style="width: 230px;">
-                        <input type="submit" value="Submit" name="subscribe">
+                        <input type="text" placeholder="Email" class="emailBox mailFooter" name="email"  style="width: 180px !important;">
+                        <input type="submit" value="Submit" name="subscribe" style="width: 180px !important;">
                     </form>
                     <div style="display: flex; justify-content: space-between;">
                         <div style="display: flex; flex-direction: column;">
@@ -313,12 +279,12 @@
                                 <g transform="translate(0.000000,65.000000) scale(0.100000,-0.100000)" fill="#c31c30"
                                     stroke="none">
                                     <path d="M43 588 c212 -300 207 -292 194 -308 -7 -8 -64 -72 -126 -142 -107
-                                -123 -111 -128 -83 -128 25 0 45 18 132 118 57 64 108 117 114 117 5 0 46 -52
-                                91 -115 l81 -115 98 -3 99 -3 -25 33 c-13 18 -57 80 -98 138 -40 58 -88 126
-                                -107 151 l-33 47 115 130 c63 72 115 134 115 137 0 3 -11 5 -23 5 -18 0 -51
-                                -30 -127 -116 -56 -64 -106 -112 -111 -107 -4 4 -41 55 -81 113 l-74 105 -98
-                                3 -98 3 45 -63z m272 -190 c83 -117 172 -242 198 -280 l48 -68 -43 0 -43 0
-                                -180 252 c-99 138 -188 264 -198 280 l-19 28 44 0 43 -1 150 -211z" />
+                                    -123 -111 -128 -83 -128 25 0 45 18 132 118 57 64 108 117 114 117 5 0 46 -52
+                                    91 -115 l81 -115 98 -3 99 -3 -25 33 c-13 18 -57 80 -98 138 -40 58 -88 126
+                                    -107 151 l-33 47 115 130 c63 72 115 134 115 137 0 3 -11 5 -23 5 -18 0 -51
+                                    -30 -127 -116 -56 -64 -106 -112 -111 -107 -4 4 -41 55 -81 113 l-74 105 -98
+                                    3 -98 3 45 -63z m272 -190 c83 -117 172 -242 198 -280 l48 -68 -43 0 -43 0
+                                    -180 252 c-99 138 -188 264 -198 280 l-19 28 44 0 43 -1 150 -211z" />
                                 </g>
                             </svg>
                         </a>
@@ -393,7 +359,8 @@
                 </div>
             </div>
         </div>
-        <div class="sf-h2" style="display: flex; flex-direction: column; gap: 10px; width: fit-content; align-items: flex-start;">
+        <div class="sf-h2"
+            style="display: flex; flex-direction: column; gap: 10px; width: fit-content; align-items: flex-start;">
             <span><a href="{% url 'shipping' %}" style="color:  #c31c30;">Shipping Policies & Return</a></span>
     
             <span><a href="{% url 'contact' %}" style="color:  #c31c30;">Contact</a></span>
@@ -403,26 +370,23 @@
             <span> +2025. LONG LIVE SDL</span>
         </div>
     </div>
+
     <script>
         const grid = document.getElementById('video-grid');
         const playerUI = document.getElementById('video-player');
         const player = document.getElementById('player');
         const backBtn = document.getElementById('backButton');
 
-        // Thumbnail click → hide grid, show player
         document.querySelectorAll('.video-item').forEach(item => {
             item.addEventListener('click', () => {
-                const src = item.dataset.videoUrl;           // shorthand for getAttribute
+                const src = item.getAttribute('data-video-url');
                 player.src = src;
-                grid.classList.add('hidden');                // hide the grid
-                playerUI.classList.add('show');              // show the inline player
-                player.play();
+                grid.classList.add('hidden');
+                playerUI.classList.add('show');
                 playerUI.scrollIntoView({ behavior: 'smooth' });
-                backBtn
             });
         });
 
-        // Back button → stop video, hide player, show grid
         backBtn.addEventListener('click', () => {
             player.pause();
             player.src = '';
@@ -430,17 +394,16 @@
             grid.classList.remove('hidden');
         });
     </script>
-      
+
     {% if messages %}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var popup = document.getElementById("popup");
+            const popup = document.getElementById("popup");
             {% for message in messages %}
             popup.textContent = "{{ message }}";
-            popup.classList.add("{{ message.tags }}"); // success or error
+            popup.classList.add("{{ message.tags }}");
             popup.style.display = "block";
-
-            setTimeout(function () {
+            setTimeout(() => {
                 popup.style.display = "none";
                 popup.classList.remove("{{ message.tags }}");
             }, 3000);
@@ -448,7 +411,6 @@
         });
     </script>
     {% endif %}
-
 </body>
 
 </html>
